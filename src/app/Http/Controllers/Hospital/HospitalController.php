@@ -24,6 +24,14 @@ class HospitalController extends Controller
      *     @OA\Response(
      *          response="200",
      *          description="成功",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property (
+     *                property="data",
+     *                type="object",
+     *                ref="#/components/schemas/Response~1Hospital"
+     *              ),
+     *          ),
      *     ),
      * )
      */
