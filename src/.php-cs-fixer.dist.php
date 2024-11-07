@@ -17,7 +17,7 @@ $config = new PhpCsFixer\Config();
 return $config
     ->setRiskyAllowed(true)
     ->setRules([
-        '@PhpCsFixer:risky' => true,
+        '@PSR2' => true,
         'binary_operator_spaces' => [
             'default' => 'align_single_space_minimal',
         ],
@@ -36,6 +36,16 @@ return $config
         'linebreak_after_opening_tag' => true,
         'mb_str_functions' => true,
         'method_chaining_indentation' => true,
+        'no_extra_blank_lines' => [
+            'tokens' => [
+                'curly_brace_block',
+                'extra',
+                // 'parenthesis_brace_block',
+                // 'square_brace_block',
+                'throw',
+                'use',
+            ]
+        ],
         'no_superfluous_phpdoc_tags' => false,
         'no_unused_imports' => true,
         'no_whitespace_in_blank_line' => true,
@@ -60,6 +70,7 @@ return $config
         ],
         'simplified_if_return' => true,
         'simplified_null_return' => true,
-        'trailing_comma_in_multiline' => ['elements' => ['arrays']],
+        'single_quote' => true,
+        'trailing_comma_in_multiline' => ['elements' => ['arrays', 'arguments']],
     ])
     ->setFinder($finder);
