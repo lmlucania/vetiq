@@ -49,6 +49,10 @@ class HospitalController extends Controller
      *          response="200",
      *          description="成功",
      *     ),
+     *     @OA\Response(
+     *          response="422",
+     *          description="バリデーションエラー",
+     *     ),
      * )
      */
     public function update(HospitalSaveRequest $request)

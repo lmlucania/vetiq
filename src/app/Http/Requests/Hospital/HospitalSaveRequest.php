@@ -25,28 +25,32 @@ class HospitalSaveRequest extends ApiRequest
      *     @OA\Property(
      *         property="name",
      *         type="string",
-     *         description="名前"
+     *         description="病院名",
+     *         example="テスト病院"
      *     ),
      *     @OA\Property(
      *         property="zipcode",
      *         type="string",
-     *         description="郵便番号 (7桁)"
+     *         description="郵便番号 (7桁)",
+     *         example=1234567
      *     ),
      *     @OA\Property(
      *         property="address",
      *         type="string",
      *         description="住所",
-     *         maxLength=255
+     *         example="東京都新宿区西新宿2-8-1"
      *     ),
      *     @OA\Property(
      *         property="phone",
      *         type="string",
-     *         description="電話番号 (10または11桁)"
+     *         description="電話番号 (10または11桁)",
+     *         example="0123456789"
      *     ),
      *     @OA\Property(
      *         property="is_published",
      *         type="boolean",
-     *         description="公開状態"
+     *         description="公開状態",
+     *         example=true
      *     )
      * )
      */
