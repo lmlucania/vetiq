@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('hospital_staffs', function (Blueprint $table) {
+        Schema::create('staffs', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade')->comment('病院ID');
             $table->string('name');
@@ -44,7 +44,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('hospital_staffs');
+        Schema::dropIfExists('staffs');
         Schema::dropIfExists('staff_password_reset_tokens');
         Schema::dropIfExists('staff_sessions');
     }

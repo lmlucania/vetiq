@@ -4,15 +4,20 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domains\Hospital\ValueObjects\HospitalId;
+use App\Domains\Staff\Entity\Staff;
+use App\Domains\Staff\ValueObjects\Email;
+use App\Domains\Staff\ValueObjects\Name;
+use App\Domains\Staff\ValueObjects\StaffId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 
-class HospitalStaffModel extends User
+class StaffModel extends User
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "hospital_staffs";
+    protected $table = 'staffs';
 
     /**
      * Get the attributes that should be cast.
@@ -33,6 +38,7 @@ class HospitalStaffModel extends User
      * @var array<int, string>
      */
     protected $fillable = [
+        'hospital_id',
         'name',
         'email',
         'password',
@@ -48,9 +54,18 @@ class HospitalStaffModel extends User
         'remember_token',
     ];
 
-
     public function hospital()
     {
         return $this->belongsTo(HospitalModel::class);
+    }
+
+    public function toEntity()
+    {
+        return new Staff(
+            staffId: new StaffId($this->id),
+            hospitalId: new HospitalId($this->hospital_id),
+            name: new Name($this->name),
+            email: new Email($this->email),
+        );
     }
 }

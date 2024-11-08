@@ -32,8 +32,67 @@ paths:
       responses:
         200:
           description: ログアウト成功
+  /hospital/info:
+    get:
+      tags:
+        - Hospital
+      summary: 病院情報を取得
+      operationId: 3a01b01dd95e29de3eb73a0f487a9cdf
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response~1Hospital'
+    put:
+      tags:
+        - Hospital
+      summary: 病院情報を更新
+      operationId: 256b677b9da1cf3e8ca8b69659c910da
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requests~1Hospital~1HospitalSaveRequest'
+      responses:
+        200:
+          description: 成功
+        422:
+          description: バリデーションエラー
 components:
   schemas:
+    Requests/Hospital/HospitalSaveRequest:
+      description: 病院情報の保存
+      required:
+        - name
+        - zipcode
+        - address
+        - phone
+        - is_published
+      properties:
+        name:
+          description: 病院名
+          type: string
+          example: テスト病院
+        zipcode:
+          description: '郵便番号 (7桁)'
+          type: string
+          example: 1234567
+        address:
+          description: 住所
+          type: string
+          example: 東京都新宿区西新宿2-8-1
+        phone:
+          description: '電話番号 (10または11桁)'
+          type: string
+          example: '0123456789'
+        is_published:
+          description: 公開状態
+          type: boolean
+          example: true
+      type: object
     Requests/Hospital/LoginRequest:
       description: 病院スタッフログイン
       required:
@@ -47,6 +106,34 @@ components:
           type: string
           format: password
           example: password
+      type: object
+    Response/Hospital:
+      description: 病院情報
+      properties:
+        uuid:
+          description: 病院ID
+          type: string
+          example: e23c0dce-5d69-4572-a283-3643d69350bc
+        name:
+          description: 病院名
+          type: string
+          example: テスト病院
+        zipcode:
+          description: 郵便番号
+          type: string
+          example: '1234567'
+        address:
+          description: 住所
+          type: string
+          example: 山梨県工藤市南区津田町加藤5-1-5
+        phone:
+          description: 電話番号
+          type: string
+          example: '0123456789'
+        is_published:
+          description: 公開フラグ
+          type: boolean
+          example: true
       type: object
 tags:
   -

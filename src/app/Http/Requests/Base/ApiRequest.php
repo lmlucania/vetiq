@@ -21,7 +21,7 @@ class ApiRequest extends FormRequest
         $response['errors']  = $validator->errors()->toArray();
 
         throw new HttpResponseException(
-            response()->json($response, 422)
+            response()->json($response, 422),
         );
     }
 }

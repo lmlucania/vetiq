@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\HospitalModel;
-use App\Models\HospitalStaffModel;
+use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -20,7 +20,7 @@ class AuthControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->staff = HospitalStaffModel::factory()->create([
+        $this->staff = StaffModel::factory()->create([
             'id'          => 1,
             'hospital_id' => HospitalModel::factory()->create()->id,
             'name'        => 'test',
@@ -185,5 +185,4 @@ class AuthControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(401);
     }
-
 }

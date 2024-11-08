@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class HospitalStaffModelFactory extends Factory
+class StaffModelFactory extends Factory
 {
     /**
      * Define the model's default state.
