@@ -8,8 +8,7 @@ final class Address
 {
     public function __construct(
         private string $address
-    )
-    {
+    ) {
     }
 
     public function getValue(): string

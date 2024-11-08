@@ -10,10 +10,9 @@ final class HospitalId
 {
     public function __construct(
         private int $hospitalId
-    )
-    {
+    ) {
         if ($hospitalId < 1) {
-            throw new InvalidArgumentException("hospital id");
+            throw new InvalidArgumentException('hospital id');
         }
     }
 

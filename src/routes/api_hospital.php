@@ -12,7 +12,8 @@ Route::middleware(['guest'])->group(static function () {
 
 Route::middleware('auth:staffs')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::controller(HospitalController::class)->group(static function () {
-        Route::get('me', 'show')->name('me');
+    Route::controller(HospitalController::class)->prefix('info')->name('info.')->group(static function () {
+        Route::get('/', 'show')->name('show');
+        Route::put('/', 'update')->name('update');
     });
 });

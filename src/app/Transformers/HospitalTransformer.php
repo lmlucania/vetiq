@@ -12,6 +12,7 @@ class HospitalTransformer extends TransformerAbstract
     /**
      * @OA\Schema(
      *     schema="Response/Hospital",
+     *     description="病院情報",
      *     type="object",
      *     @OA\Property(
      *         property="id",
@@ -44,7 +45,7 @@ class HospitalTransformer extends TransformerAbstract
      *         example="0123456789",
      *     ),
      *     @OA\Property(
-     *         property="is_public",
+     *         property="is_published",
      *         type="boolean",
      *         description="公開フラグ",
      *         example=true,
@@ -54,12 +55,12 @@ class HospitalTransformer extends TransformerAbstract
     public function transform(HospitalDto $hospitalDto)
     {
         return [
-            'id'        => $hospitalDto->getPublicId()->getValue(),
-            'name'      => $hospitalDto->getName()->getValue(),
-            'zipcode'   => $hospitalDto->getZipcode()->getValue(),
-            'address'   => $hospitalDto->getAddress()->getValue(),
-            'phone'     => $hospitalDto->getPhone()->getValue(),
-            'is_public' => $hospitalDto->getIsPublished()->getValue(),
+            'id'           => $hospitalDto->getUuid()->getValue(),
+            'name'         => $hospitalDto->getName()->getValue(),
+            'zipcode'      => $hospitalDto->getZipcode()->getValue(),
+            'address'      => $hospitalDto->getAddress()->getValue(),
+            'phone'        => $hospitalDto->getPhone()->getValue(),
+            'is_published' => $hospitalDto->getIsPublished()->getValue(),
         ];
     }
 }
