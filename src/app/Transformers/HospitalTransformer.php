@@ -15,7 +15,7 @@ class HospitalTransformer extends TransformerAbstract
      *     description="病院情報",
      *     type="object",
      *     @OA\Property(
-     *         property="id",
+     *         property="uuid",
      *         type="string",
      *         description="病院ID",
      *         example="e23c0dce-5d69-4572-a283-3643d69350bc",
@@ -55,7 +55,7 @@ class HospitalTransformer extends TransformerAbstract
     public function transform(HospitalDto $hospitalDto)
     {
         return [
-            'id'           => $hospitalDto->getUuid()->getValue(),
+            'uuid'         => $hospitalDto->getUuid()->getValue(),
             'name'         => $hospitalDto->getName()->getValue(),
             'zipcode'      => $hospitalDto->getZipcode()->getValue(),
             'address'      => $hospitalDto->getAddress()->getValue(),

@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Feature\Controllers\Hospital;
-
-
 
 use App\Models\HospitalModel;
 use App\Models\StaffModel;
@@ -21,19 +21,19 @@ class HospitalControllerTest extends TestCase
         parent::setUp();
 
         $this->hospital = HospitalModel::create([
-            'uuid' => 'b90612f5-3446-47d7-b66a-12ff54963050',
-            'name' => '裕美子病院',
-            'zipcode' => '1234567',
-            'address' => '岩手県佐藤市東区吉本町佐々木1-2-3',
-            'phone' => '0123456789',
+            'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
+            'name'         => '裕美子病院',
+            'zipcode'      => '1234567',
+            'address'      => '岩手県佐藤市東区吉本町佐々木1-2-3',
+            'phone'        => '0123456789',
             'is_published' => true,
         ]);
 
         $this->staff = StaffModel::create([
             'hospital_id' => $this->hospital->id,
-            'name' => '山岸太一',
-            'email' => 'staff+1@example.com',
-            'password' => Hash::make('password'),
+            'name'        => '山岸太一',
+            'email'       => 'staff+1@example.com',
+            'password'    => Hash::make('password'),
         ]);
     }
 
@@ -53,11 +53,11 @@ class HospitalControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(6, 'data')
             ->assertJsonFragment([
-                'id' => 'b90612f5-3446-47d7-b66a-12ff54963050',
-                'name' => '裕美子病院',
-                'zipcode' => '1234567',
-                'address' => '岩手県佐藤市東区吉本町佐々木1-2-3',
-                'phone' => '0123456789',
+                'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
+                'name'         => '裕美子病院',
+                'zipcode'      => '1234567',
+                'address'      => '岩手県佐藤市東区吉本町佐々木1-2-3',
+                'phone'        => '0123456789',
                 'is_published' => true,
             ]);
     }
@@ -70,10 +70,10 @@ class HospitalControllerTest extends TestCase
         // 準備（Arrange）
         $this->actingAs($this->staff, $this->guard);
         $postData = [
-            'name' => '裕美子病院x',
-            'zipcode' => '1234560',
-            'address' => '岩手県佐藤市東区吉本町佐々木1-2-0',
-            'phone' => '0123456780',
+            'name'         => '裕美子病院x',
+            'zipcode'      => '1234560',
+            'address'      => '岩手県佐藤市東区吉本町佐々木1-2-0',
+            'phone'        => '0123456780',
             'is_published' => false,
         ];
 
