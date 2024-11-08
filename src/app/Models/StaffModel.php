@@ -17,7 +17,7 @@ class StaffModel extends User
 {
     use HasFactory, SoftDeletes;
 
-    protected $table = "staffs";
+    protected $table = 'staffs';
 
     /**
      * Get the attributes that should be cast.
@@ -38,6 +38,7 @@ class StaffModel extends User
      * @var array<int, string>
      */
     protected $fillable = [
+        'hospital_id',
         'name',
         'email',
         'password',
@@ -53,13 +54,13 @@ class StaffModel extends User
         'remember_token',
     ];
 
-
     public function hospital()
     {
         return $this->belongsTo(HospitalModel::class);
     }
 
-    public function toEntity() {
+    public function toEntity()
+    {
         return new Staff(
             staffId: new StaffId($this->id),
             hospitalId: new HospitalId($this->hospital_id),

@@ -16,8 +16,7 @@ class Staff
         private HospitalId $hospitalId,
         private Name $name,
         private Email $email,
-    )
-    {
+    ) {
     }
 
     public function getStaffId(): StaffId

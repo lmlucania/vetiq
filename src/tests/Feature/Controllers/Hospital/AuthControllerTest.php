@@ -185,5 +185,4 @@ class AuthControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(401);
     }
-
 }

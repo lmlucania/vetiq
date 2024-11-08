@@ -10,10 +10,9 @@ final class Zipcode
 {
     public function __construct(
         private string $zipcode
-    )
-    {
+    ) {
         if (! preg_match('/^\d{7}$/', $zipcode)) {
-            throw new InvalidArgumentException("zip code");
+            throw new InvalidArgumentException('zip code');
         }
     }
 

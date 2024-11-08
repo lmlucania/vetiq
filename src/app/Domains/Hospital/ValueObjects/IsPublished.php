@@ -8,8 +8,7 @@ final class IsPublished
 {
     public function __construct(
         private bool $isPublished
-    )
-    {
+    ) {
     }
 
     public function getValue(): bool
