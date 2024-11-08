@@ -21,11 +21,11 @@ class HospitalModelFactory extends Factory
     {
         $address = $this->faker->address();  // 例）1234567 東京都新宿区西新宿2-8-1
         return [
-            'public_id'    => Str::uuid(),
+            'uuid'         => Str::uuid(),
             'name'         => $this->faker->firstName() . '病院',
             'zipcode'      => $this->faker->postcode(),
-            'address'      => mb_substr($address, 8),
-            'phone'        => $this->faker->numberBetween(1000000000, 99999999999),
+            'address'      => mb_substr($address, 9),
+            'phone'        => '0' . $this->faker->numberBetween(100000000, 9999999999),
             'is_published' => true,
         ];
     }
