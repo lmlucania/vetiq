@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\HospitalModel;
-use App\Models\StaffModel;
+use App\Models\MenuModel;
 use Illuminate\Database\Seeder;
 
-class StaffSeeder extends Seeder
+class MenuSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,11 +17,7 @@ class StaffSeeder extends Seeder
     {
         $hospitals = HospitalModel::all();
         foreach ($hospitals as $hospital) {
-            StaffModel::factory()->count(10)->create(['hospital_id' => $hospital->id]);
+            MenuModel::factory(3)->create(['hospital_id' => $hospital->id]);
         }
-        StaffModel::factory()->create([
-            'hospital_id' => $hospital->id,
-            'email'       => 'staff+1@example.com',
-        ]);
     }
 }
