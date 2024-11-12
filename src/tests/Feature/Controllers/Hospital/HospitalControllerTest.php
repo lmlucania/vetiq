@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Feature\Controllers\Hospital;
+namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\HospitalModel;
 use App\Models\StaffModel;
