@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Hospital\Service;
+namespace App\Application\Service;
 
 use App\Application\Dto\HospitalDto;
 use App\Domains\Hospital\Factory\HospitalFactory;
@@ -23,7 +23,7 @@ class HospitalService
     {
         $hospitals = $this->hospitalRepository->getList();
         return $hospitals->map(static function (HospitalModel $hospital) {
-            $entity = $this->hospitalFactory->toEntity($hospital);
+            $entity = $this->hospitalFactory->modelToEntity($hospital);
 
             return new HospitalDto(
                 uuid: $entity->getUuid(),
@@ -36,10 +36,9 @@ class HospitalService
         });
     }
 
-    public function getByStaff():HospitalDto
+    public function findByAuthStaff():HospitalDto
     {
-        $hospital       = auth()->user()->hospital;
-        $hospitalEntity = $this->hospitalFactory->toEntity($hospital);
+        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
 
         return new HospitalDto(
             uuid: $hospitalEntity->getUuid(),
@@ -57,10 +56,10 @@ class HospitalService
         string $address,
         string $phone,
         bool $isPublished
-    ): void {
+    ): bool {
         $id = $this->hospitalRepository->generateId(HospitalModel::class);
 
-        $entity = $this->hospitalFactory->createEntity(
+        $hospitalEntity = $this->hospitalFactory->createEntity(
             id:$id,
             uuid:(string)Str::uuid(),
             name:$name,
@@ -70,21 +69,21 @@ class HospitalService
             isPublished: $isPublished,
         );
 
-        $this->hospitalRepository->create($entity);
+        return $this->hospitalRepository->create($hospitalEntity);
     }
 
-    public function update(
+    public function updateByAuthStaff(
         string $name,
         string $zipcode,
         string $address,
         string $phone,
         bool $isPublished
-    ): void {
-        $hospital = auth()->user()->hospital;
+    ): bool {
+        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
 
         $entity = $this->hospitalFactory->createEntity(
-            id:$hospital->id,
-            uuid:$hospital->uuid,
+            id:$hospitalEntity->getId()->getValue(),
+            uuid:$hospitalEntity->getUuid()->getValue(),
             name:$name,
             zipcode: $zipcode,
             address: $address,
@@ -92,6 +91,6 @@ class HospitalService
             isPublished: $isPublished,
         );
 
-        $this->hospitalRepository->update($entity);
+        return $this->hospitalRepository->update($entity);
     }
 }
