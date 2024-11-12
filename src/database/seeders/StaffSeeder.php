@@ -19,5 +19,9 @@ class StaffSeeder extends Seeder
         foreach ($hospitals as $hospital) {
             StaffModel::factory()->count(10)->create(['hospital_id' => $hospital->id]);
         }
+        StaffModel::factory()->create([
+            'hospital_id' => $hospital->id,
+            'email'       => 'staff+1@example.com',
+        ]);
     }
 }
