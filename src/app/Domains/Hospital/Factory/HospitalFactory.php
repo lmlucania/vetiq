@@ -16,7 +16,22 @@ use App\Models\HospitalModel;
 
 class HospitalFactory
 {
-    public function toEntity(HospitalModel $hospitalModel): Hospital
+    public static function createEntityFromAuthStaff(): Hospital
+    {
+        $hospitalModel = auth()->user()->hospital;
+
+        return new Hospital(
+            new HospitalId($hospitalModel->id),
+            new HospitalUuid($hospitalModel->uuid),
+            new Name($hospitalModel->name),
+            new Zipcode($hospitalModel->zipcode),
+            new Address($hospitalModel->address),
+            new Phone($hospitalModel->phone),
+            new IsPublished($hospitalModel->is_published),
+        );
+    }
+
+    public function modelToEntity(HospitalModel $hospitalModel): Hospital
     {
         return new Hospital(
             new HospitalId($hospitalModel->id),
@@ -29,7 +44,7 @@ class HospitalFactory
         );
     }
 
-    public function toModel(Hospital $hospital): HospitalModel
+    public function entityToModel(Hospital $hospital): HospitalModel
     {
         $hospitalModel = new HospitalModel();
 
@@ -64,8 +79,10 @@ class HospitalFactory
         );
     }
 
-    public function updateModel(HospitalModel $hospitalModel, Hospital $hospital)
-    {
+    public function updateModelFromEntity(
+        HospitalModel $hospitalModel,
+        Hospital $hospital
+    ):HospitalModel {
         $hospitalModel->name         = $hospital->getName()->getValue();
         $hospitalModel->zipcode      = $hospital->getZipcode()->getValue();
         $hospitalModel->address      = $hospital->getAddress()->getValue();
