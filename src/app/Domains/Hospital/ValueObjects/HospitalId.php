@@ -12,12 +12,17 @@ final class HospitalId
         private int $hospitalId
     ) {
         if ($hospitalId < 1) {
-            throw new InvalidArgumentException('hospital id');
+            throw new InvalidArgumentException(self::class);
         }
     }
 
     public function getValue(): int
     {
         return $this->hospitalId;
+    }
+
+    public function equals(self $hospitalId)
+    {
+        return self::getValue() == $hospitalId->getValue();
     }
 }
