@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('menus', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade')->comment('病院ID');
             $table->string('name')->comment('診察メニュー名');
             $table->text('detail')->comment('説明');
