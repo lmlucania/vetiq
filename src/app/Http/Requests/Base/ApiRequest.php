@@ -24,4 +24,18 @@ class ApiRequest extends FormRequest
             response()->json($response, 422),
         );
     }
+
+    /**
+     * rulesでバリデーションできるように、ルートパラメータを含める
+     * @return array
+     */
+    public function validationData()
+    {
+        // リクエストボディとルートパラメータを統合
+        $params      = parent::validationData();
+        $routeParams = ['route_params' => $this->route()->parameters()];
+
+        // 上書きしないように、配列を足し算する
+        return $params + $routeParams;
+    }
 }
