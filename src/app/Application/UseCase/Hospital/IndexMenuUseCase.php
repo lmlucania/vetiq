@@ -1,0 +1,30 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\UseCase\Hospital;
+
+use App\Application\Dto\PaginatedDto;
+use App\Application\QueryService\MenuQueryService;
+use App\Domains\Menu\Factory\MenuFactory;
+use App\Models\MenuModel;
+
+class IndexMenuUseCase
+{
+    public function __construct(
+        private readonly MenuQueryService $menuQueryService,
+        private readonly MenuFactory $menuFactory
+    ) {
+    }
+
+    public function index(int $page, int $perPage, string $keyword, array $sort):PaginatedDto
+    {
+        $paginated = $this->menuQueryService->listByCriteria($page, $perPage, $keyword, $sort);
+        $dtoList   = $paginated->map(function (MenuModel $menuModel) {
+            $menuEntity = $this->menuFactory->modelToEntity($menuModel);
+            return $this->menuFactory->entityToDto($menuEntity);
+        });
+
+        return new PaginatedDto($dtoList, $paginated);
+    }
+}

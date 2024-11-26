@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Infrastructure\Repositories\HospitalRepository;
+use App\Infrastructure\Repositories\MenuRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -16,6 +18,7 @@ class RepositoryServiceProvider extends ServiceProvider
     public function register(): void
     {
         $this->app->bind(HospitalRepositoryInterface::class, HospitalRepository::class);
+        $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
     }
 
     /**
