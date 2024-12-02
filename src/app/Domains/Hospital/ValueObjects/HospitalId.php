@@ -20,9 +20,4 @@ final class HospitalId
     {
         return $this->hospitalId;
     }
-
-    public function equals(self $hospitalId)
-    {
-        return self::getValue() == $hospitalId->getValue();
-    }
 }

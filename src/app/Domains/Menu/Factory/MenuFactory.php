@@ -75,16 +75,4 @@ class MenuFactory
             new IsPublished($isPublished),
         );
     }
-
-    public function updateModelFromEntity(
-        MenuModel $menuModel,
-        Menu $menu
-    ):MenuModel {
-        $menuModel->name          = $menu->getName()->getValue();
-        $menuModel->detail        = $menu->getDetail()->getValue();
-        $menuModel->required_time = $menu->getRequiredTime()->getValue();
-        $menuModel->is_published  = $menu->getIsPublished()->getValue();
-
-        return $menuModel;
-    }
 }

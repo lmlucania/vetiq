@@ -59,4 +59,27 @@ class Menu
     {
         return $this->isPublished;
     }
+
+    /**
+     * 診察メニューが病院に属しているか
+     * @param HospitalId $hospitalId
+     * @return bool
+     */
+    public function belongsToHospital(HospitalId $hospitalId): bool
+    {
+        return $this->hospitalId == $hospitalId;
+    }
+
+    public function update(string $name, string $detail, int $requiredTime, bool $isPublished): Menu
+    {
+        return new Menu(
+            $this->menuId,
+            $this->menuUuid,
+            $this->hospitalId,
+            new Name($name),
+            new Detail($detail),
+            new RequiredTime($requiredTime),
+            new IsPublished($isPublished),
+        );
+    }
 }

@@ -4,50 +4,58 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
+use App\Domains\Menu\Entity\Menu;
+use App\Domains\Menu\Factory\MenuFactory;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
+use App\Exceptions\NotFoundException;
 use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\HospitalModel;
 use App\Models\MenuModel;
-use Illuminate\Support\Collection;
 
 class MenuRepository implements MenuRepositoryInterface
 {
     use GenerationId;
 
     public function __construct(
-        private readonly HospitalFactory $hospitalFactory
+        private readonly HospitalFactory $hospitalFactory,
+        private readonly MenuFactory $menuFactory
     ) {
-    }
-
-    public function getById(MenuId $id): MenuModel
-    {
-        return MenuModel::findOrFail($id->getValue());
     }
 
     public function getByUuid(MenuUuid $uuid): MenuModel
     {
-        return MenuModel::firstWhere('uuid', $uuid->getValue());
+        $menu = MenuModel::firstWhere('uuid', $uuid->getValue());
+        if ($menu == null) {
+            throw new NotFoundException();
+        }
+
+        return $menu;
     }
 
-    public function getList(): Collection
+    public function create(Menu $menuEntity): bool
     {
-        return HospitalModel::all();
+        $menuModel = $this->menuFactory->entityToModel($menuEntity);
+        return $menuModel->save();
     }
 
-    public function create(Hospital $hospitalEntity): bool
+    public function update(Menu $menuEntity): bool
     {
-        $hospitalModel = $this->hospitalFactory->entityToModel($hospitalEntity);
-        return $hospitalModel->save();
+        $menuModel = MenuModel::findOrFail($menuEntity->getId()->getValue());
+
+        $menuModel->name          = $menuEntity->getName()->getValue();
+        $menuModel->detail        = $menuEntity->getDetail()->getValue();
+        $menuModel->required_time = $menuEntity->getRequiredTime()->getValue();
+        $menuModel->is_published  = $menuEntity->getIsPublished()->getValue();
+
+        return $menuModel->update();
     }
 
-    public function update(Hospital $hospitalEntity): bool
+    public function delete(MenuId $id): bool
     {
-        $hospitalModel = HospitalModel::findOrFail($hospitalEntity->getId()->getValue());
-        $hospitalModel = $this->hospitalFactory->updateModelFromEntity($hospitalModel, $hospitalEntity);
-        return $hospitalModel->update();
+        $menuModel = MenuModel::findOrFail($id->getValue());
+
+        return $menuModel->delete();
     }
 }

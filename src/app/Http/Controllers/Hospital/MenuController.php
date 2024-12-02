@@ -4,11 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
+use App\Application\UseCase\Hospital\DestroyMenuUseCase;
 use App\Application\UseCase\Hospital\IndexMenuUseCase;
 use App\Application\UseCase\Hospital\ShowMenuUseCase;
+use App\Application\UseCase\Hospital\StoreMenuUseCase;
+use App\Application\UseCase\Hospital\UpdateMenuUseCase;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Hospital\DestroyMenuRequest;
 use App\Http\Requests\Hospital\IndexMenuRequest;
 use App\Http\Requests\Hospital\ShowMenuRequest;
+use App\Http\Requests\Hospital\StoreMenuRequest;
+use App\Http\Requests\Hospital\UpdateMenuRequest;
 use App\Transformers\MenuTransformer;
 use Illuminate\Http\JsonResponse;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -16,8 +22,11 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class MenuController extends Controller
 {
     public function __construct(
+        private readonly IndexMenuUseCase $indexMenuUseCase,
+        private readonly StoreMenuUseCase $storeMenuUseCase,
         private readonly ShowMenuUseCase $showMenuUseCase,
-        private readonly IndexMenuUseCase $indexMenuUseCase
+        private readonly UpdateMenuUseCase $updateMenuUseCase,
+        private readonly DestroyMenuUseCase $destroyMenuUseCase,
     ) {
     }
 
@@ -77,6 +86,40 @@ class MenuController extends Controller
     }
 
     /**
+     * @OA\Post(
+     *     path="/hospital/menus",
+     *     tags={"Hospital"},
+     *     summary="診察メニューの登録",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreMenuRequest")
+     *     ),
+     *     @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *     )
+     * )
+     */
+    public function store(StoreMenuRequest $request)
+    {
+        $success = $this->storeMenuUseCase->store(
+            $request->name,
+            $request->detail,
+            $request->required_time,
+            $request->is_published,
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
      * @OA\Get(
      *     path="/hospital/menus/{uuid}",
      *     tags={"Hospital"},
@@ -94,11 +137,95 @@ class MenuController extends Controller
      *              ref="#/components/schemas/Response~1Menu"
      *          ),
      *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Not Found",
+     *     ),
      * )
      */
-    public function show(ShowMenuRequest $request): JsonResponse
+    public function show(ShowMenuRequest $request, string $uuid): JsonResponse
     {
-        $menuDto = $this->showMenuUseCase->show($request->menu);
+        $menuDto = $this->showMenuUseCase->show($uuid);
         return fractal($menuDto, new MenuTransformer())->respond();
+    }
+
+    /**
+     * @OA\Put(
+     *     path="/hospital/menus/{uuid}",
+     *     tags={"Hospital"},
+     *     summary="診察メニューの更新",
+     *     @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="診察メニューID",
+     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
+     *     ),
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1UpdateMenuRequest")
+     *     ),
+     *     @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *     ),
+     *     @OA\Response(
+     *          response="404",
+     *          description="Not Found",
+     *     ),
+     * )
+     */
+    public function update(UpdateMenuRequest $request, string $uuid)
+    {
+        $success = $this->updateMenuUseCase->update(
+            $uuid,
+            $request->name,
+            $request->detail,
+            $request->required_time,
+            $request->is_published,
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
+     * @OA\Delete(
+     *     path="/hospital/menus/{uuid}",
+     *     tags={"Hospital"},
+     *     summary="診察メニューの削除",
+     *     @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="診察メニューID",
+     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not Found",
+     *      ),
+     * )
+     */
+    public function destroy(DestroyMenuRequest $request, string $uuid): JsonResponse
+    {
+        $success = $this->destroyMenuUseCase->destroy($uuid);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

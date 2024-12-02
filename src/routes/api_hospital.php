@@ -17,5 +17,5 @@ Route::middleware('auth:staffs')->group(static function () {
         Route::get('/', 'show')->name('show');
         Route::put('/', 'update')->name('update');
     });
-    Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', ]);
+    Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });
