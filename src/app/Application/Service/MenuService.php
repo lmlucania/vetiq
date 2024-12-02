@@ -75,10 +75,24 @@ class MenuService
         return $this->menuRepository->update($menuEntity);
     }
 
-    public function delete(string $uuid)
+    public function delete(string $uuid):bool
     {
         $menuEntity = $this->getHospitalOwnByUuid($uuid);
 
         return $this->menuRepository->delete($menuEntity->getId());
+    }
+
+    public function publish(string $uuid):bool
+    {
+        $menuEntity = $this->getHospitalOwnByUuid($uuid);
+
+        return $this->menuRepository->publish($menuEntity->getId());
+    }
+
+    public function unpublish(string $uuid):bool
+    {
+        $menuEntity = $this->getHospitalOwnByUuid($uuid);
+
+        return $this->menuRepository->unpublish($menuEntity->getId());
     }
 }

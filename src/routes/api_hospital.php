@@ -18,4 +18,8 @@ Route::middleware('auth:staffs')->group(static function () {
         Route::put('/', 'update')->name('update');
     });
     Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::controller(MenuController::class)->prefix('menus')->name('menus.')->group(static function () {
+        Route::post('{menu}/publish', 'publish')->name('publish');
+        Route::post('{menu}/unpublish', 'unpublish')->name('unpublish');
+    });
 });

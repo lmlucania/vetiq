@@ -6,13 +6,14 @@ namespace App\Http\Controllers\Hospital;
 
 use App\Application\UseCase\Hospital\DestroyMenuUseCase;
 use App\Application\UseCase\Hospital\IndexMenuUseCase;
+use App\Application\UseCase\Hospital\PublishMenuUseCase;
 use App\Application\UseCase\Hospital\ShowMenuUseCase;
 use App\Application\UseCase\Hospital\StoreMenuUseCase;
+use App\Application\UseCase\Hospital\UnpublishMenuUseCase;
 use App\Application\UseCase\Hospital\UpdateMenuUseCase;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\DestroyMenuRequest;
 use App\Http\Requests\Hospital\IndexMenuRequest;
-use App\Http\Requests\Hospital\ShowMenuRequest;
+use App\Http\Requests\Hospital\QueryParamMenuRequest;
 use App\Http\Requests\Hospital\StoreMenuRequest;
 use App\Http\Requests\Hospital\UpdateMenuRequest;
 use App\Transformers\MenuTransformer;
@@ -27,6 +28,8 @@ class MenuController extends Controller
         private readonly ShowMenuUseCase $showMenuUseCase,
         private readonly UpdateMenuUseCase $updateMenuUseCase,
         private readonly DestroyMenuUseCase $destroyMenuUseCase,
+        private readonly PublishMenuUseCase $publishMenuUseCase,
+        private readonly UnpublishMenuUseCase $unpublishMenuUseCase,
     ) {
     }
 
@@ -143,7 +146,7 @@ class MenuController extends Controller
      *     ),
      * )
      */
-    public function show(ShowMenuRequest $request, string $uuid): JsonResponse
+    public function show(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {
         $menuDto = $this->showMenuUseCase->show($uuid);
         return fractal($menuDto, new MenuTransformer())->respond();
@@ -219,9 +222,79 @@ class MenuController extends Controller
      *      ),
      * )
      */
-    public function destroy(DestroyMenuRequest $request, string $uuid): JsonResponse
+    public function destroy(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {
         $success = $this->destroyMenuUseCase->destroy($uuid);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/hospital/menus/{uuid}/publish",
+     *     tags={"Hospital"},
+     *     summary="診察メニューを公開に変更",
+     *     @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="診察メニューID",
+     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not Found",
+     *      ),
+     * )
+     */
+    public function publish(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    {
+        $success = $this->publishMenuUseCase->publish($uuid);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/hospital/menus/{uuid}/unpublish",
+     *     tags={"Hospital"},
+     *     summary="診察メニューを非公開に変更",
+     *     @OA\Parameter(
+     *          name="uuid",
+     *          in="path",
+     *          description="診察メニューID",
+     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
+     *      ),
+     *      @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *      ),
+     *      @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *      ),
+     *      @OA\Response(
+     *          response="404",
+     *          description="Not Found",
+     *      ),
+     * )
+     */
+    public function unpublish(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    {
+        $success = $this->unpublishMenuUseCase->unpublish($uuid);
 
         if ($success) {
             return response()->success();

@@ -6,7 +6,7 @@ namespace App\Http\Requests\Hospital;
 
 use App\Http\Requests\Base\ApiRequest;
 
-class DestroyMenuRequest extends ApiRequest
+class QueryParamMenuRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

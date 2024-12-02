@@ -20,4 +20,8 @@ interface MenuRepositoryInterface
     public function update(Menu $menuEntity):bool;
 
     public function delete(MenuId $id):bool;
+
+    public function publish(MenuId $id):bool;
+
+    public function unpublish(MenuId $id):bool;
 }
