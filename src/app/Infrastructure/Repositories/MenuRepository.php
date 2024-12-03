@@ -58,22 +58,4 @@ class MenuRepository implements MenuRepositoryInterface
 
         return $menuModel->delete();
     }
-
-    public function publish(MenuId $id): bool
-    {
-        $menuModel = MenuModel::findOrFail($id->getValue());
-
-        $menuModel->is_published  = true;
-
-        return $menuModel->update();
-    }
-
-    public function unpublish(MenuId $id): bool
-    {
-        $menuModel = MenuModel::findOrFail($id->getValue());
-
-        $menuModel->is_published  = false;
-
-        return $menuModel->update();
-    }
 }

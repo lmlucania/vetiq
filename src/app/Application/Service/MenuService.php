@@ -86,13 +86,17 @@ class MenuService
     {
         $menuEntity = $this->getHospitalOwnByUuid($uuid);
 
-        return $this->menuRepository->publish($menuEntity->getId());
+        $menuEntity = $menuEntity->publish();
+
+        return $this->menuRepository->update($menuEntity);
     }
 
     public function unpublish(string $uuid):bool
     {
         $menuEntity = $this->getHospitalOwnByUuid($uuid);
 
-        return $this->menuRepository->unpublish($menuEntity->getId());
+        $menuEntity = $menuEntity->unpublish();
+
+        return $this->menuRepository->update($menuEntity);
     }
 }

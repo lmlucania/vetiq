@@ -82,4 +82,30 @@ class Menu
             new IsPublished($isPublished),
         );
     }
+
+    public function publish():Menu
+    {
+        return new Menu(
+            $this->menuId,
+            $this->menuUuid,
+            $this->hospitalId,
+            $this->name,
+            $this->detail,
+            $this->requiredTime,
+            new IsPublished(true),
+        );
+    }
+
+    public function unpublish():Menu
+    {
+        return new Menu(
+            $this->menuId,
+            $this->menuUuid,
+            $this->hospitalId,
+            $this->name,
+            $this->detail,
+            $this->requiredTime,
+            new IsPublished(false),
+        );
+    }
 }
