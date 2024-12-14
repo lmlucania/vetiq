@@ -13,7 +13,7 @@ final class HospitalUuid
         private string $uuid
     ) {
         if (! Uuid::isValid($uuid)) {
-            throw new InvalidArgumentException('hospital uuid');
+            throw new InvalidArgumentException(get_class($this));
         }
     }
 

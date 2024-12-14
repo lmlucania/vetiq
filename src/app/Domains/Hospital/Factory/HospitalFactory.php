@@ -78,17 +78,4 @@ class HospitalFactory
             new IsPublished($isPublished),
         );
     }
-
-    public function updateModelFromEntity(
-        HospitalModel $hospitalModel,
-        Hospital $hospital
-    ):HospitalModel {
-        $hospitalModel->name         = $hospital->getName()->getValue();
-        $hospitalModel->zipcode      = $hospital->getZipcode()->getValue();
-        $hospitalModel->address      = $hospital->getAddress()->getValue();
-        $hospitalModel->phone        = $hospital->getPhone()->getValue();
-        $hospitalModel->is_published = $hospital->getIsPublished()->getValue();
-
-        return $hospitalModel;
-    }
 }

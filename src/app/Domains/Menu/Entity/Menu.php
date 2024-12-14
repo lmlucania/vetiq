@@ -72,7 +72,7 @@ class Menu
 
     public function update(string $name, string $detail, int $requiredTime, bool $isPublished): Menu
     {
-        return new Menu(
+        return new $this(
             $this->menuId,
             $this->menuUuid,
             $this->hospitalId,
@@ -85,7 +85,7 @@ class Menu
 
     public function publish():Menu
     {
-        return new Menu(
+        return new $this(
             $this->menuId,
             $this->menuUuid,
             $this->hospitalId,
@@ -98,7 +98,7 @@ class Menu
 
     public function unpublish():Menu
     {
-        return new Menu(
+        return new $this(
             $this->menuId,
             $this->menuUuid,
             $this->hospitalId,
