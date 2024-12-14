@@ -16,6 +16,15 @@ class ShowHospitalInfoByAuthStaffUseCase
 
     public function show(): HospitalDto
     {
-        return $this->hospitalService->findByAuthStaff();
+        $hospitalEntity = $this->hospitalService->findByAuthStaff();
+
+        return new HospitalDto(
+            uuid: $hospitalEntity->getUuid(),
+            name: $hospitalEntity->getName(),
+            zipcode: $hospitalEntity->getZipcode(),
+            address: $hospitalEntity->getAddress(),
+            phone: $hospitalEntity->getPhone(),
+            isPublished: $hospitalEntity->getIsPublished(),
+        );
     }
 }
