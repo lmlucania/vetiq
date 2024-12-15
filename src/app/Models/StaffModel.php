@@ -59,7 +59,8 @@ class StaffModel extends User
         return $this->belongsTo(HospitalModel::class);
     }
 
-    public function toEntity()
+    // fixme factoryクラスに移行する
+    public function modelToEntity()
     {
         return new Staff(
             staffId: new StaffId($this->id),

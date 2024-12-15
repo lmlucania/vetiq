@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use App\Application\Dto\HospitalDto;
+use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Models\HospitalModel;
@@ -36,18 +37,9 @@ class HospitalService
         });
     }
 
-    public function findByAuthStaff():HospitalDto
+    public function findByAuthStaff():Hospital
     {
-        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
-
-        return new HospitalDto(
-            uuid: $hospitalEntity->getUuid(),
-            name: $hospitalEntity->getName(),
-            zipcode: $hospitalEntity->getZipcode(),
-            address: $hospitalEntity->getAddress(),
-            phone: $hospitalEntity->getPhone(),
-            isPublished: $hospitalEntity->getIsPublished(),
-        );
+        return $this->hospitalFactory::createEntityFromAuthStaff();
     }
 
     public function create(
@@ -81,9 +73,7 @@ class HospitalService
     ): bool {
         $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
 
-        $entity = $this->hospitalFactory->createEntity(
-            id:$hospitalEntity->getId()->getValue(),
-            uuid:$hospitalEntity->getUuid()->getValue(),
+        $hospitalEntity = $hospitalEntity->update(
             name:$name,
             zipcode: $zipcode,
             address: $address,
@@ -91,6 +81,6 @@ class HospitalService
             isPublished: $isPublished,
         );
 
-        return $this->hospitalRepository->update($entity);
+        return $this->hospitalRepository->update($hospitalEntity);
     }
 }

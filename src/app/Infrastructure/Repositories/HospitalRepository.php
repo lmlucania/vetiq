@@ -40,7 +40,13 @@ class HospitalRepository implements HospitalRepositoryInterface
     public function update(Hospital $hospitalEntity): bool
     {
         $hospitalModel = HospitalModel::findOrFail($hospitalEntity->getId()->getValue());
-        $hospitalModel = $this->hospitalFactory->updateModelFromEntity($hospitalModel, $hospitalEntity);
+
+        $hospitalModel->name         = $hospitalEntity->getName()->getValue();
+        $hospitalModel->zipcode      = $hospitalEntity->getZipcode()->getValue();
+        $hospitalModel->address      = $hospitalEntity->getAddress()->getValue();
+        $hospitalModel->phone        = $hospitalEntity->getPhone()->getValue();
+        $hospitalModel->is_published = $hospitalEntity->getIsPublished()->getValue();
+
         return $hospitalModel->update();
     }
 }

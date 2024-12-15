@@ -12,7 +12,7 @@ final class Email
         private string $email
     ) {
         if (! filter_var($email, FILTER_VALIDATE_EMAIL)) {
-            throw new InvalidArgumentException('email');
+            throw new InvalidArgumentException(get_class($this));
         }
     }
 

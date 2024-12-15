@@ -96,6 +96,236 @@
                     }
                 }
             }
+        },
+        "/hospital/menus": {
+            "get": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューの一覧",
+                "operationId": "c456a36de2619e061663dc8aedbea58b",
+                "parameters": [
+                    {
+                        "name": "page",
+                        "in": "query",
+                        "description": "ページ番号"
+                    },
+                    {
+                        "name": "per_page",
+                        "in": "query",
+                        "description": "1ページあたりの表示数（デフォルト50件）"
+                    },
+                    {
+                        "name": "sort[]",
+                        "in": "query",
+                        "description": "並び替え",
+                        "style": "deepObject",
+                        "explode": true,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "example": [
+                                "name",
+                                "-detail"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "keyword",
+                        "in": "query",
+                        "description": "検索キーワード（メニュー名または説明の部分一致）"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response~1Hospital"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューの登録",
+                "operationId": "3e345b33ebb7f7232d9afd4a84270007",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Requests~1Hospital~1StoreMenuRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    }
+                }
+            }
+        },
+        "/hospital/menus/{uuid}": {
+            "get": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューの詳細",
+                "operationId": "22cab2c12d92e3e1e54720ffe674e6d9",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "診察メニューID",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response~1Menu"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューの更新",
+                "operationId": "c5591d5ec30e9ac2a04bcdd60ec8c8e2",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "診察メニューID",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Requests~1Hospital~1UpdateMenuRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューの削除",
+                "operationId": "7eca8192e88f69f50380b7ff831bb245",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "診察メニューID",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/hospital/menus/{uuid}/publish": {
+            "post": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューを公開に変更",
+                "operationId": "008df7ab13c28aa7b7bf9668f0f40cce",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "診察メニューID",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/hospital/menus/{uuid}/unpublish": {
+            "post": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "診察メニューを非公開に変更",
+                "operationId": "1fdd59a1c6c1293cba6dccd03dc07fec",
+                "parameters": [
+                    {
+                        "name": "uuid",
+                        "in": "path",
+                        "description": "診察メニューID",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
         }
     },
     "components": {
@@ -157,6 +387,70 @@
                 },
                 "type": "object"
             },
+            "Requests/Hospital/StoreMenuRequest": {
+                "description": "診察メニューの登録",
+                "required": [
+                    "name",
+                    "detail",
+                    "required_time",
+                    "is_published"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "診察メニュー名",
+                        "type": "string",
+                        "example": "健康診断"
+                    },
+                    "detail": {
+                        "description": "診察メニューの説明",
+                        "type": "string",
+                        "example": "年に一度の健康診断で、体調をチェックします。"
+                    },
+                    "required_time": {
+                        "description": "所要時間（分単位）",
+                        "type": "integer",
+                        "maximum": 300,
+                        "example": 30
+                    },
+                    "is_published": {
+                        "description": "公開フラグ",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
+            "Requests/Hospital/UpdateMenuRequest": {
+                "description": "診察メニューの更新",
+                "required": [
+                    "name",
+                    "detail",
+                    "required_time",
+                    "is_published"
+                ],
+                "properties": {
+                    "name": {
+                        "description": "診察メニュー名",
+                        "type": "string",
+                        "example": "健康診断"
+                    },
+                    "detail": {
+                        "description": "診察メニューの説明",
+                        "type": "string",
+                        "example": "年に一度の健康診断で、体調をチェックします。"
+                    },
+                    "required_time": {
+                        "description": "所要時間（分単位）",
+                        "type": "integer",
+                        "maximum": 300,
+                        "example": 30
+                    },
+                    "is_published": {
+                        "description": "公開フラグ",
+                        "type": "boolean"
+                    }
+                },
+                "type": "object"
+            },
             "Response/Hospital": {
                 "description": "病院情報",
                 "properties": {
@@ -184,6 +478,37 @@
                         "description": "電話番号",
                         "type": "string",
                         "example": "0123456789"
+                    },
+                    "is_published": {
+                        "description": "公開フラグ",
+                        "type": "boolean",
+                        "example": true
+                    }
+                },
+                "type": "object"
+            },
+            "Response/Menu": {
+                "description": "診察メニュー",
+                "properties": {
+                    "uuid": {
+                        "description": "診察メニューID",
+                        "type": "string",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    },
+                    "name": {
+                        "description": "診察メニュー名",
+                        "type": "string",
+                        "example": "一般診察"
+                    },
+                    "detail": {
+                        "description": "説明",
+                        "type": "string",
+                        "example": "基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。"
+                    },
+                    "required_time": {
+                        "description": "所要時間（分）",
+                        "type": "string",
+                        "example": "30"
                     },
                     "is_published": {
                         "description": "公開フラグ",

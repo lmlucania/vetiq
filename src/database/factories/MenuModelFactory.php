@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\MenuModel>
@@ -29,6 +30,7 @@ class MenuModelFactory extends Factory
         ];
         $menu = $this->faker->randomElement($menus);
         return [
+            'uuid'          => Str::uuid(),
             'name'          => $menu['name'],
             'detail'        => $menu['detail'],
             'required_time' => 30,

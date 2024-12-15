@@ -12,7 +12,7 @@ final class HospitalId
         private int $hospitalId
     ) {
         if ($hospitalId < 1) {
-            throw new InvalidArgumentException('hospital id');
+            throw new InvalidArgumentException(get_class($this));
         }
     }
 

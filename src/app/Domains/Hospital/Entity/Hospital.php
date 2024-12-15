@@ -59,4 +59,17 @@ class Hospital
     {
         return $this->isPublished;
     }
+
+    public function update(string $name, string $zipcode, string $address, string $phone, bool $isPublished): Hospital
+    {
+        return new $this(
+            id:$this->id,
+            uuid:$this->uuid,
+            name:new Name($name),
+            zipcode: new Zipcode($zipcode),
+            address: new Address($address),
+            phone: new Phone($phone),
+            isPublished: new IsPublished($isPublished),
+        );
+    }
 }
