@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('first_name')->comment('名前（名）');
             $table->boolean('accept_appointment')->comment('指名予約可否フラグ');
             $table->text('remark')->comment('備考');
+            $table->softDeletes();
             $table->timestamps();
         });
     }
