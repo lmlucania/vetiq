@@ -69,7 +69,7 @@ class MenuController extends Controller
      *          response="200",
      *          description="成功",
      *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Hospital"
+     *              ref="#/components/schemas/Response~1Menu"
      *          ),
      *     ),
      * )
