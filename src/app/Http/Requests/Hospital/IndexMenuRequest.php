@@ -18,7 +18,7 @@ class IndexMenuRequest extends PaginationRequest
 
     public function rules(): array
     {
-        return parent::rules() + [
+        return [
             'sort'    => 'nullable|array',
             'sort.*'  => 'string',
             'keyword' => 'nullable|string',
