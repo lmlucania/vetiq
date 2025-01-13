@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Hospital;
 
 use App\Application\UseCase\Hospital\IndexVetUseCase;
+use App\Application\UseCase\Hospital\StoreVetUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexVetRequest;
+use App\Http\Requests\Hospital\StoreVetRequest;
 use App\Transformers\VetTransformer;
 use Illuminate\Http\JsonResponse;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
@@ -14,7 +16,8 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class VetController extends Controller
 {
     public function __construct(
-        private readonly IndexVetUseCase $indexVetUseCase
+        private readonly IndexVetUseCase $indexVetUseCase,
+        private readonly StoreVetUseCase $storeVetUseCase,
     ) {
     }
 
@@ -71,5 +74,39 @@ class VetController extends Controller
         return fractal($paginatedDto->getCollection(), new VetTransformer())
             ->paginateWith(new IlluminatePaginatorAdapter($paginatedDto->getPaginate()))
             ->respond();
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/hospital/vets",
+     *     tags={"Hospital"},
+     *     summary="獣医師の登録",
+     *     @OA\RequestBody(
+     *          required=true,
+     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreVetRequest")
+     *     ),
+     *     @OA\Response(
+     *          response="200",
+     *          description="成功",
+     *     ),
+     *     @OA\Response(
+     *          response="400",
+     *          description="失敗",
+     *     )
+     * )
+     */
+    public function store(StoreVetRequest $request)
+    {
+        $success = $this->storeVetUseCase->store(
+            $request->getLastName(),
+            $request->getFirstName(),
+            $request->getAcceptAppointment(),
+            $request->getRemark(),
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

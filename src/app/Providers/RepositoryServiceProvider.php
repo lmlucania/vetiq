@@ -6,8 +6,10 @@ namespace App\Providers;
 
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
+use App\Domains\Vet\Repository\VetRepositoryInterface;
 use App\Infrastructure\Repositories\HospitalRepository;
 use App\Infrastructure\Repositories\MenuRepository;
+use App\Infrastructure\Repositories\VetRepository;
 use Illuminate\Support\ServiceProvider;
 
 class RepositoryServiceProvider extends ServiceProvider
@@ -19,6 +21,7 @@ class RepositoryServiceProvider extends ServiceProvider
     {
         $this->app->bind(HospitalRepositoryInterface::class, HospitalRepository::class);
         $this->app->bind(MenuRepositoryInterface::class, MenuRepository::class);
+        $this->app->bind(VetRepositoryInterface::class, VetRepository::class);
     }
 
     /**

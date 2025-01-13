@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
-use App\Domains\Hospital\Factory\HospitalFactory;
+use App\Application\Service\AuthStaffService;
 use App\Infrastructure\QueryService\VetQueryServiceInterface;
 use App\Models\VetModel;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
@@ -17,15 +17,15 @@ class VetQueryService implements VetQueryServiceInterface
     private $sortable = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
 
     public function __construct(
-        private readonly HospitalFactory $hospitalFactory
+        private readonly AuthStaffService $authStaffService
     ) {
     }
 
     public function listByCriteria(int $page, int $perPage, string $keyword, array $sort): LengthAwarePaginator
     {
-        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
+        $hospitalId = $this->authStaffService->getHospitalId();
 
-        $query = VetModel::query()->where('hospital_id', $hospitalEntity->getId()->getValue());
+        $query = VetModel::query()->where('hospital_id', $hospitalId->getValue());
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort);
 
