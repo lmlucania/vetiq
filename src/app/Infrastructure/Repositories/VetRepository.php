@@ -7,7 +7,7 @@ namespace App\Infrastructure\Repositories;
 use App\Domains\Vet\Entity\Vet;
 use App\Domains\Vet\Factory\VetFactory;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
-use App\Domains\Vet\ValueObjects\VetId;
+use App\Domains\Vet\ValueObjects\DeletableVetId;
 use App\Domains\Vet\ValueObjects\VetUuid;
 use App\Infrastructure\Repositories\Traits\GenerationId;
 use App\Models\VetModel;
@@ -23,7 +23,7 @@ class VetRepository implements VetRepositoryInterface
 
     public function getByUuid(VetUuid $uuid): VetModel
     {
-        // TODO: Implement getByUuid() method.
+        return VetModel::where('uuid', $uuid->getValue())->firstOrFail();
     }
 
     public function create(Vet $vetEntity): bool
@@ -44,8 +44,10 @@ class VetRepository implements VetRepositoryInterface
         return $vetModel->update();
     }
 
-    public function delete(VetId $id): bool
+    public function delete(DeletableVetId $id): bool
     {
-        // TODO: Implement delete() method.
+        $vetModel = VetModel::findOrFail($id->getValue());
+
+        return $vetModel->delete();
     }
 }

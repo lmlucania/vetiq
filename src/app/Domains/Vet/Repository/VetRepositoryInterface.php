@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Vet\Repository;
 
 use App\Domains\Vet\Entity\Vet;
-use App\Domains\Vet\ValueObjects\VetId;
+use App\Domains\Vet\ValueObjects\DeletableVetId;
 use App\Domains\Vet\ValueObjects\VetUuid;
 use App\Models\VetModel;
 
@@ -19,5 +19,5 @@ interface VetRepositoryInterface
 
     public function update(Vet $vetEntity):bool;
 
-    public function delete(VetId $id):bool;
+    public function delete(DeletableVetId $id):bool;
 }

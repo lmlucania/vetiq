@@ -181,7 +181,7 @@ class MenuController extends Controller
      *     ),
      * )
      */
-    public function update(UpdateMenuRequest $request, string $uuid)
+    public function update(UpdateMenuRequest $request, string $uuid): JsonResponse
     {
         $success = $this->updateMenuUseCase->update(
             $uuid,

@@ -7,6 +7,8 @@ namespace App\Application\Service;
 use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\ValueObjects\HospitalId;
+use App\Exceptions\UnauthorizedException;
+use App\Models\StaffModel;
 
 class AuthStaffService
 {
@@ -15,9 +17,14 @@ class AuthStaffService
     public function __construct(
         private readonly HospitalFactory $hospitalFactory,
     ) {
-        $hospitalModel = auth()->user()->hospital;
+        $authUser = auth()->user();
 
-        $this->hospitalEntity = $this->hospitalFactory->modelToEntity($hospitalModel);
+        // ログインユーザーがスタッフ以外の時にエラーを返す
+        if (! ($authUser instanceof StaffModel)) {
+            throw new UnauthorizedException('スタッフ以外は許可されていません。');
+        }
+
+        $this->hospitalEntity = $this->hospitalFactory->modelToEntity($authUser->hospital);
     }
 
     /**
