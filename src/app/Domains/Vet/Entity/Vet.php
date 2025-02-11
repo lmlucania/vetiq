@@ -88,9 +88,8 @@ class Vet
      * 削除可能な獣医師IDを取得する
      * @return DeletableVetId
      */
-    public function getIdForDelete(): DeletableVetId
+    public function getDeletableId(): DeletableVetId
     {
-        $id = $this->getId();
-        return new DeletableVetId($id->getValue());
+        return DeletableVetId::fromVetId($this->getId());
     }
 }

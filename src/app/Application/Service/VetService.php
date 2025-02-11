@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
+use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Vet\Entity\Vet;
 use App\Domains\Vet\Factory\VetFactory;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
@@ -18,6 +19,7 @@ class VetService
         private readonly VetFactory $vetFactory,
         private readonly AuthStaffService $authStaffService,
         private readonly VetRepositoryInterface $vetRepository,
+        private readonly HospitalRepositoryInterface $hospitalRepository,
     ) {
     }
 
@@ -77,7 +79,13 @@ class VetService
     public function delete(string $uuid): bool
     {
         $vetEntity   = $this->getHospitalOwnByUuid($uuid);
-        $deletableId = $vetEntity->getIdForDelete();
+
+        $vetCount = $this->hospitalRepository->countVet($vetEntity->getHospitalId());
+        if ($vetCount == 1) {
+            throw new \DomainException('この病院には1人の獣医師しかいないため、削除できません。');
+        }
+
+        $deletableId = $vetEntity->getDeletableId();
 
         return $this->vetRepository->delete($deletableId);
     }
