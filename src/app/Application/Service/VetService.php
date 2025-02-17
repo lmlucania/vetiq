@@ -9,6 +9,7 @@ use App\Domains\Vet\Entity\Vet;
 use App\Domains\Vet\Factory\VetFactory;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
 use App\Domains\Vet\ValueObjects\VetUuid;
+use App\Exceptions\DomainException;
 use App\Exceptions\NotFoundException;
 use App\Models\VetModel;
 use Illuminate\Support\Str;
@@ -78,11 +79,11 @@ class VetService
 
     public function delete(string $uuid): bool
     {
-        $vetEntity   = $this->getHospitalOwnByUuid($uuid);
+        $vetEntity = $this->getHospitalOwnByUuid($uuid);
 
         $vetCount = $this->hospitalRepository->countVet($vetEntity->getHospitalId());
         if ($vetCount == 1) {
-            throw new \DomainException('この病院には1人の獣医師しかいないため、削除できません。');
+            throw new DomainException('この病院には1人の獣医師しかいないため、削除できません。');
         }
 
         $deletableId = $vetEntity->getDeletableId();
