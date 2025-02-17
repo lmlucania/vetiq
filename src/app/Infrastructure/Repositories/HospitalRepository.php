@@ -10,6 +10,7 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Infrastructure\Repositories\Traits\GenerationId;
 use App\Models\HospitalModel;
+use App\Models\VetModel;
 use Illuminate\Support\Collection;
 
 class HospitalRepository implements HospitalRepositoryInterface
@@ -48,5 +49,15 @@ class HospitalRepository implements HospitalRepositoryInterface
         $hospitalModel->is_published = $hospitalEntity->getIsPublished()->getValue();
 
         return $hospitalModel->update();
+    }
+
+    /**
+     * 指定された病院に所属する獣医師の数を取得する
+     * @param HospitalId $id
+     * @return int
+     */
+    public function countVet(HospitalId $id): int
+    {
+        return VetModel::where('hospital_id', $id->getValue())->count();
     }
 }

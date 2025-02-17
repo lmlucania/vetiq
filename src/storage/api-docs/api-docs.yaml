@@ -99,7 +99,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Response~1Hospital'
+                $ref: '#/components/schemas/Response~1Menu'
     post:
       tags:
         - Hospital
@@ -217,6 +217,122 @@ paths:
           description: 失敗
         404:
           description: 'Not Found'
+  /hospital/vets:
+    get:
+      tags:
+        - Hospital
+      summary: 獣医師の一覧
+      operationId: 2c2be280207d2b485f99d1a17c15b4b2
+      parameters:
+        -
+          name: page
+          in: query
+          description: ページ番号
+        -
+          name: per_page
+          in: query
+          description: 1ページあたりの表示数（デフォルト50件）
+        -
+          name: 'sort[]'
+          in: query
+          description: 並び替え
+          style: deepObject
+          explode: true
+          schema:
+            type: array
+            items:
+              type: string
+            example:
+              - last_name
+              - '-accept_appointment'
+        -
+          name: keyword
+          in: query
+          description: 検索キーワード（名前（姓）または名前（名）の部分一致）
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response~1Vet'
+    post:
+      tags:
+        - Hospital
+      summary: 獣医師の登録
+      operationId: 2da1eb674c547f94f39256e9befc218e
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requests~1Hospital~1StoreVetRequest'
+      responses:
+        200:
+          description: 成功
+        400:
+          description: 失敗
+  '/hospital/vets/{uuid}':
+    get:
+      tags:
+        - Hospital
+      summary: 獣医師の詳細
+      operationId: a77ca6ba36f69e12f3ae9ad3dabd1309
+      parameters:
+        -
+          name: uuid
+          in: path
+          description: 獣医師ID
+          example: 5705d9e7-39bd-44c4-af36-be78d0eeb825
+      responses:
+        200:
+          description: 成功
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Response~1Vet'
+        404:
+          description: 'Not Found'
+    put:
+      tags:
+        - Hospital
+      summary: 獣医師の登録
+      operationId: 099fb7ccd2680391eea7430ec713864a
+      parameters:
+        -
+          name: uuid
+          in: path
+          description: 獣医師ID
+          example: 5705d9e7-39bd-44c4-af36-be78d0eeb825
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Requests~1Hospital~1UpdateVetRequest'
+      responses:
+        200:
+          description: 成功
+        400:
+          description: 失敗
+    delete:
+      tags:
+        - Hospital
+      summary: 獣医師の削除
+      operationId: c016f75f05587fdbed835da153447401
+      parameters:
+        -
+          name: uuid
+          in: path
+          description: 獣医師ID
+          example: 5705d9e7-39bd-44c4-af36-be78d0eeb825
+      responses:
+        200:
+          description: 成功
+        400:
+          description: 失敗
+        404:
+          description: 'Not Found'
 components:
   schemas:
     Requests/Hospital/HospitalSaveRequest:
@@ -288,6 +404,31 @@ components:
           description: 公開フラグ
           type: boolean
       type: object
+    Requests/Hospital/StoreVetRequest:
+      description: 獣医師の登録
+      required:
+        - last_name
+        - first_name
+        - accept_appointment
+        - remark
+      properties:
+        last_name:
+          description: 名前（姓）
+          type: string
+          example: 山田
+        first_name:
+          description: 名前（名）
+          type: string
+          example: 太郎
+        accept_appointment:
+          description: 指名予約可否フラグ
+          type: boolean
+          example: true
+        remark:
+          description: 備考
+          type: string
+          example: 皮膚科専門医
+      type: object
     Requests/Hospital/UpdateMenuRequest:
       description: 診察メニューの更新
       required:
@@ -312,6 +453,31 @@ components:
         is_published:
           description: 公開フラグ
           type: boolean
+      type: object
+    Requests/Hospital/UpdateVetRequest:
+      description: 獣医師の更新
+      required:
+        - last_name
+        - first_name
+        - accept_appointment
+        - remark
+      properties:
+        last_name:
+          description: 名前（姓）
+          type: string
+          example: 山田
+        first_name:
+          description: 名前（名）
+          type: string
+          example: 太郎
+        accept_appointment:
+          description: 指名予約可否フラグ
+          type: boolean
+          example: true
+        remark:
+          description: 備考
+          type: string
+          example: 皮膚科専門医
       type: object
     Response/Hospital:
       description: 病院情報
@@ -364,6 +530,30 @@ components:
           description: 公開フラグ
           type: boolean
           example: true
+      type: object
+    Response/Vet:
+      description: 獣医師
+      properties:
+        uuid:
+          description: 獣医師UUID
+          type: string
+          example: 5705d9e7-39bd-44c4-af36-be78d0eeb825
+        last_name:
+          description: 名前（姓）
+          type: string
+          example: 山田
+        first_name:
+          description: 名前（名）
+          type: string
+          example: 太郎
+        accept_appointment:
+          description: 指名予約可否フラグ
+          type: boolean
+          example: true
+        remark:
+          description: 備考
+          type: string
+          example: 犬・猫の内科診療を得意としています。
       type: object
 tags:
   -

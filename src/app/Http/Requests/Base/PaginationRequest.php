@@ -6,12 +6,13 @@ namespace App\Http\Requests\Base;
 
 class PaginationRequest extends ApiRequest
 {
-    public function rules(): array
+    protected function validationRules():array
     {
-        return [
-            'page'     => 'nullable|integer|min:1',
-            'per_page' => 'nullable|integer|min:1|max:500',
-        ];
+        // pageとper_pageはデフォルトで設定する
+        return parent::validationRules() + [
+                'page'     => 'nullable|integer|min:1',
+                'per_page' => 'nullable|integer|min:1|max:500',
+            ];
     }
 
     /**

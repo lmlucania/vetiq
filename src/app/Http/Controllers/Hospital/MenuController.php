@@ -69,7 +69,7 @@ class MenuController extends Controller
      *          response="200",
      *          description="成功",
      *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Hospital"
+     *              ref="#/components/schemas/Response~1Menu"
      *          ),
      *     ),
      * )
@@ -181,7 +181,7 @@ class MenuController extends Controller
      *     ),
      * )
      */
-    public function update(UpdateMenuRequest $request, string $uuid)
+    public function update(UpdateMenuRequest $request, string $uuid): JsonResponse
     {
         $success = $this->updateMenuUseCase->update(
             $uuid,

@@ -4,11 +4,6 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Domains\Staff\Entity\Staff;
-use App\Domains\Staff\ValueObjects\Email;
-use App\Domains\Staff\ValueObjects\Name;
-use App\Domains\Staff\ValueObjects\StaffId;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;

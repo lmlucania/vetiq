@@ -20,4 +20,6 @@ interface HospitalRepositoryInterface
     public function create(Hospital $hospitalEntity):bool;
 
     public function update(Hospital $hospitalEntity):bool;
+
+    public function countVet(HospitalId $id): int;
 }

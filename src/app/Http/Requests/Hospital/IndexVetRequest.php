@@ -6,7 +6,7 @@ namespace App\Http\Requests\Hospital;
 
 use App\Http\Requests\Base\PaginationRequest;
 
-class IndexMenuRequest extends PaginationRequest
+class IndexVetRequest extends PaginationRequest
 {
     /**
      * Determine if the user is authorized to make this request.
