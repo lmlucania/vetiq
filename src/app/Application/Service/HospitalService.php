@@ -16,7 +16,8 @@ class HospitalService
 {
     public function __construct(
         private readonly HospitalFactory $hospitalFactory,
-        private readonly HospitalRepositoryInterface $hospitalRepository
+        private readonly HospitalRepositoryInterface $hospitalRepository,
+        private readonly AuthStaffService $authStaffService,
     ) {
     }
 
@@ -39,7 +40,12 @@ class HospitalService
 
     public function findByAuthStaff():Hospital
     {
-        return $this->hospitalFactory::createEntityFromAuthStaff();
+        $hospitalId = $this->authStaffService->getHospitalId();
+
+        $hospitalModel = $this->hospitalRepository->getById($hospitalId);
+        $hospitalEntity = $this->hospitalFactory->modelToEntity($hospitalModel);
+
+        return $hospitalEntity;
     }
 
     public function create(
@@ -51,7 +57,7 @@ class HospitalService
     ): bool {
         $id = $this->hospitalRepository->generateId(HospitalModel::class);
 
-        $hospitalEntity = $this->hospitalFactory->createEntity(
+        $hospitalEntity = $this->hospitalFactory->createEntityFromPrimitive(
             id:$id,
             uuid:(string)Str::uuid(),
             name:$name,
@@ -71,7 +77,7 @@ class HospitalService
         string $phone,
         bool $isPublished
     ): bool {
-        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
+        $hospitalEntity = $this->findByAuthStaff();
 
         $hospitalEntity = $hospitalEntity->update(
             name:$name,
