@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\Menu\Repository;
 
 use App\Domains\Menu\Entity\Menu;
+use App\Domains\Menu\ValueObjects\DeletableMenuId;
 use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Models\MenuModel;
@@ -19,5 +20,5 @@ interface MenuRepositoryInterface
 
     public function update(Menu $menuEntity):bool;
 
-    public function delete(MenuId $id):bool;
+    public function delete(DeletableMenuId $id):bool;
 }

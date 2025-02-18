@@ -16,21 +16,6 @@ use App\Models\HospitalModel;
 
 class HospitalFactory
 {
-    public static function createEntityFromAuthStaff(): Hospital
-    {
-        $hospitalModel = auth()->user()->hospital;
-
-        return new Hospital(
-            new HospitalId($hospitalModel->id),
-            new HospitalUuid($hospitalModel->uuid),
-            new Name($hospitalModel->name),
-            new Zipcode($hospitalModel->zipcode),
-            new Address($hospitalModel->address),
-            new Phone($hospitalModel->phone),
-            new IsPublished($hospitalModel->is_published),
-        );
-    }
-
     public function modelToEntity(HospitalModel $hospitalModel): Hospital
     {
         return new Hospital(
@@ -59,7 +44,7 @@ class HospitalFactory
         return $hospitalModel;
     }
 
-    public function createEntity(
+    public function createEntityFromPrimitive(
         int $id,
         string $uuid,
         string $name,

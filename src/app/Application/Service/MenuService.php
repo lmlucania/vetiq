@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
-use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Menu\Entity\Menu;
 use App\Domains\Menu\Factory\MenuFactory;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
@@ -18,7 +17,7 @@ class MenuService
     public function __construct(
         private readonly MenuRepositoryInterface $menuRepository,
         private readonly MenuFactory $menuFactory,
-        private readonly HospitalFactory $hospitalFactory,
+        private readonly AuthStaffService $authStaffService,
     ) {
     }
 
@@ -31,12 +30,12 @@ class MenuService
      */
     public function getHospitalOwnByUuid(string $uuid): Menu
     {
-        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
+        $hospitalId = $this->authStaffService->getHospitalId();
 
         $menuModel  = $this->menuRepository->getByUuid(new MenuUuid($uuid));
         $menuEntity = $this->menuFactory->modelToEntity($menuModel);
 
-        if (! $menuEntity->belongsToHospital($hospitalEntity->getId())) {
+        if (! $menuEntity->belongsToHospital($hospitalId)) {
             throw new NotFoundException();
         }
 
@@ -45,13 +44,13 @@ class MenuService
 
     public function store(string $name, string $detail, int $requiredTime, bool $isPublished):bool
     {
-        $hospitalEntity = $this->hospitalFactory::createEntityFromAuthStaff();
+        $hospitalId = $this->authStaffService->getHospitalId();
 
         $id         = $this->menuRepository->generateId(MenuModel::class);
-        $menuEntity = $this->menuFactory->createEntity(
+        $menuEntity = $this->menuFactory->createEntityFromPrimitive(
             id:$id,
             uuid:(string)Str::uuid(),
-            hospitalId: $hospitalEntity->getId()->getValue(),
+            hospitalId: $hospitalId->getValue(),
             name:$name,
             detail: $detail,
             requiredTime: $requiredTime,
@@ -78,8 +77,9 @@ class MenuService
     public function delete(string $uuid):bool
     {
         $menuEntity = $this->getHospitalOwnByUuid($uuid);
+        $deletableId = $menuEntity->getDeletableId();
 
-        return $this->menuRepository->delete($menuEntity->getId());
+        return $this->menuRepository->delete($deletableId);
     }
 
     public function publish(string $uuid):bool
