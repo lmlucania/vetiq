@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace App\Domains\Menu\Entity;
 
 use App\Domains\Hospital\ValueObjects\HospitalId;
+use App\Domains\Menu\ValueObjects\DeletableMenuId;
 use App\Domains\Menu\ValueObjects\Detail;
 use App\Domains\Menu\ValueObjects\IsPublished;
 use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Domains\Menu\ValueObjects\Name;
 use App\Domains\Menu\ValueObjects\RequiredTime;
+use App\Domains\Vet\ValueObjects\DeletableVetId;
 
 class Menu
 {
@@ -107,5 +109,14 @@ class Menu
             $this->requiredTime,
             new IsPublished(false),
         );
+    }
+
+    /**
+     * 削除可能な診察メニューIDを取得する
+     * @return DeletableMenuId
+     */
+    public function getDeletableId(): DeletableMenuId
+    {
+        return DeletableMenuId::fromMenuId($this->getId());
     }
 }

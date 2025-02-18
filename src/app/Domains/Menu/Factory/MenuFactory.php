@@ -56,7 +56,7 @@ class MenuFactory
         );
     }
 
-    public function createEntity(
+    public function createEntityFromPrimitive(
         int $id,
         string $uuid,
         int $hospitalId,
