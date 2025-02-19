@@ -6,7 +6,6 @@ namespace App\Domains\Menu\Repository;
 
 use App\Domains\Menu\Entity\Menu;
 use App\Domains\Menu\ValueObjects\DeletableMenuId;
-use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Models\MenuModel;
 

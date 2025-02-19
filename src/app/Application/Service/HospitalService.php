@@ -42,7 +42,7 @@ class HospitalService
     {
         $hospitalId = $this->authStaffService->getHospitalId();
 
-        $hospitalModel = $this->hospitalRepository->getById($hospitalId);
+        $hospitalModel  = $this->hospitalRepository->getById($hospitalId);
         $hospitalEntity = $this->hospitalFactory->modelToEntity($hospitalModel);
 
         return $hospitalEntity;

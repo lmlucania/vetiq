@@ -12,7 +12,6 @@ use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Domains\Menu\ValueObjects\Name;
 use App\Domains\Menu\ValueObjects\RequiredTime;
-use App\Domains\Vet\ValueObjects\DeletableVetId;
 
 class Menu
 {

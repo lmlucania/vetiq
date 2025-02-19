@@ -76,7 +76,7 @@ class MenuService
 
     public function delete(string $uuid):bool
     {
-        $menuEntity = $this->getHospitalOwnByUuid($uuid);
+        $menuEntity  = $this->getHospitalOwnByUuid($uuid);
         $deletableId = $menuEntity->getDeletableId();
 
         return $this->menuRepository->delete($deletableId);
