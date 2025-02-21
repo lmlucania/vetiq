@@ -19,6 +19,7 @@ class StaffSeeder extends Seeder
         foreach ($hospitals as $hospital) {
             StaffModel::factory()->count(10)->create(['hospital_id' => $hospital->id]);
         }
+        // OpenAPIからログインできるようにデータを作成
         StaffModel::factory()->create([
             'hospital_id' => $hospital->id,
             'email'       => 'staff+1@example.com',
