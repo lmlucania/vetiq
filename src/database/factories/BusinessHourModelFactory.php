@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\BusinessHour\Enum\DayOfWeek;
+use App\Domains\BusinessHour\Enum\TimePeriod;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,6 +24,7 @@ class BusinessHourModelFactory extends Factory
         return [
             'uuid'        => Str::uuid(),
             'day_of_week' => DayOfWeek::SUNDAY,
+            'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',
             'end_time'    => '12:00',
         ];

@@ -12,7 +12,7 @@ final class BusinessHourId
         private int $id
     ) {
         if ($id < 1) {
-            throw new InvalidArgumentException('予約受付時間IDが不正です');
+            throw new InvalidArgumentException('受付時間IDが不正です');
         }
     }
 

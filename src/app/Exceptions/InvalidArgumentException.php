@@ -12,7 +12,7 @@ class InvalidArgumentException extends Exception
     {
         return response()->json([
             'error'   => 'Invalid argument',
-            'message' => "{$this->getMessage()}の値が不正です。",
+            'message' => $this->getMessage(),
         ], 400);
     }
 }

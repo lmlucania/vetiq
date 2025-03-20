@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domains\BusinessHour\Enum\DayOfWeek;
+use App\Domains\BusinessHour\Enum\TimePeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -22,7 +24,8 @@ class BusinessHourModel extends Model
     protected function casts(): array
     {
         return [
-            'day_of_week' => 'integer',
+            'day_of_week' => DayOfWeek::class,
+            'time_period' => TimePeriod::class,
             'start_time'  => 'datetime:H:i',
             'end_time'    => 'datetime:H:i',
         ];
