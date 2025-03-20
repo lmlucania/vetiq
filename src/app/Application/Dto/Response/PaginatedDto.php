@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Dto;
+namespace App\Application\Dto\Response;
 
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
