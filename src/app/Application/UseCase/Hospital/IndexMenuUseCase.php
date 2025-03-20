@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Hospital;
 
-use App\Application\Dto\PaginatedDto;
+use App\Application\Dto\Response\PaginatedDto;
 use App\Application\QueryService\MenuQueryService;
 use App\Domains\Menu\Factory\MenuFactory;
 use App\Models\MenuModel;

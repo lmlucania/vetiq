@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Application\Dto\HospitalDto;
+use App\Application\Dto\Response\HospitalDto;
 use League\Fractal\TransformerAbstract;
 
 class HospitalTransformer extends TransformerAbstract

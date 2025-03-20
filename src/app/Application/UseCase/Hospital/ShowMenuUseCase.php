@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Hospital;
 
-use App\Application\Dto\MenuDto;
+use App\Application\Dto\Response\MenuDto;
 use App\Application\Service\MenuService;
 use App\Domains\Menu\Factory\MenuFactory;
 

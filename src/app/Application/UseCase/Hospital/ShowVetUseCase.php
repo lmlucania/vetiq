@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Hospital;
 
-use App\Application\Dto\VetDto;
+use App\Application\Dto\Response\VetDto;
 use App\Application\Service\VetService;
 use App\Domains\Vet\Factory\VetFactory;
 

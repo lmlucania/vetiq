@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Hospital;
 
-use App\Application\Dto\HospitalDto;
+use App\Application\Dto\Response\HospitalDto;
 use App\Application\Service\HospitalService;
 
 class ShowHospitalInfoByAuthStaffUseCase

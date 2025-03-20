@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
-use App\Application\Dto\HospitalDto;
+use App\Application\Dto\Response\HospitalDto;
 use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
