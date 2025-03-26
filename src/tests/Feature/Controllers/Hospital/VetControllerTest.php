@@ -20,7 +20,7 @@ class VetControllerTest extends TestCase
     {
         parent::setUp();
 
-        // ログイン用病院のデータをセットアップ
+        // ログインする病院のデータをセットアップ
         $this->hospital = HospitalModel::factory()->create(['id' => 1]);
         $this->staff    = StaffModel::factory()->create([
             'id'          => 1,

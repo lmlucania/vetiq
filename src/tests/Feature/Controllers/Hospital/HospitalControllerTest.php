@@ -20,7 +20,7 @@ class HospitalControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->hospital = HospitalModel::create([
+        $this->hospital = HospitalModel::factory()->create([
             'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
             'name'         => '裕美子病院',
             'zipcode'      => '1234567',
@@ -29,7 +29,7 @@ class HospitalControllerTest extends TestCase
             'is_published' => true,
         ]);
 
-        $this->staff = StaffModel::create([
+        $this->staff = StaffModel::factory()->create([
             'hospital_id' => $this->hospital->id,
             'name'        => '山岸太一',
             'email'       => 'staff+1@example.com',
