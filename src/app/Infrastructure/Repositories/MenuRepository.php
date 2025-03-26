@@ -9,7 +9,6 @@ use App\Domains\Menu\Entity\Menu;
 use App\Domains\Menu\Factory\MenuFactory;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Menu\ValueObjects\DeletableMenuId;
-use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Exceptions\NotFoundException;
 use App\Infrastructure\Repositories\Traits\GenerationId;

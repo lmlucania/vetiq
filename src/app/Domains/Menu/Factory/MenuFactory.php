@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\Menu\Factory;
 
-use App\Application\Dto\MenuDto;
+use App\Application\Dto\Response\MenuDto;
 use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Domains\Menu\Entity\Menu;
 use App\Domains\Menu\ValueObjects\Detail;

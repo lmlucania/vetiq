@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Hospital;
 use App\Application\UseCase\Hospital\ShowHospitalInfoByAuthStaffUseCase;
 use App\Application\UseCase\Hospital\UpdateHospitalInfoByAuthStaffUseCase;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\HospitalSaveRequest;
+use App\Http\Requests\Hospital\StoreHospitalRequest;
 use App\Transformers\HospitalTransformer;
 
 class HospitalController extends Controller
@@ -45,7 +45,7 @@ class HospitalController extends Controller
      *     summary="病院情報を更新",
      *     @OA\RequestBody(
      *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1HospitalSaveRequest")
+     *         @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreHospitalRequest")
      *     ),
      *     @OA\Response(
      *          response="200",
@@ -57,7 +57,7 @@ class HospitalController extends Controller
      *     ),
      * )
      */
-    public function update(HospitalSaveRequest $request)
+    public function update(StoreHospitalRequest $request)
     {
         $success = $this->updateHospitalInfoByAuthStaffUseCase->update(
             $request->name,

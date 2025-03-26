@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\UseCase\Hospital;
 
-use App\Application\Dto\PaginatedDto;
+use App\Application\Dto\Response\PaginatedDto;
 use App\Application\QueryService\VetQueryService;
 use App\Domains\Vet\Factory\VetFactory;
 use App\Models\VetModel;

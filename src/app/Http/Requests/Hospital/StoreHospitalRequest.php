@@ -6,7 +6,7 @@ namespace App\Http\Requests\Hospital;
 
 use App\Http\Requests\Base\ApiRequest;
 
-class HospitalSaveRequest extends ApiRequest
+class StoreHospitalRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -18,7 +18,7 @@ class HospitalSaveRequest extends ApiRequest
 
     /**
      * @OA\Schema(
-     *     schema="Requests/Hospital/HospitalSaveRequest",
+     *     schema="Requests/Hospital/StoreHospitalRequest",
      *     type="object",
      *     required={"name", "zipcode", "address", "phone", "is_published"},
      *     description="病院情報の保存",

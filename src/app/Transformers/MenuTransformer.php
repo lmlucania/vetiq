@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Application\Dto\MenuDto;
+use App\Application\Dto\Response\MenuDto;
 use League\Fractal\TransformerAbstract;
 
 class MenuTransformer extends TransformerAbstract

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Application\Dto\VetDto;
+use App\Application\Dto\Response\VetDto;
 use League\Fractal\TransformerAbstract;
 
 class VetTransformer extends TransformerAbstract
