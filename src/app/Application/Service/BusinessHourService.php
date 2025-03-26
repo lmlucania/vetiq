@@ -29,7 +29,7 @@ class BusinessHourService
         private readonly AuthStaffService $authStaffService,
     ) {
     }
-    
+
     public function getByUuid(string $uuid): BusinessHour
     {
         $hospitalId = $this->authStaffService->getHospitalId();
@@ -98,7 +98,7 @@ class BusinessHourService
 
     public function delete(string $uuid):bool
     {
-        $entity = $this->getByUuid($uuid);
+        $entity      = $this->getByUuid($uuid);
         $deletableId = $entity->getDeletableId();
 
         return $this->businessHourRepository->delete($deletableId);
