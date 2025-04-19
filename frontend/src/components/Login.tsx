@@ -17,8 +17,14 @@ const Login: React.FC = () => {
       if (response.data) {
         navigate('/dashboard');
       }
-    } catch (err) {
-      setError('ログインに失敗しました。メールアドレスまたはパスワードが正しくありません。');
+    } catch (err: any) {
+      if (err.response?.status === 401) {
+        setError('メールアドレスまたはパスワードが正しくありません。');
+      } else if (err.response?.data?.message) {
+        setError(err.response.data.message);
+      } else {
+        setError('ログインに失敗しました。しばらく経ってから再度お試しください。');
+      }
     }
   };
 
