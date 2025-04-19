@@ -1,19 +1,23 @@
 
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import './Login.css';
 
-const Login = () => {
+const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await axios.post('/hospital/login', { email, password });
-      window.location.href = '/dashboard';
-    } catch (err: any) {
+      const response = await axios.post('/hospital/login', { email, password });
+      if (response.data) {
+        navigate('/dashboard');
+      }
+    } catch (err) {
       setError('ログインに失敗しました。メールアドレスまたはパスワードが正しくありません。');
     }
   };
