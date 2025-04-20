@@ -84,7 +84,7 @@ flowchart LR
     Controller -->|Parameters| UseCase
     UseCase -->|DTO| Controller
     UseCase -->|Parameters| Service
-    Service -->|Parameters| Repository
+    Service -->|Entity| Repository
     Repository -->|Entity| Service
     Service -->|Entity| UseCase
 ```
