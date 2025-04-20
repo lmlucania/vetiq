@@ -51,6 +51,52 @@
                 }
             }
         },
+        "/hospital/business_hours": {
+            "get": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "受付時間の一覧",
+                "operationId": "720be06399f8b54b4a976b04fae71e4a",
+                "responses": {
+                    "200": {
+                        "description": "成功",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Response~1BusinessHour"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Hospital"
+                ],
+                "summary": "指定した曜日の予約受付時間の作成/更新",
+                "operationId": "16608eef905d5be3dc3a9f335784ff6b",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/Requests~1Hospital~1StoreBusinessHourRequest"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "成功"
+                    },
+                    "400": {
+                        "description": "失敗"
+                    }
+                }
+            }
+        },
         "/hospital/info": {
             "get": {
                 "tags": [
@@ -82,7 +128,7 @@
                     "content": {
                         "application/json": {
                             "schema": {
-                                "$ref": "#/components/schemas/Requests~1Hospital~1HospitalSaveRequest"
+                                "$ref": "#/components/schemas/Requests~1Hospital~1StoreHospitalRequest"
                             }
                         }
                     }
@@ -501,7 +547,90 @@
     },
     "components": {
         "schemas": {
-            "Requests/Hospital/HospitalSaveRequest": {
+            "Enum/DayOfWeek": {
+                "description": "曜日",
+                "type": "integer",
+                "enum": [
+                    0,
+                    1,
+                    2,
+                    3,
+                    4,
+                    5,
+                    6
+                ],
+                "example": 0
+            },
+            "Enum/TimePeriod": {
+                "description": "午前・午後",
+                "type": "integer",
+                "enum": [
+                    0,
+                    1
+                ],
+                "example": 0
+            },
+            "Requests/Hospital/LoginRequest": {
+                "description": "病院スタッフログイン",
+                "required": [
+                    "email",
+                    "password"
+                ],
+                "properties": {
+                    "email": {
+                        "type": "string",
+                        "example": "staff+1@example.com"
+                    },
+                    "password": {
+                        "type": "string",
+                        "format": "password",
+                        "example": "password"
+                    }
+                },
+                "type": "object"
+            },
+            "Requests/Hospital/StoreBusinessHourRequest": {
+                "description": "指定した曜日の予約受付時間の作成/更新",
+                "required": [
+                    "day_of_week",
+                    "periods",
+                    "periods.*.period_type",
+                    "periods.*.start_time",
+                    "periods.*.end_time"
+                ],
+                "properties": {
+                    "day_of_week": {
+                        "$ref": "#/components/schemas/Enum~1DayOfWeek"
+                    },
+                    "periods": {
+                        "description": "予約受付時間のリスト（最大2件）",
+                        "type": "array",
+                        "items": {
+                            "properties": {
+                                "time_period": {
+                                    "$ref": "#/components/schemas/Enum~1TimePeriod"
+                                },
+                                "start_time": {
+                                    "description": "開始時間（HH:MM形式）",
+                                    "type": "string",
+                                    "format": "time",
+                                    "example": "09:00"
+                                },
+                                "end_time": {
+                                    "description": "終了時間（HH:MM形式）",
+                                    "type": "string",
+                                    "format": "time",
+                                    "example": "12:00"
+                                }
+                            },
+                            "type": "object"
+                        },
+                        "maxItems": 2
+                    }
+                },
+                "type": "object"
+            },
+            "Requests/Hospital/StoreHospitalRequest": {
                 "description": "病院情報の保存",
                 "required": [
                     "name",
@@ -535,25 +664,6 @@
                         "description": "公開状態",
                         "type": "boolean",
                         "example": true
-                    }
-                },
-                "type": "object"
-            },
-            "Requests/Hospital/LoginRequest": {
-                "description": "病院スタッフログイン",
-                "required": [
-                    "email",
-                    "password"
-                ],
-                "properties": {
-                    "email": {
-                        "type": "string",
-                        "example": "staff+1@example.com"
-                    },
-                    "password": {
-                        "type": "string",
-                        "format": "password",
-                        "example": "password"
                     }
                 },
                 "type": "object"
@@ -682,6 +792,39 @@
                         "description": "備考",
                         "type": "string",
                         "example": "皮膚科専門医"
+                    }
+                },
+                "type": "object"
+            },
+            "Response/BusinessHour": {
+                "description": "受付時間",
+                "properties": {
+                    "uuid": {
+                        "description": "受付時間ID",
+                        "type": "string",
+                        "example": "1667cff9-71e5-4719-953c-e074507d2d3d"
+                    },
+                    "day_of_week": {
+                        "description": "曜日",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "time_period": {
+                        "description": "午前午後",
+                        "type": "integer",
+                        "example": 0
+                    },
+                    "start_time": {
+                        "description": "受付開始時間",
+                        "type": "string",
+                        "format": "time",
+                        "example": "9:00"
+                    },
+                    "end_time": {
+                        "description": "受付終了時間",
+                        "type": "string",
+                        "format": "time",
+                        "example": "12:00"
                     }
                 },
                 "type": "object"
