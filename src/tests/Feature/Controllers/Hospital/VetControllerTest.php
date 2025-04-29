@@ -9,6 +9,7 @@ use App\Models\StaffModel;
 use App\Models\VetModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
+use Laravel\Sanctum\Sanctum;
 
 class VetControllerTest extends TestCase
 {
@@ -73,7 +74,7 @@ class VetControllerTest extends TestCase
     public function testIndexSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.index'));
@@ -115,7 +116,7 @@ class VetControllerTest extends TestCase
     {
         // 準備（Arrange）
         VetModel::query()->delete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.index'));
@@ -133,7 +134,7 @@ class VetControllerTest extends TestCase
     {
         // 準備（Arrange）
         VetModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.index'));
@@ -158,7 +159,7 @@ class VetControllerTest extends TestCase
         VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテスト']);            // first_name：後方一致
         VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテストあ']);          // first_name：部分一致
         $missingVet = VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あ']);  // 一致しない
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.index', ['keyword' => 'テスト']));
@@ -197,7 +198,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => true,
             'remark'             => 'テスト備考',
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->post(route('hospital.vets.store'), $postData);
@@ -226,7 +227,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => '', // テスト対象
             'remark'             => '', // テスト対象
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->post(route('hospital.vets.store'), $postData);
@@ -252,7 +253,7 @@ class VetControllerTest extends TestCase
     public function testShowSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.show', ['vet' => $this->vet->uuid]));
@@ -276,7 +277,7 @@ class VetControllerTest extends TestCase
     public function testShowNotHospitalOwnFailure()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.vets.show', ['vet' => $this->nonLoginHospitalVet->uuid]));
@@ -297,7 +298,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => false,
             'remark'             => 'テスト備考',
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->put(route('hospital.vets.update', ['vet' => $this->vet->uuid]), $postData);
@@ -324,7 +325,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => false,
             'remark'             => 'テスト備考',
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->put(route('hospital.vets.update', ['vet' => $this->nonLoginHospitalVet->uuid]), $postData);
@@ -346,7 +347,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => false,
             'remark'             => 'テスト備考',
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->put(route('hospital.vets.update', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']), $postData);
@@ -369,7 +370,7 @@ class VetControllerTest extends TestCase
     public function testDestroySuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->uuid]));
@@ -393,7 +394,7 @@ class VetControllerTest extends TestCase
     public function testDestroyNotHospitalOwnFailure()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->nonLoginHospitalVet->uuid]));
@@ -409,7 +410,7 @@ class VetControllerTest extends TestCase
     {
         // 準備（Arrange）
         VetModel::where('id', '!=', $this->vet->id)->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->uuid]));
@@ -434,7 +435,7 @@ class VetControllerTest extends TestCase
     {
         // 準備（Arrange）
         VetModel::query()->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.vets.destroy', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']));

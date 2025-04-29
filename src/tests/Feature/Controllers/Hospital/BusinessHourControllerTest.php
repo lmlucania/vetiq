@@ -10,6 +10,7 @@ use App\Models\BusinessHourModel;
 use App\Models\HospitalModel;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class BusinessHourControllerTest extends TestCase
@@ -66,10 +67,10 @@ class BusinessHourControllerTest extends TestCase
             'hospital_id' => $nonLoginHospital->id,
         ]);
 
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.business_hours.index'));
+        $response = $this->get(route('hospital.business-hours.index'));
 
         // 検証（Assert）
         $response
@@ -110,10 +111,10 @@ class BusinessHourControllerTest extends TestCase
     public function testIndexNoRecordSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.business_hours.index'));
+        $response = $this->get(route('hospital.business-hours.index'));
 
         // 検証（Assert）
         $response
@@ -142,10 +143,10 @@ class BusinessHourControllerTest extends TestCase
                 ],
             ],
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -181,10 +182,10 @@ class BusinessHourControllerTest extends TestCase
                 ],
             ],
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -226,10 +227,10 @@ class BusinessHourControllerTest extends TestCase
                 ],
             ],
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -256,10 +257,10 @@ class BusinessHourControllerTest extends TestCase
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->uuid]));
+        $response = $this->delete(route('hospital.business-hours.destroy', ['business_hour' => $model->uuid]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -280,10 +281,10 @@ class BusinessHourControllerTest extends TestCase
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->uuid]));
+        $response = $this->delete(route('hospital.business-hours.destroy', ['business_hour' => $model->uuid]));
 
         // 検証（Assert）
         $response->assertStatus(404);

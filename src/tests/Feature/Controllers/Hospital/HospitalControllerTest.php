@@ -9,6 +9,7 @@ use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\Sanctum;
 
 class HospitalControllerTest extends TestCase
 {
@@ -43,7 +44,7 @@ class HospitalControllerTest extends TestCase
     public function testShowSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.info.show'));
@@ -68,7 +69,7 @@ class HospitalControllerTest extends TestCase
     public function testUpdateSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
         $postData = [
             'name'         => '裕美子病院x',
             'zipcode'      => '1234560',

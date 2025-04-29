@@ -10,6 +10,7 @@ use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\Sanctum;
 
 class MenuControllerTest extends TestCase
 {
@@ -77,7 +78,7 @@ class MenuControllerTest extends TestCase
     public function testIndexSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index'));
@@ -119,7 +120,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::query()->delete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index'));
@@ -137,7 +138,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index'));
@@ -155,7 +156,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['per_page' => 10]));
@@ -174,7 +175,7 @@ class MenuControllerTest extends TestCase
         // 準備（Arrange）
         MenuModel::query()->forceDelete();
         MenuModel::factory()->count(59)->create(['hospital_id' => $this->hospital->id]);
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['page' => 2]));
@@ -198,7 +199,7 @@ class MenuControllerTest extends TestCase
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは三番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは一番目にくる
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['sort' => ['name']])); // 名前の昇順でソート
@@ -223,7 +224,7 @@ class MenuControllerTest extends TestCase
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは三番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは一番目にくる
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['sort' => ['-name']])); // 名前の降順でソート
@@ -248,7 +249,7 @@ class MenuControllerTest extends TestCase
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'aa']); // レスポンスでは二番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'bb']); // レスポンスでは三番目にくる
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c', 'detail' => 'cc']); // レスポンスでは一番目にくる
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['sort' => ['-name', 'detail']])); // 名前：降順、説明：昇順でソート
@@ -279,7 +280,7 @@ class MenuControllerTest extends TestCase
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテスト']);            // detail：後方一致
         MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテストあ']);          // detail：部分一致
         $missingMenu = MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あ']);  // 一致しない
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.index', ['keyword' => 'テスト']));
@@ -318,7 +319,7 @@ class MenuControllerTest extends TestCase
             'required_time' => 30,
             'is_published'  => true,
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->post(route('hospital.menus.store'), $postData);
@@ -347,7 +348,7 @@ class MenuControllerTest extends TestCase
             'required_time' => 30,
             'is_published'  => true,
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->post(route('hospital.menus.store'), $postData);
@@ -370,7 +371,7 @@ class MenuControllerTest extends TestCase
     public function testShowSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.show', ['menu' => $this->menu->uuid]));
@@ -394,7 +395,7 @@ class MenuControllerTest extends TestCase
     public function testShowNotHospitalOwnFailure()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->get(route('hospital.menus.show', ['menu' => $this->otherHospitalMenu->uuid]));
@@ -415,7 +416,7 @@ class MenuControllerTest extends TestCase
             'required_time' => 100,
             'is_published'  => false,
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->put(route('hospital.menus.update', ['menu' => $this->menu->uuid]), $postData);
@@ -442,7 +443,7 @@ class MenuControllerTest extends TestCase
             'required_time' => 100,
             'is_published'  => false,
         ];
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->put(route('hospital.menus.update', ['menu' => $this->otherHospitalMenu->uuid]), $postData);
@@ -458,7 +459,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::query()->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
@@ -482,7 +483,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::where('id', '!=', $this->menu->id)->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->menu->uuid]));
@@ -507,7 +508,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::where('id', '!=', $this->otherHospitalMenu->id)->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->otherHospitalMenu->uuid]));
@@ -525,7 +526,7 @@ class MenuControllerTest extends TestCase
     {
         // 準備（Arrange）
         MenuModel::query()->forceDelete();
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));

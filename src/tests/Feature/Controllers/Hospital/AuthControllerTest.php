@@ -8,6 +8,7 @@ use App\Models\HospitalModel;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\Sanctum;
 use Tests\TestCase;
 
 class AuthControllerTest extends TestCase
@@ -157,7 +158,7 @@ class AuthControllerTest extends TestCase
     public function testUserLogoutSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        Sanctum::actingAs($this->staff, ['*'], $this->guard);
 
         // 実行（Act）
         $response = $this->post(route('hospital.logout'));
