@@ -39,8 +39,12 @@ return [
 
     'guards' => [
         'staffs' => [
-            'driver'   => 'session',
+            'driver'   => 'sanctum',
             'provider' => 'staffs',
+        ],
+        'users' => [
+            'driver'   => 'sanctum',
+            'provider' => 'users',
         ],
     ],
 

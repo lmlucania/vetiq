@@ -7,8 +7,11 @@ namespace App\Http\Controllers\Hospital;
 use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\LoginRequest;
+use App\Models\StaffModel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Laravel\Sanctum\NewAccessToken;
 
 class AuthController extends Controller
 {
@@ -33,12 +36,18 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        if (Auth::guard('staffs')->attempt($request->only(['email', 'password']))) {
-            $request->session()->regenerate();
-            return response()->json();
+        $user = StaffModel::where('email', $request->email)->first();
+
+        if (!$user || !Hash::check($request->password, $user->password)) {
+            throw new UnauthorizedException('ログインに失敗しました。メールアドレスまたはパスワードが正しくありません。');
         }
 
-        throw new UnauthorizedException('ログインに失敗しました。メールアドレスまたはパスワードが正しくありません。');
+        $token = $this->createToken($user);
+
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'expires_at' => $token->accessToken->expires_at,
+        ]);
     }
 
     /**
@@ -54,10 +63,54 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        Auth::logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        $user = $request->user();
+        if ($user) {
+            $user->currentAccessToken()->delete();
+        }
 
         return response()->json(['message' => 'ログアウトが成功しました。']);
+    }
+
+    /**
+     * @OA\Post(
+     *     path="/hospital/refresh-token",
+     *     tags={"Hospital"},
+     *     summary="トークンリフレッシュ",
+     *     @OA\Response(
+     *          response="200",
+     *          description="ログアウト成功",
+     *     ),
+     * )
+     */
+    public function refreshToken(Request $request)
+    {
+        $user = $request->user();
+
+        $user->currentAccessToken()->delete();
+
+        $token = $this->createToken($user);
+
+        return response()->json([
+            'token' => $token->plainTextToken,
+            'expires_at' => $token->accessToken->expires_at,
+        ]);
+    }
+
+    /**
+     * トークンを作成
+     * @param StaffModel $user
+     * @return NewAccessToken
+     */
+    private function createToken(StaffModel $user): NewAccessToken
+    {
+        // 未設定の場合は有効期限無し
+        $expiresAt = null;
+        if (config('sanctum.expiration') != null) {
+            $expiresAt = now()->addMinutes((int)config('sanctum.expiration'));
+        }
+
+        return $user->createToken(
+            'PC', ['*'], $expiresAt,
+        );
     }
 }

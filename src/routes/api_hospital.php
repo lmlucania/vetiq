@@ -15,6 +15,7 @@ Route::middleware(['guest'])->group(static function () {
 
 Route::middleware('auth:staffs')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+    Route::post('refresh-token', [AuthController::class, 'refreshToken'])->name('refresh-token');
     Route::controller(HospitalController::class)->prefix('info')->name('info.')->group(static function () {
         Route::get('/', 'show')->name('show');
         Route::put('/', 'update')->name('update');
@@ -25,5 +26,5 @@ Route::middleware('auth:staffs')->group(static function () {
         Route::post('{menu}/unpublish', 'unpublish')->name('unpublish');
     });
     Route::resource('vets', VetController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::resource('business_hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('business-hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
 });
