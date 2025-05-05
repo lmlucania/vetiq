@@ -27,6 +27,20 @@ class AuthController extends Controller
      *     @OA\Response(
      *          response="200",
      *          description="ログイン成功",
+     *          @OA\JsonContent(
+     *              type="object",
+     *              @OA\Property(
+     *                  property="token",
+     *                  type="string",
+     *                  example="9|bWKC0YcBfDE1lOsBPmKAwMTTN91xu7iAEyxJcF1j1e936bed"
+     *              ),
+     *              @OA\Property(
+     *                  property="expires_at",
+     *                  type="string",
+     *                  format="date-time",
+     *                  example="2025-04-29T10:23:00Z"
+     *              )
+     *          )
      *     ),
      *     @OA\Response(
      *          response="401",
