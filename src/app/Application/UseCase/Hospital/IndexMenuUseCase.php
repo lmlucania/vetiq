@@ -17,9 +17,9 @@ class IndexMenuUseCase
     ) {
     }
 
-    public function index(int $page, int $perPage, string $keyword, array $sort):PaginatedDto
+    public function index(int $page, int $perPage, string $keyword, array $sort, array $queryParam):PaginatedDto
     {
-        $paginated = $this->menuQueryService->listByCriteria($page, $perPage, $keyword, $sort);
+        $paginated = $this->menuQueryService->listByCriteria($page, $perPage, $keyword, $sort, $queryParam);
         $dtoList   = $paginated->map(function (MenuModel $menuModel) {
             $menuEntity = $this->menuFactory->modelToEntity($menuModel);
             return $this->menuFactory->entityToDto($menuEntity);

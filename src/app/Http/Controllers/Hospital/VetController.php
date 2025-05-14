@@ -77,6 +77,7 @@ class VetController extends Controller
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
             sort: $request->getSort(),
+            queryParam: $request->getAllQuery(),
         );
 
         return fractal($paginatedDto->getCollection(), new VetTransformer())

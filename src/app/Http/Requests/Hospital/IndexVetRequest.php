@@ -34,4 +34,9 @@ class IndexVetRequest extends PaginationRequest
     {
         return $this->query('keyword', '');
     }
+
+    public function getAllQuery(): array
+    {
+        return $this->query();
+    }
 }

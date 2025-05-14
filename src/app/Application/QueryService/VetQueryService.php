@@ -21,7 +21,7 @@ class VetQueryService implements VetQueryServiceInterface
     ) {
     }
 
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $hospitalId = $this->authStaffService->getHospitalId();
 
@@ -34,6 +34,6 @@ class VetQueryService implements VetQueryServiceInterface
                 ->orWhere('first_name', 'LIKE', "%{$keyword}%");
         });
 
-        return $filteredQuery->paginate($perPage, ['*'], 'page', $page);
+        return $filteredQuery->paginate($perPage, ['*'], 'page', $page)->appends($queryParam);
     }
 }

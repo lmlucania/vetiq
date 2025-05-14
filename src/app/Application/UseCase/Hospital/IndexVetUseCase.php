@@ -17,9 +17,9 @@ class IndexVetUseCase
     ) {
     }
 
-    public function execute(int $page, int $perPage, string $keyword, array $sort):PaginatedDto
+    public function execute(int $page, int $perPage, string $keyword, array $sort, array $queryParam):PaginatedDto
     {
-        $paginated = $this->vetQueryService->listByCriteria($page, $perPage, $keyword, $sort);
+        $paginated = $this->vetQueryService->listByCriteria($page, $perPage, $keyword, $sort, $queryParam);
         $dtoList   = $paginated->map(function (VetModel $vetModel) {
             $vetEntity = $this->vetFactory->modelToEntity($vetModel);
             return $this->vetFactory->entityToDto($vetEntity);

@@ -20,7 +20,7 @@ class MenuQueryService implements MenuQueryServiceInterface
         private readonly AuthStaffService $authStaffService
     ) {
     }
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $hospitalId = $this->authStaffService->getHospitalId();
 
@@ -33,6 +33,6 @@ class MenuQueryService implements MenuQueryServiceInterface
                 ->orWhere('detail', 'LIKE', "%{$keyword}%");
         });
 
-        return $filteredQuery->paginate($perPage, ['*'], 'page', $page);
+        return $filteredQuery->paginate($perPage, ['*'], 'page', $page)->appends($queryParam);
     }
 }
