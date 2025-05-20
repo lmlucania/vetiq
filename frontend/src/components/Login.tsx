@@ -1,8 +1,8 @@
 
 import React, { useState } from 'react';
-import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import './Login.css';
+import {axiosApi} from "../api/axiosApi";
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -13,7 +13,13 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/hospital/login', { email, password }, { withCredentials: true });
+      await axiosApi.get('/sanctum/csrf-cookie');
+
+      const response = await axiosApi.post(
+          '/hospital/login',
+          { email, password },
+
+          );
       if (response.data) {
         navigate('/dashboard');
       }
