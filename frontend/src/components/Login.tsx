@@ -13,7 +13,7 @@ const Login: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:8080/api/hospital/login', { email, password });
+      const response = await axios.post('http://localhost:8080/hospital/login', { email, password }, { withCredentials: true });
       if (response.data) {
         navigate('/dashboard');
       }
