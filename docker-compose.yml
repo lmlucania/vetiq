@@ -25,6 +25,20 @@ services:
             - ./docker-assets/php/xdebug.ini:/usr/local/etc/php/php.ini
         working_dir: /src
 
+    frontend:
+        container_name: ${PROJECT_NAME}_frontend
+        build:
+            context: .
+            dockerfile: docker-assets/frontend/Dockerfile
+        volumes:
+            - ./frontend:/var/www/html/frontend
+            - /app/node_modules
+        ports:
+            - 3000:3000
+        environment:
+            - NODE_ENV=development
+        command: sh -c 'cd frontend && npm run start'
+
     mysql:
         container_name: ${PROJECT_NAME}_mysql
         image: mysql:8.0
