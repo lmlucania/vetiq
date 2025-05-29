@@ -16,19 +16,13 @@ class UpdateMenuRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 診察メニューの更新
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [
-            'name'              => 'required|string',
-            'detail'            => 'required|string',
-            'required_time'     => 'required|integer|max:300',
-            'is_published'      => 'required|boolean',
-            'route_params.menu' => 'required|uuid|exists:menus,uuid',
+            'name'          => 'required|string',
+            'detail'        => 'required|string',
+            'required_time' => 'required|integer|max:300',
+            'is_published'  => 'required|boolean',
         ];
     }
 }

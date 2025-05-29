@@ -16,11 +16,6 @@ class StoreVetRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 獣医師の登録
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [

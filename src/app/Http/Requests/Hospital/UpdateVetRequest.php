@@ -16,11 +16,6 @@ class UpdateVetRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 獣医師の更新
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [
@@ -28,7 +23,6 @@ class UpdateVetRequest extends ApiRequest
             'first_name'         => 'required|string',
             'accept_appointment' => 'required|boolean',
             'remark'             => 'required|string',
-            'route_params.vet'   => 'required|uuid|exists:vets,uuid',
         ];
     }
 

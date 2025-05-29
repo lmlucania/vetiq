@@ -16,11 +16,6 @@ class StoreMenuRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 診察メニューの登録
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [

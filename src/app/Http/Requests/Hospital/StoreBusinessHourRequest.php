@@ -19,11 +19,6 @@ class StoreBusinessHourRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 指定した曜日の受付時間の作成/更新
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [

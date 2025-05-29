@@ -16,11 +16,6 @@ class IndexMenuRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 診察メニューの一覧
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [

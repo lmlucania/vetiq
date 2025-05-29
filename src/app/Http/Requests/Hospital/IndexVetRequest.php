@@ -16,11 +16,6 @@ class IndexVetRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 獣医師の一覧
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [

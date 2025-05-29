@@ -16,11 +16,6 @@ class StoreHospitalRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @lrd:start
-     * 病院情報を更新
-     * @lrd:end
-     */
     public function rules(): array
     {
         return [
