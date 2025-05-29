@@ -26,9 +26,9 @@ class IndexVetRequest extends ApiRequest
         return [
             'page'     => 'nullable|integer|min:1',
             'per_page' => 'nullable|integer|min:1|max:500',
-            'sort'    => 'nullable|array',
-            'sort.*'  => 'string',
-            'keyword' => 'nullable|string',
+            'sort'     => 'nullable|array',
+            'sort.*'   => 'string',
+            'keyword'  => 'nullable|string',
         ];
     }
 

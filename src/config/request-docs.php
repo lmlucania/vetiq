@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 return [
     // changes doc title
-    'title' => 'LRD - Laravel Request Docs',
+    'title'   => 'LRD - Laravel Request Docs',
     'enabled' => true,
     // change it to true will make lrd to throw exception if rules in request class need to be changed
     // keep it false
@@ -12,7 +14,7 @@ return [
     * Route where request docs will be served from laravel app.
     * localhost:8080/request-docs
     */
-    'url' => 'request-docs',
+    'url'         => 'request-docs',
     'middlewares' => [
         // \Rakutentech\LaravelRequestDocs\NotFoundWhenProduction::class,
     ],
@@ -30,25 +32,25 @@ return [
         '#^_tt#',
     ],
 
-    'hide_meta_data' => false,
-    'hide_sql_data' => false,
-    'hide_logs_data' => false,
+    'hide_meta_data'   => false,
+    'hide_sql_data'    => false,
+    'hide_logs_data'   => false,
     'hide_models_data' => false,
 
     // https://github.com/rakutentech/laravel-request-docs/pull/92
     // When rules are put in other method than rules()
     'rules_methods' => [
-        'rules'
+        'rules',
     ],
 
     // Can be overridden as // @LRDresponses 200|400|401
-    'default_responses' => [ "200", "400", "401", "403", "404", "405", "422", "429", "500", "503"],
+    'default_responses' => [ '200', '400', '401', '403', '404', '405', '422', '429', '500', '503'],
 
     // changes default headers on first load for Set Global Headers
     // Later the local storage is used when edits are made
     'default_headers' => [
         'Content-Type' => 'application/json',
-        'Accept' => 'application/json',
+        'Accept'       => 'application/json',
     ],
 
     // By default, LRD group your routes by the first /path.
@@ -57,23 +59,23 @@ return [
         'uri_patterns' => [
             '^api/v[\d]+/', // `/api/v1/users/store` group as `/api/v1/users`.
             '^api/',        // `/api/users/store` group as `/api/users`.
-        ]
+        ],
     ],
 
     // No need to touch below
     // open api config
     // used to generate open api json
     'open_api' => [
-        'title' => 'Laravel Request Docs',
+        'title'       => 'Laravel Request Docs',
         'description' => 'Laravel Request Docs',
         // default version that this library provides
         'version' => '3.0.0',
         // changeable
         'document_version' => '1.0.0',
         // license that you want to display
-        'license' => 'Apache 2.0',
+        'license'     => 'Apache 2.0',
         'license_url' => 'https://www.apache.org/licenses/LICENSE-2.0.html',
-        'server_url' => 'http://localhost:8080',
+        'server_url'  => 'http://localhost:8080',
         //openapi 3.0.x doesn't support request body for delete operation
         //ref: https://github.com/OAI/OpenAPI-Specification/pull/2117
         'delete_with_body' => false,
@@ -83,7 +85,7 @@ return [
         'responses' => [
             '200' => [
                 'description' => 'Successful operation',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -93,7 +95,7 @@ return [
             ],
             '400' => [
                 'description' => 'Bad Request',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -103,7 +105,7 @@ return [
             ],
             '401' => [
                 'description' => 'Unauthorized',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -113,7 +115,7 @@ return [
             ],
             '403' => [
                 'description' => 'Forbidden',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -123,7 +125,7 @@ return [
             ],
             '404' => [
                 'description' => 'Not Found',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -133,7 +135,7 @@ return [
             ],
             '422' => [
                 'description' => 'Unprocessable Entity',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -143,7 +145,7 @@ return [
             ],
             '500' => [
                 'description' => 'Internal Server Error',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -153,7 +155,7 @@ return [
             ],
             'default' => [
                 'description' => 'Unexpected error',
-                'content' => [
+                'content'     => [
                     'application/json' => [
                         'schema' => [
                             'type' => 'object',
@@ -176,5 +178,5 @@ return [
 
     //export request docs as json file from terminal
     //from project root directory
-    'export_path' => 'storage/api-docs/api-docs.json'
+    'export_path' => 'storage/api-docs/api-docs.json',
 ];
