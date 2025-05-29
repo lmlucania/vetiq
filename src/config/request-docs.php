@@ -73,7 +73,7 @@ return [
         // license that you want to display
         'license' => 'Apache 2.0',
         'license_url' => 'https://www.apache.org/licenses/LICENSE-2.0.html',
-        'server_url' => env('APP_URL', 'http://localhost'),
+        'server_url' => 'http://localhost:8080',
         //openapi 3.0.x doesn't support request body for delete operation
         //ref: https://github.com/OAI/OpenAPI-Specification/pull/2117
         'delete_with_body' => false,
@@ -167,7 +167,7 @@ return [
         // Ref: https://spec.openapis.org/oas/v3.0.3#security-scheme-object
         'security' => [
             //available options [null, bearer, basic, apikey, jwt]
-            'type' => 'bearer',
+            'type' => 'null',
             'name' => 'api_key',
             //Note: only works for "apikey" & "jwt", available options [query, header, cookie]
             'position' => 'header',
@@ -176,5 +176,5 @@ return [
 
     //export request docs as json file from terminal
     //from project root directory
-    'export_path' => 'public/api-docs.json'
+    'export_path' => 'storage/api-docs/api-docs.json'
 ];
