@@ -21,7 +21,7 @@ class AuthController extends Controller
     {
         if (Auth::guard('staffs')->attempt($request->only(['email', 'password']))) {
             $request->session()->regenerate();
-            return response()->json();
+            return response()->json(['message' => 'ログインが成功しました。']);
         }
 
         throw new UnauthorizedException('ログインに失敗しました。メールアドレスまたはパスワードが正しくありません。');
