@@ -13,23 +13,9 @@ use Illuminate\Support\Facades\Auth;
 class AuthController extends Controller
 {
     /**
-     * @OA\Post(
-     *     path="/hospital/login",
-     *     tags={"Hospital"},
-     *     summary="ログイン",
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1LoginRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="ログイン成功",
-     *     ),
-     *     @OA\Response(
-     *          response="401",
-     *          description="ログイン失敗",
-     *     )
-     * )
+     * @lrd:start
+     * ログイン
+     * @lrd:end
      */
     public function login(LoginRequest $request)
     {
@@ -42,15 +28,9 @@ class AuthController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/logout",
-     *     tags={"Hospital"},
-     *     summary="ログアウト",
-     *     @OA\Response(
-     *          response="200",
-     *          description="ログアウト成功",
-     *     ),
-     * )
+     * @lrd:start
+     * ログアウト
+     * @lrd:end
      */
     public function logout(Request $request)
     {

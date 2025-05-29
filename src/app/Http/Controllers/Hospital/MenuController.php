@@ -34,45 +34,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/menus",
-     *     tags={"Hospital"},
-     *     summary="診察メニューの一覧",
-     *     @OA\Parameter(
-     *          name="page",
-     *          in="query",
-     *          description="ページ番号"
-     *     ),
-     *     @OA\Parameter(
-     *          name="per_page",
-     *          in="query",
-     *          description="1ページあたりの表示数（デフォルト50件）"
-     *     ),
-     *     @OA\Parameter(
-     *          name="sort[]",
-     *          in="query",
-     *          description="並び替え",
-     *          style="deepObject",
-     *          explode=true,
-     *          @OA\Schema(
-     *              type="array",
-     *              items=@OA\Items(type="string"),
-     *              example={"name", "-detail"}
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *          name="keyword",
-     *          in="query",
-     *          description="検索キーワード（メニュー名または説明の部分一致）"
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Menu"
-     *          ),
-     *     ),
-     * )
+     * @lrd:start
+     * 診察メニューの一覧
+     * @lrd:end
      */
     public function index(IndexMenuRequest $request): JsonResponse
     {
@@ -89,23 +53,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/menus",
-     *     tags={"Hospital"},
-     *     summary="診察メニューの登録",
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreMenuRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *     )
-     * )
+     * @lrd:start
+     * 診察メニューの登録
+     * @lrd:end
      */
     public function store(StoreMenuRequest $request)
     {
@@ -123,28 +73,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/menus/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="診察メニューの詳細",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="診察メニューID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *      ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Menu"
-     *          ),
-     *     ),
-     *     @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *     ),
-     * )
+     * @lrd:start
+     * 診察メニューの詳細
+     * @lrd:end
      */
     public function show(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {
@@ -153,33 +84,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Put(
-     *     path="/hospital/menus/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="診察メニューの更新",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="診察メニューID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1UpdateMenuRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *     ),
-     *     @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *     ),
-     * )
+     * @lrd:start
+     * 診察メニューの更新
+     * @lrd:end
      */
     public function update(UpdateMenuRequest $request, string $uuid): JsonResponse
     {
@@ -198,29 +105,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/hospital/menus/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="診察メニューの削除",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="診察メニューID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *      ),
-     *      @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *      ),
-     * )
+     * @lrd:start
+     * 診察メニューの削除
+     * @lrd:end
      */
     public function destroy(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {
@@ -233,29 +120,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/menus/{uuid}/publish",
-     *     tags={"Hospital"},
-     *     summary="診察メニューを公開に変更",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="診察メニューID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *      ),
-     *      @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *      ),
-     * )
+     * @lrd:start
+     * 診察メニューを公開に変更
+     * @lrd:end
      */
     public function publish(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {
@@ -268,29 +135,9 @@ class MenuController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/menus/{uuid}/unpublish",
-     *     tags={"Hospital"},
-     *     summary="診察メニューを非公開に変更",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="診察メニューID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *      ),
-     *      @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *      ),
-     * )
+     * @lrd:start
+     * 診察メニューを非公開に変更
+     * @lrd:end
      */
     public function unpublish(QueryParamMenuRequest $request, string $uuid): JsonResponse
     {

@@ -23,18 +23,9 @@ class BusinessHourController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/business_hours",
-     *     tags={"Hospital"},
-     *     summary="受付時間の一覧",
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1BusinessHour"
-     *          ),
-     *     ),
-     * )
+     * @lrd:start
+     * 受付時間の一覧
+     * @lrd:end
      */
     public function index()
     {
@@ -43,23 +34,9 @@ class BusinessHourController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/business_hours",
-     *     tags={"Hospital"},
-     *     summary="指定した曜日の受付時間の作成/更新",
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreBusinessHourRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *     )
-     * )
+     * @lrd:start
+     * 指定した曜日の受付時間の作成/更新
+     * @lrd:end
      */
     public function store(StoreBusinessHourRequest $request)
     {
@@ -75,29 +52,9 @@ class BusinessHourController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/hospital/business_hours/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="予約受付時間の削除",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="受付時間ID",
-     *          example="1667cff9-71e5-4719-953c-e074507d2d3d",
-     *      ),
-     *      @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *      ),
-     * )
+     * @lrd:start
+     * 予約受付時間の削除
+     * @lrd:end
      */
     public function destroy(QueryParamBusinessHourRequest $request, string $uuid): JsonResponse
     {
