@@ -13,11 +13,11 @@ use App\Application\UseCase\Hospital\UnpublishMenuUseCase;
 use App\Application\UseCase\Hospital\UpdateMenuUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexMenuRequest;
-use App\Http\Requests\Hospital\QueryParamMenuRequest;
 use App\Http\Requests\Hospital\StoreMenuRequest;
 use App\Http\Requests\Hospital\UpdateMenuRequest;
 use App\Transformers\MenuTransformer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class MenuController extends Controller
@@ -77,7 +77,7 @@ class MenuController extends Controller
      * 診察メニューの詳細
      * @lrd:end
      */
-    public function show(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    public function show(Request $request, string $uuid): JsonResponse
     {
         $menuDto = $this->showMenuUseCase->show($uuid);
         return fractal($menuDto, new MenuTransformer())->respond();
@@ -109,7 +109,7 @@ class MenuController extends Controller
      * 診察メニューの削除
      * @lrd:end
      */
-    public function destroy(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    public function destroy(Request $request, string $uuid): JsonResponse
     {
         $success = $this->destroyMenuUseCase->destroy($uuid);
 
@@ -124,7 +124,7 @@ class MenuController extends Controller
      * 診察メニューを公開に変更
      * @lrd:end
      */
-    public function publish(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    public function publish(Request $request, string $uuid): JsonResponse
     {
         $success = $this->publishMenuUseCase->publish($uuid);
 
@@ -139,7 +139,7 @@ class MenuController extends Controller
      * 診察メニューを非公開に変更
      * @lrd:end
      */
-    public function unpublish(QueryParamMenuRequest $request, string $uuid): JsonResponse
+    public function unpublish(Request $request, string $uuid): JsonResponse
     {
         $success = $this->unpublishMenuUseCase->unpublish($uuid);
 

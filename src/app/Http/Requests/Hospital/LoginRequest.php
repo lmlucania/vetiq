@@ -16,6 +16,11 @@ class LoginRequest extends ApiRequest
         return true;
     }
 
+    /**
+     * @lrd:start
+     * ログイン
+     * @lrd:end
+     */
     public function rules(): array
     {
         return [

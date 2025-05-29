@@ -11,11 +11,11 @@ use App\Application\UseCase\Hospital\StoreVetUseCase;
 use App\Application\UseCase\Hospital\UpdateVetUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexVetRequest;
-use App\Http\Requests\Hospital\QueryParamVetRequest;
 use App\Http\Requests\Hospital\StoreVetRequest;
 use App\Http\Requests\Hospital\UpdateVetRequest;
 use App\Transformers\VetTransformer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class VetController extends Controller
@@ -73,7 +73,7 @@ class VetController extends Controller
      * 獣医師の詳細
      * @lrd:end
      */
-    public function show(QueryParamVetRequest $request, string $uuid):JsonResponse
+    public function show(Request $request, string $uuid):JsonResponse
     {
         $vetDto = $this->showVetUseCase->show($uuid);
         return fractal($vetDto, new VetTransformer())->respond();
@@ -105,7 +105,7 @@ class VetController extends Controller
      * 獣医師の削除
      * @lrd:end
      */
-    public function destroy(QueryParamVetRequest $request, string $uuid): JsonResponse
+    public function destroy(Request $request, string $uuid): JsonResponse
     {
         $success = $this->destroyVetUseCase->destroy($uuid);
 

@@ -8,10 +8,10 @@ use App\Application\UseCase\Hospital\DestroyBusinessHourUseCase;
 use App\Application\UseCase\Hospital\IndexBusinessHourUseCase;
 use App\Application\UseCase\Hospital\StoreBusinessHourUseCase;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\QueryParamBusinessHourRequest;
 use App\Http\Requests\Hospital\StoreBusinessHourRequest;
 use App\Transformers\BusinessHourTransformer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 
 class BusinessHourController extends Controller
 {
@@ -56,7 +56,7 @@ class BusinessHourController extends Controller
      * 予約受付時間の削除
      * @lrd:end
      */
-    public function destroy(QueryParamBusinessHourRequest $request, string $uuid): JsonResponse
+    public function destroy(Request $request, string $uuid): JsonResponse
     {
         $success = $this->destroyBusinessHourUseCase->execute($uuid);
 
