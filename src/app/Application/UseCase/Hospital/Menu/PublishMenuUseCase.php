@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\Hospital;
+namespace App\Application\UseCase\Hospital\Menu;
 
 use App\Application\Service\MenuService;
 
-class UnpublishMenuUseCase
+class PublishMenuUseCase
 {
     public function __construct(
         private readonly MenuService $menuService,
     ) {
     }
 
-    public function unpublish(string $uuid):bool
+    public function publish(string $uuid):bool
     {
-        return $this->menuService->unpublish($uuid);
+        return $this->menuService->publish($uuid);
     }
 }

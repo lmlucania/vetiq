@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\Hospital;
+namespace App\Application\UseCase\Hospital\Menu;
 
 use App\Application\Dto\Response\PaginatedDto;
 use App\Application\QueryService\VetQueryService;

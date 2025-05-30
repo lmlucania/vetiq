@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\Hospital;
+namespace App\Application\UseCase\Hospital\BusinessHour;
 
 use App\Application\Dto\Request\BusinessHourDto;
 use App\Application\Service\BusinessHourService;

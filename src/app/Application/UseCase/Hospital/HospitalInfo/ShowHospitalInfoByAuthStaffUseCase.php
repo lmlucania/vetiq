@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\Hospital;
+namespace App\Application\UseCase\Hospital\HospitalInfo;
 
 use App\Application\Dto\Response\HospitalDto;
 use App\Application\Service\HospitalService;

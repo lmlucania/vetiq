@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\DestroyVetUseCase;
-use App\Application\UseCase\Hospital\IndexVetUseCase;
-use App\Application\UseCase\Hospital\ShowVetUseCase;
-use App\Application\UseCase\Hospital\StoreVetUseCase;
-use App\Application\UseCase\Hospital\UpdateVetUseCase;
+use App\Application\UseCase\Hospital\Menu\IndexVetUseCase;
+use App\Application\UseCase\Hospital\Vet\DestroyVetUseCase;
+use App\Application\UseCase\Hospital\Vet\ShowVetUseCase;
+use App\Application\UseCase\Hospital\Vet\StoreVetUseCase;
+use App\Application\UseCase\Hospital\Vet\UpdateVetUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexVetRequest;
 use App\Http\Requests\Hospital\StoreVetRequest;
