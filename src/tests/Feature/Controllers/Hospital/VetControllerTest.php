@@ -352,15 +352,7 @@ class VetControllerTest extends TestCase
         $response = $this->put(route('hospital.vets.update', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']), $postData);
 
         // 検証（Assert）
-        $response
-            ->assertStatus(422)
-            ->assertJsonCount(2)
-            ->assertJsonFragment([
-                'message' => 'バリデーションエラー',
-                'errors'  => [
-                    'route_params.vet' => ['validation.exists'],
-                ],
-            ]);
+        $response->assertStatus(404);
     }
 
     /**
@@ -440,14 +432,6 @@ class VetControllerTest extends TestCase
         $response = $this->delete(route('hospital.vets.destroy', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
 
         // 検証（Assert）
-        $response
-            ->assertStatus(422)
-            ->assertJsonCount(2)
-            ->assertJsonFragment([
-                'message' => 'バリデーションエラー',
-                'errors'  => [
-                    'route_params.vet' => ['validation.exists'],
-                ],
-            ]);
+        $response->assertStatus(404);
     }
 }

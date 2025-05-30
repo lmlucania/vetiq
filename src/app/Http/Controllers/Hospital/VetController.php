@@ -11,11 +11,11 @@ use App\Application\UseCase\Hospital\StoreVetUseCase;
 use App\Application\UseCase\Hospital\UpdateVetUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexVetRequest;
-use App\Http\Requests\Hospital\QueryParamVetRequest;
 use App\Http\Requests\Hospital\StoreVetRequest;
 use App\Http\Requests\Hospital\UpdateVetRequest;
 use App\Transformers\VetTransformer;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class VetController extends Controller
@@ -30,45 +30,9 @@ class VetController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/vets",
-     *     tags={"Hospital"},
-     *     summary="獣医師の一覧",
-     *     @OA\Parameter(
-     *          name="page",
-     *          in="query",
-     *          description="ページ番号"
-     *     ),
-     *     @OA\Parameter(
-     *          name="per_page",
-     *          in="query",
-     *          description="1ページあたりの表示数（デフォルト50件）"
-     *     ),
-     *     @OA\Parameter(
-     *          name="sort[]",
-     *          in="query",
-     *          description="並び替え",
-     *          style="deepObject",
-     *          explode=true,
-     *          @OA\Schema(
-     *              type="array",
-     *              items=@OA\Items(type="string"),
-     *              example={"last_name", "-accept_appointment"}
-     *          )
-     *     ),
-     *     @OA\Parameter(
-     *          name="keyword",
-     *          in="query",
-     *          description="検索キーワード（名前（姓）または名前（名）の部分一致）"
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Vet"
-     *          ),
-     *     ),
-     * )
+     * @lrd:start
+     * 獣医師の一覧
+     * @lrd:end
      */
     public function index(IndexVetRequest $request): JsonResponse
     {
@@ -85,23 +49,9 @@ class VetController extends Controller
     }
 
     /**
-     * @OA\Post(
-     *     path="/hospital/vets",
-     *     tags={"Hospital"},
-     *     summary="獣医師の登録",
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreVetRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *     )
-     * )
+     * @lrd:start
+     * 獣医師の登録
+     * @lrd:end
      */
     public function store(StoreVetRequest $request)
     {
@@ -119,63 +69,23 @@ class VetController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/vets/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="獣医師の詳細",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="獣医師ID",
-     *          example="5705d9e7-39bd-44c4-af36-be78d0eeb825",
-     *      ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Vet"
-     *          ),
-     *     ),
-     *     @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *     ),
-     * )
+     * @lrd:start
+     * 獣医師の詳細
+     * @lrd:end
      */
-    public function show(QueryParamVetRequest $request, string $uuid):JsonResponse
+    public function show(Request $request, string $uuid):JsonResponse
     {
         $vetDto = $this->showVetUseCase->show($uuid);
         return fractal($vetDto, new VetTransformer())->respond();
     }
 
     /**
-     * @OA\Put(
-     *     path="/hospital/vets/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="獣医師の登録",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="獣医師ID",
-     *          example="5705d9e7-39bd-44c4-af36-be78d0eeb825",
-     *     ),
-     *     @OA\RequestBody(
-     *          required=true,
-     *          @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1UpdateVetRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *     )
-     * )
+     * @lrd:start
+     * 獣医師の更新
+     * @lrd:end
      */
     public function update(UpdateVetRequest $request, string $uuid):JsonResponse
     {
-        // fixme テスト未実施
         $success = $this->updateVetUseCase->update(
             uuid: $uuid,
             lastName: $request->getLastName(),
@@ -191,31 +101,11 @@ class VetController extends Controller
     }
 
     /**
-     * @OA\Delete(
-     *     path="/hospital/vets/{uuid}",
-     *     tags={"Hospital"},
-     *     summary="獣医師の削除",
-     *     @OA\Parameter(
-     *          name="uuid",
-     *          in="path",
-     *          description="獣医師ID",
-     *          example="5705d9e7-39bd-44c4-af36-be78d0eeb825",
-     *      ),
-     *      @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *      ),
-     *      @OA\Response(
-     *          response="400",
-     *          description="失敗",
-     *      ),
-     *      @OA\Response(
-     *          response="404",
-     *          description="Not Found",
-     *      ),
-     * )
+     * @lrd:start
+     * 獣医師の削除
+     * @lrd:end
      */
-    public function destroy(QueryParamVetRequest $request, string $uuid): JsonResponse
+    public function destroy(Request $request, string $uuid): JsonResponse
     {
         $success = $this->destroyVetUseCase->destroy($uuid);
 

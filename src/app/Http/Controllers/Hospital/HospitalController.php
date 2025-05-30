@@ -19,43 +19,19 @@ class HospitalController extends Controller
     }
 
     /**
-     * @OA\Get(
-     *     path="/hospital/info",
-     *     tags={"Hospital"},
-     *     summary="病院情報を取得",
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *          @OA\JsonContent(
-     *              ref="#/components/schemas/Response~1Hospital"
-     *          ),
-     *     ),
-     * )
+     * @lrd:start
+     * 病院情報を取得
+     * @lrd:end
      */
     public function show()
     {
         $dto = $this->showHospitalInfoByAuthStaffUseCase->show();
         return fractal($dto, new HospitalTransformer())->respond();
     }
-
     /**
-     * @OA\Put(
-     *     path="/hospital/info",
-     *     tags={"Hospital"},
-     *     summary="病院情報を更新",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(ref="#/components/schemas/Requests~1Hospital~1StoreHospitalRequest")
-     *     ),
-     *     @OA\Response(
-     *          response="200",
-     *          description="成功",
-     *     ),
-     *     @OA\Response(
-     *          response="422",
-     *          description="バリデーションエラー",
-     *     ),
-     * )
+     * @lrd:start
+     * 病院情報を更新
+     * @lrd:end
      */
     public function update(StoreHospitalRequest $request)
     {

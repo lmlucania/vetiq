@@ -16,38 +16,6 @@ class StoreVetRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @OA\Schema(
-     *     schema="Requests/Hospital/StoreVetRequest",
-     *     type="object",
-     *     required={"last_name", "first_name", "accept_appointment", "remark"},
-     *     description="獣医師の登録",
-     *     @OA\Property(
-     *          property="last_name",
-     *          type="string",
-     *          description="名前（姓）",
-     *          example="山田",
-     *     ),
-     *     @OA\Property(
-     *          property="first_name",
-     *          type="string",
-     *          description="名前（名）",
-     *          example="太郎",
-     *     ),
-     *     @OA\Property(
-     *          property="accept_appointment",
-     *          type="boolean",
-     *          description="指名予約可否フラグ",
-     *          example=true,
-     *     ),
-     *     @OA\Property(
-     *          property="remark",
-     *          type="string",
-     *          description="備考",
-     *          example="皮膚科専門医",
-     *     )
-     * )
-     */
     public function rules(): array
     {
         return [
