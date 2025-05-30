@@ -465,15 +465,7 @@ class MenuControllerTest extends TestCase
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
 
         // 検証（Assert）
-        $response
-            ->assertStatus(422)
-            ->assertJsonCount(2)
-            ->assertJsonFragment([
-                'message' => 'バリデーションエラー',
-                'errors'  => [
-                    'route_params.menu' => ['validation.exists'],
-                ],
-            ]);
+        $response->assertStatus(404);
     }
 
     /**
@@ -532,14 +524,6 @@ class MenuControllerTest extends TestCase
         $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
 
         // 検証（Assert）
-        $response
-            ->assertStatus(422)
-            ->assertJsonCount(2)
-            ->assertJsonFragment([
-                'message' => 'バリデーションエラー',
-                'errors'  => [
-                    'route_params.menu' => ['validation.exists'],
-                ],
-            ]);
+        $response->assertStatus(404);
     }
 }

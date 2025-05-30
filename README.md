@@ -1,5 +1,5 @@
 # VetIQ
-動物病院の予約＆口コミ アプリのAPI
+動物病院の予約＆口コミ アプリ
 
 ## Included services
 - Nginx
@@ -47,10 +47,18 @@ php artisan migrate:refresh --seed
 ```
 
 
-### API Document
+## API Document
+
+### URL
 
 ```
-localhost:8080/api/documentation
+localhost:8080/request-docs
+```
+
+### Generate OpenAPI collection as json file
+
+```
+php artisan laravel-request-docs:export
 ```
 
 ### Architecture

@@ -16,44 +16,6 @@ class StoreHospitalRequest extends ApiRequest
         return true;
     }
 
-    /**
-     * @OA\Schema(
-     *     schema="Requests/Hospital/StoreHospitalRequest",
-     *     type="object",
-     *     required={"name", "zipcode", "address", "phone", "is_published"},
-     *     description="病院情報の保存",
-     *     @OA\Property(
-     *         property="name",
-     *         type="string",
-     *         description="病院名",
-     *         example="テスト病院"
-     *     ),
-     *     @OA\Property(
-     *         property="zipcode",
-     *         type="string",
-     *         description="郵便番号 (7桁)",
-     *         example=1234567
-     *     ),
-     *     @OA\Property(
-     *         property="address",
-     *         type="string",
-     *         description="住所",
-     *         example="東京都新宿区西新宿2-8-1"
-     *     ),
-     *     @OA\Property(
-     *         property="phone",
-     *         type="string",
-     *         description="電話番号 (10または11桁)",
-     *         example="0123456789"
-     *     ),
-     *     @OA\Property(
-     *         property="is_published",
-     *         type="boolean",
-     *         description="公開状態",
-     *         example=true
-     *     )
-     * )
-     */
     public function rules(): array
     {
         return [

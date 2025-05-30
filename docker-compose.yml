@@ -32,7 +32,6 @@ services:
             dockerfile: docker-assets/frontend/Dockerfile
         volumes:
             - ./frontend:/var/www/html/frontend
-            - /app/node_modules
         ports:
             - 3000:3000
         environment:
