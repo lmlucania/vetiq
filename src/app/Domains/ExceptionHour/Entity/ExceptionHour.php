@@ -21,13 +21,24 @@ class ExceptionHour
         private ExceptionHourUuid $exceptionHourUuid,
         private HospitalId $hospitalId,
         private Date $date,
-        private StartTime $startTime,
-        private EndTime $endTime,
+        private ?StartTime $startTime,
+        private ?EndTime $endTime,
         private IsClosed $isClosed,
-        private Reason $reason,
+        private ?Reason $reason,
     ) {
-        if ($this->startTime->getValue() > $this->endTime->getValue()) {
-            throw new DomainException('開始時刻＜終了時刻で指定してください。');
+        if ($this->isClosed->getValue()) {
+            if (!is_null($this->startTime) || !is_null($this->endTime)) {
+                throw new DomainException('休診の場合は、開始時刻と終了時刻を指定してはいけません。');
+            }
+        } else {
+            if (is_null($this->startTime) || is_null($this->endTime)) {
+                throw new DomainException('休診でない場合は、開始時刻と終了時刻を入力してください。');
+            }
+
+            // 開始 < 終了 チェック
+            if ($this->startTime->getValue() > $this->endTime->getValue()) {
+                throw new DomainException('開始時刻は終了時刻より前にしてください。');
+            }
         }
     }
 
@@ -51,12 +62,12 @@ class ExceptionHour
         return $this->date;
     }
 
-    public function getStartTime(): StartTime
+    public function getStartTime(): ?StartTime
     {
         return $this->startTime;
     }
 
-    public function getEndTime(): EndTime
+    public function getEndTime(): ?EndTime
     {
         return $this->endTime;
     }
@@ -66,7 +77,7 @@ class ExceptionHour
         return $this->isClosed;
     }
 
-    public function getReason(): Reason
+    public function getReason(): ?Reason
     {
         return $this->reason;
     }

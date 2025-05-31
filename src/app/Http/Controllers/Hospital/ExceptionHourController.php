@@ -9,24 +9,29 @@ use App\Application\UseCase\Hospital\ExceptionHour\IndexExceptionHourUseCase;
 use App\Application\UseCase\Hospital\ExceptionHour\StoreExceptionHourUseCase;
 use App\Application\UseCase\Hospital\ExceptionHour\UpdateExceptionHourUseCase;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Hospital\IndexExceptionHourRequest;
+use App\Transformers\ExceptionHourTransformer;
 use Illuminate\Http\Request;
 
 class ExceptionHourController extends Controller
 {
     public function __construct(
-        IndexExceptionHourUseCase $indexExceptionHourUseCase,
-        StoreExceptionHourUseCase $storeExceptionHourUseCase,
-        UpdateExceptionHourUseCase $updateExceptionHourUseCase,
-        DestroyExceptionHourUseCase $destroyExceptionHourUseCase,
+        private IndexExceptionHourUseCase $indexExceptionHourUseCase,
+        private StoreExceptionHourUseCase $storeExceptionHourUseCase,
+        private UpdateExceptionHourUseCase $updateExceptionHourUseCase,
+        private DestroyExceptionHourUseCase $destroyExceptionHourUseCase,
     ) {
     }
 
     /**
-     * Display a listing of the resource.
+     * @lrd:start
+     * 例外受付時間の一覧
+     * @lrd:end
      */
-    public function index()
+    public function index(IndexExceptionHourRequest $indexExceptionHourRequest, int $year)
     {
-        return 1;
+        $dto = $this->indexExceptionHourUseCase->execute($year);
+        return fractal($dto->getCollection(), new ExceptionHourTransformer());
     }
 
     /**
