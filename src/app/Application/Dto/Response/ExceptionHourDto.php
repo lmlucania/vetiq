@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Dto\Response;
 
+use App\Domains\ExceptionHour\Enum\TimePeriod;
 use App\Domains\ExceptionHour\ValueObjects\Date;
 use App\Domains\ExceptionHour\ValueObjects\EndTime;
 use App\Domains\ExceptionHour\ValueObjects\ExceptionHourUuid;
@@ -16,6 +17,7 @@ class ExceptionHourDto
     public function __construct(
         private ExceptionHourUuid $exceptionHourUuid,
         private Date $date,
+        private TimePeriod $timePeriod,
         private ?StartTime $startTime,
         private ?EndTime $endTime,
         private IsClosed $isClosed,
@@ -31,6 +33,11 @@ class ExceptionHourDto
     public function getDate(): Date
     {
         return $this->date;
+    }
+
+    public function getTimePeriod(): TimePeriod
+    {
+        return $this->timePeriod;
     }
 
     public function getStartTime(): ?StartTime

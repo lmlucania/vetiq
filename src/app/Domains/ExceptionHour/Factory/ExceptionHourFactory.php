@@ -25,6 +25,7 @@ class ExceptionHourFactory
             new ExceptionHourUuid($model->uuid),
             new HospitalId($model->hospital_id),
             new Date($model->date),
+            $model->time_period,
             is_null($model->start_time) ? null : StartTime::fromCarbon($model->start_time),
             is_null($model->end_time) ? null : EndTime::fromCarbon($model->end_time),
             new IsClosed($model->is_closed),
@@ -40,6 +41,7 @@ class ExceptionHourFactory
         $model->uuid        = $entity->getExceptionHourUuid()->getValue();
         $model->hospital_id = $entity->getHospitalId()->getValue();
         $model->date        = $entity->getDate()->getValue();
+        $model->day_of_week = $entity->getTimePeriod();
         $model->start_time  = $entity->getStartTime()?->getValue();
         $model->end_time    = $entity->getEndTime()?->getValue();
         $model->is_closed   = $entity->getIsClosed()->getValue();
@@ -53,6 +55,7 @@ class ExceptionHourFactory
         return new ExceptionHourDto(
             $entity->getExceptionHourUuid(),
             $entity->getDate(),
+            $entity->getTimePeriod(),
             $entity->getStartTime(),
             $entity->getEndTime(),
             $entity->getIsClosed(),

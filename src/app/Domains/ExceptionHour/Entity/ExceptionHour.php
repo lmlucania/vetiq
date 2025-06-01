@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Domains\ExceptionHour\Entity;
 
+use App\Domains\ExceptionHour\Enum\TimePeriod;
 use App\Domains\ExceptionHour\ValueObjects\Date;
 use App\Domains\ExceptionHour\ValueObjects\EndTime;
 use App\Domains\ExceptionHour\ValueObjects\ExceptionHourId;
@@ -21,13 +22,14 @@ class ExceptionHour
         private ExceptionHourUuid $exceptionHourUuid,
         private HospitalId $hospitalId,
         private Date $date,
+        private TimePeriod $timePeriod,
         private ?StartTime $startTime,
         private ?EndTime $endTime,
         private IsClosed $isClosed,
         private ?Reason $reason,
     ) {
         if ($this->isClosed->getValue()) {
-            if (!is_null($this->startTime) || !is_null($this->endTime)) {
+            if (! is_null($this->startTime) || ! is_null($this->endTime)) {
                 throw new DomainException('休診の場合は、開始時刻と終了時刻を指定してはいけません。');
             }
         } else {
@@ -60,6 +62,11 @@ class ExceptionHour
     public function getDate(): Date
     {
         return $this->date;
+    }
+
+    public function getTimePeriod(): TimePeriod
+    {
+        return $this->timePeriod;
     }
 
     public function getStartTime(): ?StartTime
