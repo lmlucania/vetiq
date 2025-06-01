@@ -16,6 +16,7 @@ return new class extends Migration
             $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('hospital_id')->constrained()->onDelete('cascade')->comment('病院ID');
             $table->date('date')->comment('受付時間を変更する日付');
+            $table->tinyInteger('time_period')->comment('午前/午後');
             $table->time('start_time')->nullable()->comment('受付開始時間');
             $table->time('end_time')->nullable()->comment('受付終了時間');
             $table->boolean('is_closed')->comment('休診フラグ');
