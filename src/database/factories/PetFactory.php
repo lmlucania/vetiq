@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Domains\Pet\Enum\Gender;
@@ -19,12 +21,12 @@ class PetFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid' => (string) Str::uuid(),
-            'gender' => Gender::Male,
-            'birthday' => $this->faker->dateTimeBetween('-15 years', '-1 year'),
+            'uuid'            => (string) Str::uuid(),
+            'gender'          => Gender::Male,
+            'birthday'        => $this->faker->dateTimeBetween('-15 years', '-1 year'),
             'started_care_at' => $this->faker->dateTimeBetween('-10 years', 'now'),
-            'name' => $this->faker->firstName,
-            'remark' => $this->faker->optional()->sentence(),
+            'name'            => $this->faker->firstName,
+            'remark'          => $this->faker->optional()->sentence(),
         ];
     }
 }

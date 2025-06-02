@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Foundation\Auth\User as _User;
 use Illuminate\Notifications\Notifiable;
 
-class User extends Authenticatable
+class User extends _User
 {
     use HasFactory, Notifiable;
 
