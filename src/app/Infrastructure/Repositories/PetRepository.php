@@ -26,7 +26,9 @@ class PetRepository implements PetRepositoryInterface
 
     public function getListByUserId(int $userId): Collection
     {
-        return Pet::where('user_id', $userId)->orderBy('id');
+        return Pet::where('user_id', $userId)
+            ->orderBy('id')
+            ->get();
     }
 
     public function create(

@@ -21,7 +21,9 @@ class PetController extends Controller
      */
     public function index()
     {
-        //
+        $petCollection = $this->petService->getMyPets();
+
+        return fractal($petCollection, new PetTransformer())->respond();
     }
 
     /**
