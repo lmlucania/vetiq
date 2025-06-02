@@ -12,6 +12,11 @@ return Application::configure(basePath: dirname(__DIR__))
                 ->prefix('hospital')
                 ->name('hospital.')
                 ->group(base_path('routes/api_hospital.php'));
+
+            Route::middleware('api')
+                ->prefix('user')
+                ->name('user.')
+                ->group(base_path('routes/api_user.php'));
         },
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
