@@ -7,16 +7,16 @@ namespace App\Application\Dto\Response;
 use App\Exceptions\InvalidArgumentException;
 use Illuminate\Support\Collection;
 
-class BusinessHourCollectionDto
+class ExceptionHourCollectionDto
 {
-    /** @var BusinessHourDto[] */
+    /** @var ExceptionHourDto[] */
     private Collection $dtoCollection;
 
     public function __construct(Collection $dtoCollection)
     {
         foreach ($dtoCollection as $dto) {
-            if (! $dto instanceof BusinessHourDto) {
-                throw new InvalidArgumentException('受付時間のデータが不正です。');
+            if (! $dto instanceof ExceptionHourDto) {
+                throw new InvalidArgumentException('例外受付時間のデータが不正です。');
             }
         }
 
@@ -24,7 +24,7 @@ class BusinessHourCollectionDto
     }
 
     /**
-     * @return BusinessHourDto[]
+     * @return ExceptionHourDto[]
      */
     public function getCollection(): Collection
     {

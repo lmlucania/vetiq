@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\Hospital\AuthController;
 use App\Http\Controllers\Hospital\BusinessHourController;
+use App\Http\Controllers\Hospital\ExceptionHourController;
 use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Hospital\MenuController;
 use App\Http\Controllers\Hospital\VetController;
@@ -26,4 +27,8 @@ Route::middleware('auth:staffs')->group(static function () {
     });
     Route::resource('vets', VetController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::resource('business_hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('exception-hours', ExceptionHourController::class)->only(['store', 'destroy']);
+    Route::controller(ExceptionHourController::class)->prefix('exception-hours')->name('exception-hours.')->group(static function () {
+        Route::get('{year}', 'index')->name('index');
+    });
 });

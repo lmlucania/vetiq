@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\DestroyMenuUseCase;
-use App\Application\UseCase\Hospital\IndexMenuUseCase;
-use App\Application\UseCase\Hospital\PublishMenuUseCase;
-use App\Application\UseCase\Hospital\ShowMenuUseCase;
-use App\Application\UseCase\Hospital\StoreMenuUseCase;
-use App\Application\UseCase\Hospital\UnpublishMenuUseCase;
-use App\Application\UseCase\Hospital\UpdateMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\DestroyMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\IndexMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\PublishMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\ShowMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\StoreMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\UnpublishMenuUseCase;
+use App\Application\UseCase\Hospital\Menu\UpdateMenuUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexMenuRequest;
 use App\Http\Requests\Hospital\StoreMenuRequest;
@@ -45,6 +45,7 @@ class MenuController extends Controller
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
             sort: $request->getSort(),
+            queryParam: $request->getAllQuery(),
         );
 
         return fractal($paginatedDto->getCollection(), new MenuTransformer())

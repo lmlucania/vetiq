@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\DestroyBusinessHourUseCase;
-use App\Application\UseCase\Hospital\IndexBusinessHourUseCase;
-use App\Application\UseCase\Hospital\StoreBusinessHourUseCase;
+use App\Application\UseCase\Hospital\BusinessHour\DestroyBusinessHourUseCase;
+use App\Application\UseCase\Hospital\BusinessHour\IndexBusinessHourUseCase;
+use App\Application\UseCase\Hospital\BusinessHour\StoreBusinessHourUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\StoreBusinessHourRequest;
 use App\Transformers\BusinessHourTransformer;
