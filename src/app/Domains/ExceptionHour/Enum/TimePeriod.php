@@ -8,8 +8,8 @@ use App\Exceptions\InvalidArgumentException;
 
 enum TimePeriod: int
 {
-    case AM = 0;
-    case PM = 1;
+    case AM = 1;
+    case PM = 2;
 
     public function name(): string
     {
@@ -22,8 +22,8 @@ enum TimePeriod: int
     public static function fromInt(int $value): self
     {
         return match ($value) {
-            0       => self::AM,
-            1       => self::PM,
+            1       => self::AM,
+            2       => self::PM,
             default => throw new InvalidArgumentException('午前午後の値が不正です。'),
         };
     }

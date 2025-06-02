@@ -22,6 +22,7 @@ class DatabaseSeeder extends Seeder
             BusinessHourSeeder::class,
             ExceptionHourSeeder::class,
             UserSeeder::class,
+            PetSeeder::class,
         ]);
     }
 }
