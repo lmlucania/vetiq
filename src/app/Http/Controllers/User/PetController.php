@@ -6,6 +6,7 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\PetService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StorePetRequest;
 use App\Transformers\PetTransformer;
 use Illuminate\Http\Request;
 
@@ -17,7 +18,9 @@ class PetController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * @lrd:start
+     * ユーザーのペット一覧
+     * @lrd:end
      */
     public function index()
     {
@@ -27,19 +30,22 @@ class PetController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * ペットの登録
      */
-    public function create()
+    public function store(StorePetRequest $request)
     {
-        //
-    }
+        $success = $this->petService->create(
+            name: $request->getName(),
+            gender: $request->getGender(),
+            birthday: $request->getBirthday(),
+            startedCareAt: $request->getStartedCareAt(),
+            remark: $request->getRemark(),
+        );
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
-    {
-        //
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**
