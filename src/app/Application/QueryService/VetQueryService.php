@@ -21,7 +21,7 @@ class VetQueryService implements VetQueryServiceInterface
     ) {
     }
 
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {
         $hospitalId = $this->authStaffService->getHospitalId();
 

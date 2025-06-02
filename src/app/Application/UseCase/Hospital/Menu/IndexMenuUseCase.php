@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\UseCase\Hospital;
+namespace App\Application\UseCase\Hospital\Menu;
 
 use App\Application\Dto\Response\PaginatedDto;
 use App\Application\QueryService\MenuQueryService;
@@ -17,9 +17,9 @@ class IndexMenuUseCase
     ) {
     }
 
-    public function index(int $page, int $perPage, string $keyword, array $sort):PaginatedDto
+    public function index(int $page, int $perPage, string $keyword, array $sort, $queryParam):PaginatedDto
     {
-        $paginated = $this->menuQueryService->listByCriteria($page, $perPage, $keyword, $sort);
+        $paginated = $this->menuQueryService->listByCriteria($page, $perPage, $keyword, $sort, $queryParam);
         $dtoList   = $paginated->map(function (MenuModel $menuModel) {
             $menuEntity = $this->menuFactory->modelToEntity($menuModel);
             return $this->menuFactory->entityToDto($menuEntity);

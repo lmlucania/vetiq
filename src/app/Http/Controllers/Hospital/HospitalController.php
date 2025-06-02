@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\ShowHospitalInfoByAuthStaffUseCase;
-use App\Application\UseCase\Hospital\UpdateHospitalInfoByAuthStaffUseCase;
+use App\Application\UseCase\Hospital\HospitalInfo\ShowHospitalInfoByAuthStaffUseCase;
+use App\Application\UseCase\Hospital\HospitalInfo\UpdateHospitalInfoByAuthStaffUseCase;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\StoreHospitalRequest;
 use App\Transformers\HospitalTransformer;

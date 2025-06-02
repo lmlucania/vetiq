@@ -19,6 +19,8 @@ class DatabaseSeeder extends Seeder
             StaffSeeder::class,
             MenuSeeder::class,
             VetSeeder::class,
+            BusinessHourSeeder::class,
+            ExceptionHourSeeder::class,
         ]);
     }
 }
