@@ -89,6 +89,8 @@ class PetService
     {
         $pet = $this->getByUuid($uuid);
 
+        // fixme 未受診の予約がある場合は削除できない
+
         return $this->petRepository->delete($pet->id);
     }
 }
