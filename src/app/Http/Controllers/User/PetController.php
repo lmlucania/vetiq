@@ -89,7 +89,7 @@ class PetController extends Controller
      * ペットの削除
      * @lrd:end
      */
-    public function destroy(string $uuid): bool
+    public function destroy(string $uuid)
     {
         $success = $this->petService->delete(
             uuid: $uuid,
