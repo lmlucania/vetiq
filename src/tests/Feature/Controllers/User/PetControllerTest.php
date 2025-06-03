@@ -34,7 +34,7 @@ class PetControllerTest extends TestCase
     {
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
-        $pet = Pet::factory([
+        $pet = Pet::factory()->create([
             'user_id' => $this->user->id,
         ]);
         Pet::factory()->create([
