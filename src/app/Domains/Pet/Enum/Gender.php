@@ -12,7 +12,7 @@ enum Gender: int
     case Female  = 2;
     case Unknown = 9;
 
-    public function name(): string
+    public function label(): string
     {
         return match ($this) {
             self::Male    => 'オス',
@@ -23,10 +23,6 @@ enum Gender: int
 
     public static function fromInt(int $value): self
     {
-        return match ($value) {
-            1       => self::Male,
-            2       => self::Female,
-            default => throw new InvalidArgumentException('性別の値が不正です。'),
-        };
+        return self::tryFrom($value) ?? throw new InvalidArgumentException("性別の値が不正です: $value");
     }
 }
