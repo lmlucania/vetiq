@@ -17,6 +17,8 @@ class UserQueryService
                 'users.email',
                 'user_profiles.first_name',
                 'user_profiles.last_name',
+                'user_profiles.first_name_kana',
+                'user_profiles.last_name_kana',
                 'user_profiles.phone_number',
                 'user_profiles.post_code',
                 'user_profiles.prefecture',

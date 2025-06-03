@@ -12,14 +12,16 @@ class UserProfileTransformer extends TransformerAbstract
     public function transform(stdClass $userProfile)
     {
         return [
-            'email'        => $userProfile->email,
-            'first_name'   => $userProfile->first_name,
-            'last_name'    => $userProfile->last_name,
-            'phone_number' => $userProfile->phone_number,
-            'post_code'    => $userProfile->post_code,
-            'prefecture'   => $userProfile->prefecture,
-            'address1'     => $userProfile->address1,
-            'address2'     => $userProfile->address2,
+            'email'           => $userProfile->email,
+            'first_name'      => $userProfile->first_name,
+            'last_name'       => $userProfile->last_name,
+            'first_name_kana' => $userProfile->first_name_kana,
+            'last_name_kana'  => $userProfile->last_name_kana,
+            'phone_number'    => $userProfile->phone_number,
+            'post_code'       => $userProfile->post_code,
+            'prefecture'      => $userProfile->prefecture,
+            'address1'        => $userProfile->address1,
+            'address2'        => $userProfile->address2,
         ];
     }
 }

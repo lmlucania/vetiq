@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Models;
 
+use App\Domains\Location\Enum\Prefecture;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
@@ -25,6 +26,13 @@ class UserProfile extends Model
         'address1',
         'address2',
     ];
+
+    protected function casts(): array
+    {
+        return [
+            'prefecture' => Prefecture::class,
+        ];
+    }
 
     public function user(): BelongsTo
     {
