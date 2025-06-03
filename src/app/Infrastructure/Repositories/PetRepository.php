@@ -10,7 +10,6 @@ use App\Exceptions\NotFoundException;
 use App\Models\Pet;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
 
 class PetRepository implements PetRepositoryInterface
 {
@@ -32,20 +31,22 @@ class PetRepository implements PetRepositoryInterface
     }
 
     public function create(
+        string $uuid,
         int $userId,
         string $name,
         Gender $gender,
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
         ?string $remark,
-    ): bool {
+    ): Pet {
         return Pet::create([
-            'uuid'          => (string)Str::uuid(),
-            'name'          => $name,
-            'gender'        => $gender,
-            'birthday'      => $birthday,
-            'startedCareAt' => $startedCareAt,
-            'remark'        => $remark,
+            'uuid'            => $uuid,
+            'user_id'         => $userId,
+            'name'            => $name,
+            'gender'          => $gender,
+            'birthday'        => $birthday,
+            'started_care_at' => $startedCareAt,
+            'remark'          => $remark,
         ]);
     }
 
@@ -57,7 +58,7 @@ class PetRepository implements PetRepositoryInterface
         ?Carbon $startedCareAt,
         ?string $remark,
     ): bool {
-        $model = Pet::firstOrFail($id);
+        $model = Pet::findOrFail($id);
 
         $model->name            = $name;
         $model->gender          = $gender;
@@ -70,8 +71,8 @@ class PetRepository implements PetRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $model = Pet::firstOrFail($id);
+        $model = Pet::findOrFail($id);
 
-        $model->delete();
+        return $model->delete();
     }
 }

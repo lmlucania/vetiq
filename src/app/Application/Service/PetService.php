@@ -10,6 +10,7 @@ use App\Exceptions\NotFoundException;
 use App\Models\Pet;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 
 class PetService
 {
@@ -47,11 +48,12 @@ class PetService
         ?string $birthday,
         ?string $startedCareAt,
         ?string $remark
-    ) {
+    ): Pet {
         $birthdayCarbon      = $birthday ? Carbon::parse($birthday) : null;
         $startedCareAtCarbon = $startedCareAt ? Carbon::parse($startedCareAt) : null;
 
         return $this->petRepository->create(
+            uuid: (string)Str::uuid(),
             userId: $this->authActorService->getUserId(),
             name: $name,
             gender: Gender::fromInt($gender),
@@ -59,5 +61,34 @@ class PetService
             startedCareAt: $startedCareAtCarbon,
             remark: $remark,
         );
+    }
+
+    public function update(
+        string $uuid,
+        string $name,
+        int $gender,
+        ?string $birthday,
+        ?string $startedCareAt,
+        ?string $remark
+    ): bool {
+        $pet                 = $this->getByUuid($uuid);
+        $birthdayCarbon      = $birthday ? Carbon::parse($birthday) : null;
+        $startedCareAtCarbon = $startedCareAt ? Carbon::parse($startedCareAt) : null;
+
+        return $this->petRepository->update(
+            id: $pet->id,
+            name: $name,
+            gender: Gender::fromInt($gender),
+            birthday: $birthdayCarbon,
+            startedCareAt: $startedCareAtCarbon,
+            remark: $remark,
+        );
+    }
+
+    public function delete(string $uuid): bool
+    {
+        $pet = $this->getByUuid($uuid);
+
+        return $this->petRepository->delete($pet->id);
     }
 }

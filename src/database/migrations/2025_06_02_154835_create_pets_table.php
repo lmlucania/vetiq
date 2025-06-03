@@ -20,6 +20,7 @@ return new class extends Migration
             $table->timestamp('birthday')->nullable()->comment('生年月日');
             $table->timestamp('started_care_at')->nullable()->comment('飼育開始日');
             $table->text('remark')->nullable()->comment('備考');
+            $table->softDeletes();
             $table->timestamps();
         });
     }

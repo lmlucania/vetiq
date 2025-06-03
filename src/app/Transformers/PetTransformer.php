@@ -15,8 +15,8 @@ class PetTransformer extends TransformerAbstract
             'uuid'            => $pet->uuid,
             'name'            => $pet->name,
             'gender'          => $pet->gender,
-            'birthday'        => $pet->birthday->format('Y-m-d'),
-            'started_care_at' => $pet->started_care_at->format('Y-m-d'),
+            'birthday'        => $pet->birthday?->format('Y-m-d'),
+            'started_care_at' => $pet->started_care_at?->format('Y-m-d'),
             'remark'          => $pet->remark,
         ];
     }

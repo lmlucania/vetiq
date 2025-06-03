@@ -16,13 +16,14 @@ interface PetRepositoryInterface
     public function getListByUserId(int $userId): Collection;
 
     public function create(
+        string $uuid,
         int $userId,
         string $name,
         Gender $gender,
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
         ?string $remark,
-    ):bool;
+    ): Pet;
 
     public function update(
         int $id,

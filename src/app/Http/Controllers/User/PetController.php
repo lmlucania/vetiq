@@ -7,8 +7,8 @@ namespace App\Http\Controllers\User;
 use App\Application\Service\PetService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\StorePetRequest;
+use App\Http\Requests\User\UpdatePetRequest;
 use App\Transformers\PetTransformer;
-use Illuminate\Http\Request;
 
 class PetController extends Controller
 {
@@ -30,7 +30,9 @@ class PetController extends Controller
     }
 
     /**
+     * @lrd:start
      * ペットの登録
+     * @lrd:end
      */
     public function store(StorePetRequest $request)
     {
@@ -49,7 +51,9 @@ class PetController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @lrd:start
+     * ペットの詳細
+     * @lrd:end
      */
     public function show(string $uuid)
     {
@@ -59,26 +63,41 @@ class PetController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @lrd:start
+     * ペットの更新
+     * @lrd:end
      */
-    public function edit(string $id)
+    public function update(UpdatePetRequest $request, string $uuid)
     {
-        //
+        $success = $this->petService->update(
+            uuid: $uuid,
+            name: $request->getName(),
+            gender: $request->getGender(),
+            birthday: $request->getBirthday(),
+            startedCareAt: $request->getStartedCareAt(),
+            remark: $request->getRemark(),
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**
-     * Update the specified resource in storage.
+     * @lrd:start
+     * ペットの削除
+     * @lrd:end
      */
-    public function update(Request $request, string $id)
+    public function destroy(string $uuid): bool
     {
-        //
-    }
+        $success = $this->petService->delete(
+            uuid: $uuid,
+        );
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }
