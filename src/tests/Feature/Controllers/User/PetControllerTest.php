@@ -177,7 +177,7 @@ class PetControllerTest extends TestCase
     /**
      * ペットの削除 論理削除ができること
      */
-    public function testDeleteSuccess()
+    public function testDestroySuccess()
     {
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
