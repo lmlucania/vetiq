@@ -17,5 +17,6 @@ Route::middleware('auth:users')->group(static function () {
     Route::controller(UserController::class)->prefix('profile')->name('profile.')->group(static function () {
         Route::get('', 'me')->name('me');
         Route::post('', 'update')->name('update');
+        Route::delete('', 'destroy')->name('destroy');
     });
 });
