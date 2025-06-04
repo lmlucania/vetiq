@@ -73,4 +73,13 @@ class UserService
             return ($updated === true && $upserted >= 1);
         });
     }
+
+    public function deleteMe()
+    {
+        $userId = $this->authActorService->getUserId();
+
+        // fixme 未受診の予約がある場合は削除させない
+
+        return $this->userRepository->delete($userId);
+    }
 }

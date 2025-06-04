@@ -30,7 +30,7 @@ class UserController extends Controller
 
     /**
      * @lrd:start
-     *  個人情報を更新
+     * 個人情報を更新
      * @lrd:end
      */
     public function update(UpdateUserProfileRequest $request)
@@ -47,6 +47,21 @@ class UserController extends Controller
             address1: $request->getAddress1(),
             address2: $request->getAddress2(),
         );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
+     * @lrd:start
+     * 退会
+     * @lrd:end
+     */
+    public function destroy()
+    {
+        $success = $this->userService->deleteMe();
 
         if ($success) {
             return response()->success();

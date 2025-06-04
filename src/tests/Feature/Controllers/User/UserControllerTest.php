@@ -174,4 +174,28 @@ class UserControllerTest extends TestCase
         $this->assertEquals($postData['address1'], $record->address1);
         $this->assertEquals($postData['address2'], $record->address2);
     }
+
+    /**
+     * 退会 ユーザーが論理削除されていること
+     */
+    public function testDestroySuccess()
+    {
+        // 準備（Arrange）
+        $this->actingAs($this->user, $this->guard);
+
+        // 実行（Act）
+        $response = $this->delete(route('user.profile.destroy'));
+
+        // 検証（Assert）
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('users', 1);
+
+        $this->assertSoftDeleted(
+            table: 'users',
+            data: [
+                'id' => $this->user->id,
+            ],
+        );
+    }
 }
