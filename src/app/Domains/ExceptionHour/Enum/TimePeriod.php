@@ -11,7 +11,7 @@ enum TimePeriod: int
     case AM = 1;
     case PM = 2;
 
-    public function name(): string
+    public function label(): string
     {
         return match ($this) {
             self::AM => '午前',
@@ -21,10 +21,6 @@ enum TimePeriod: int
 
     public static function fromInt(int $value): self
     {
-        return match ($value) {
-            1       => self::AM,
-            2       => self::PM,
-            default => throw new InvalidArgumentException('午前午後の値が不正です。'),
-        };
+        return self::tryFrom($value) ?? throw new InvalidArgumentException("午前午後の値が不正です: $value");
     }
 }
