@@ -17,7 +17,8 @@ class FavoriteService
         $user = $this->authActorService->getUser();
 
         $hospital = $this->hospitalService->getByUuid($uuid);
-        return $user->favoriteHospitals()->sync([$hospital->id]);
+        // すでにお気に入り登録されていても、重複登録せずにスルーされる
+        return $user->favoriteHospitals()->syncWithoutDetaching($hospital->id);
     }
 
     public function detach(string $uuid): int
