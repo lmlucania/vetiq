@@ -21,7 +21,7 @@ Route::middleware('auth:users')->group(static function () {
         Route::delete('', 'destroy')->name('destroy');
     });
     Route::resource('favorites', FavoriteController::class)->only(['index']);
-    Route::controller(FavoriteController::class)->prefix('favorite')->name('favorite.')->group(static function () {
+    Route::controller(FavoriteController::class)->prefix('favorites')->name('favorites.')->group(static function () {
         Route::post('{uuid}', 'attach')->name('attach');
         Route::delete('{uuid}', 'detach')->name('detach');
     });
