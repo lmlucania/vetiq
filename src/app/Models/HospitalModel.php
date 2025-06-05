@@ -26,4 +26,15 @@ class HospitalModel extends Model
     {
         return $this->hasMany(StaffModel::class);
     }
+
+    public function favoredByUsers()
+    {
+        return $this->belongsToMany(
+            User::class,
+            'favorites',
+            'hospital_id',
+            'user_id',
+        )
+            ->withTimestamps();
+    }
 }

@@ -46,4 +46,15 @@ class User extends _User
             'password'          => 'hashed',
         ];
     }
+
+    public function favoriteHospitals()
+    {
+        return $this->belongsToMany(
+            HospitalModel::class,
+            'favorites',
+            'user_id',
+            'hospital_id',
+        )
+            ->withTimestamps();
+    }
 }
