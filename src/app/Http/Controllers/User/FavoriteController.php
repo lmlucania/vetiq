@@ -44,11 +44,9 @@ class FavoriteController extends Controller
      */
     public function detach(string $uuid)
     {
-        $success = $this->favoriteService->detach($uuid);
+        $this->favoriteService->detach($uuid);
 
-        if ($success) {
-            return response()->success();
-        }
-        return response()->error();
+        // お気に入りしていない病院を解除した場合でも200を返す
+        return response()->success();
     }
 }
