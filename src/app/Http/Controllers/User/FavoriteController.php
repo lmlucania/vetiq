@@ -8,7 +8,6 @@ use App\Application\Service\FavoriteService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexFavoriteRequest;
 use App\Transformers\FavoriteTransformer;
-use App\Transformers\VetTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class FavoriteController extends Controller

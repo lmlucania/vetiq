@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
@@ -27,5 +29,4 @@ class FavoriteQueryService
 
         return $filteredQuery->paginate($perPage, ['*'], 'page', $page);
     }
-
 }

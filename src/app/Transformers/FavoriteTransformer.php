@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Application\Dto\Response\VetDto;
 use App\Models\Favorite;
 use League\Fractal\TransformerAbstract;
 
@@ -14,8 +13,8 @@ class FavoriteTransformer extends TransformerAbstract
     {
         // fixme 病院のidを除く
         return [
-            'id'               => $favorite->id,
-            'hospital'          => $favorite->hospital,
+            'id'       => $favorite->id,
+            'hospital' => $favorite->hospital,
         ];
     }
 }
