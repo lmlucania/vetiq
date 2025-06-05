@@ -8,6 +8,7 @@ use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Hospital\ValueObjects\HospitalId;
+use App\Exceptions\NotFoundException;
 use App\Infrastructure\Repositories\Traits\GenerationId;
 use App\Models\HospitalModel;
 use App\Models\VetModel;
@@ -25,6 +26,16 @@ class HospitalRepository implements HospitalRepositoryInterface
     public function getById(HospitalId $id): HospitalModel
     {
         return HospitalModel::findOrFail($id->getValue());
+    }
+
+    public function getByUuid(string $uuid): HospitalModel
+    {
+        $hospital = HospitalModel::firstWhere('uuid', $uuid);
+        if ($hospital == null) {
+            throw new NotFoundException();
+        }
+
+        return $hospital;
     }
 
     public function getList(): Collection

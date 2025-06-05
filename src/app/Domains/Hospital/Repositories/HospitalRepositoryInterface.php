@@ -15,6 +15,8 @@ interface HospitalRepositoryInterface
 
     public function getById(HospitalId $id): HospitalModel;
 
+    public function getByUuid(string $uuid): HospitalModel;
+
     public function getList(): Collection;
 
     public function create(Hospital $hospitalEntity):bool;
