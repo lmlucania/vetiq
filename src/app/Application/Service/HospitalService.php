@@ -17,8 +17,13 @@ class HospitalService
     public function __construct(
         private readonly HospitalFactory $hospitalFactory,
         private readonly HospitalRepositoryInterface $hospitalRepository,
-        private readonly AuthStaffService $authStaffService,
+        private readonly AuthActorService $authActorService,
     ) {
+    }
+
+    public function getByUuid(string $uuid)
+    {
+        return $this->hospitalRepository->getByUuid($uuid);
     }
 
     public function getList():Collection
@@ -40,7 +45,7 @@ class HospitalService
 
     public function findByAuthStaff():Hospital
     {
-        $hospitalId = $this->authStaffService->getHospitalId();
+        $hospitalId = $this->authActorService->getHospitalId();
 
         $hospitalModel  = $this->hospitalRepository->getById($hospitalId);
         $hospitalEntity = $this->hospitalFactory->modelToEntity($hospitalModel);
