@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Models\Favorite;
 use App\Models\Review;
 use League\Fractal\TransformerAbstract;
 
@@ -14,9 +13,9 @@ class ReviewTransformer extends TransformerAbstract
     {
         // fixme 病院のidを除く
         return [
-            'uuid'       => $review->uuid,
-            'title' => $review->title,
-            'body' => $review->body,
+            'uuid'     => $review->uuid,
+            'title'    => $review->title,
+            'body'     => $review->body,
             'hospital' => $review->hospital,
         ];
     }

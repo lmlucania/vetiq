@@ -7,7 +7,6 @@ namespace App\Http\Controllers\User;
 use App\Application\Service\ReviewService;
 use App\Http\Controllers\Controller;
 use App\Models\Review;
-use App\Transformers\PetTransformer;
 use App\Transformers\ReviewTransformer;
 use Illuminate\Http\Request;
 
@@ -15,8 +14,7 @@ class ReviewController extends Controller
 {
     public function __construct(
         private ReviewService $reviewService,
-    )
-    {
+    ) {
     }
 
     /**
@@ -40,19 +38,11 @@ class ReviewController extends Controller
      * レビューの詳細
      * @lrd:end
      */
-    public function show(string $uuid)
+    public function show(string $hospitalUuid, string $reviewUuid)
     {
-        $review = $this->reviewService->getMineByUuid($uuid);
+        $review = $this->reviewService->getOwnByUuidInHospital($hospitalUuid, $reviewUuid);
 
         return fractal($review, new ReviewTransformer())->respond();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Review $review)
-    {
-        //
     }
 
     /**

@@ -23,7 +23,7 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'               => Str::uuid(),
+            'uuid'        => Str::uuid(),
             'hospital_id' => HospitalModel::factory()->create()->id,
             'user_id'     => User::factory()->create()->id,
             'rating'      => Rating::One,
