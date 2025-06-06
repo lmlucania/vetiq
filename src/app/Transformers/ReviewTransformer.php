@@ -14,6 +14,7 @@ class ReviewTransformer extends TransformerAbstract
         // fixme 病院のidを除く
         return [
             'uuid'     => $review->uuid,
+            'rating'   => $review->rating->value,
             'title'    => $review->title,
             'body'     => $review->body,
             'hospital' => $review->hospital,
