@@ -22,4 +22,14 @@ class Review extends Model
     protected $casts = [
         'rating' => Rating::class,
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
+    public function hospital()
+    {
+        return $this->belongsTo(HospitalModel::class, 'hospital_id', 'id');
+    }
 }

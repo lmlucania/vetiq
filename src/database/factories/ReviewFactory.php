@@ -8,6 +8,7 @@ use App\Domains\Review\Enum\Rating;
 use App\Models\HospitalModel;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
+use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Review>
@@ -22,6 +23,7 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
+            'uuid'               => Str::uuid(),
             'hospital_id' => HospitalModel::factory()->create()->id,
             'user_id'     => User::factory()->create()->id,
             'rating'      => Rating::One,

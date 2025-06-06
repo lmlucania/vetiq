@@ -5,6 +5,7 @@ declare(strict_types=1);
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\PetController;
+use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\UserController;
 use Illuminate\Support\Facades\Route;
 
@@ -25,4 +26,5 @@ Route::middleware('auth:users')->group(static function () {
         Route::post('{uuid}', 'attach')->name('attach');
         Route::delete('{uuid}', 'detach')->name('detach');
     });
+    Route::resource('reviews', ReviewController::class)->only(['show']);
 });

@@ -13,6 +13,7 @@ return new class extends Migration
     {
         Schema::create('reviews', function (Blueprint $table) {
             $table->id();
+            $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('hospital_id')->constrained()->onDelete('cascade');
             $table->foreignId('user_id')->constrained()->onDelete('cascade');
             $table->tinyInteger('rating')->unsigned()->comment('評価点数');
