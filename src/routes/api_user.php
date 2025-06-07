@@ -26,7 +26,5 @@ Route::middleware('auth:users')->group(static function () {
         Route::post('{uuid}', 'attach')->name('attach');
         Route::delete('{uuid}', 'detach')->name('detach');
     });
-    Route::controller(ReviewController::class)->prefix('hospital')->name('hospital.')->group(static function () {
-        Route::get('{hospitalUuid}/review/{ReviewUuid}', 'show')->name('show');
-    });
+    Route::resource('reviews', ReviewController::class)->only(['show']);
 });

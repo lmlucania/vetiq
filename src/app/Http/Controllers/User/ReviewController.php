@@ -38,9 +38,9 @@ class ReviewController extends Controller
      * レビューの詳細
      * @lrd:end
      */
-    public function show(string $hospitalUuid, string $reviewUuid)
+    public function show(string $uuid)
     {
-        $review = $this->reviewService->getOwnByUuidInHospital($hospitalUuid, $reviewUuid);
+        $review = $this->reviewService->getOwnByUuid($uuid);
 
         return fractal($review, new ReviewTransformer())->respond();
     }

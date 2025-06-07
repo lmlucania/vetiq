@@ -8,5 +8,5 @@ use App\Models\Review;
 
 interface ReviewRepositoryInterface
 {
-    public function getByUuidInHospital(int $hospitalId, string $reviewUuid): Review;
+    public function getByUuid(string $reviewUuid): Review;
 }

@@ -6,7 +6,6 @@ namespace App\Application\Service;
 
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Exceptions\NotFoundException;
-use App\Infrastructure\Repositories\HospitalRepository;
 use App\Models\Review;
 
 class ReviewService
@@ -14,14 +13,12 @@ class ReviewService
     public function __construct(
         private AuthActorService $authActorService,
         private ReviewRepositoryInterface $reviewRepository,
-        private HospitalRepository $hospitalRepository,
     ) {
     }
 
-    public function getOwnByUuidInHospital(string $hospitalUuid, string $reviewUuid): Review
+    public function getOwnByUuid(string $uuid): Review
     {
-        $hospital = $this->hospitalRepository->getByUuid($hospitalUuid);
-        $review   = $this->reviewRepository->getByUuidInHospital($hospital->id, $reviewUuid);
+        $review = $this->reviewRepository->getByUuid($uuid);
 
         if ($review->user_id != $this->authActorService->getUserId()) {
             throw new NotFoundException();
