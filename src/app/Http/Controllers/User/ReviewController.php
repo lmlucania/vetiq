@@ -6,6 +6,7 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\ReviewService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\StoreReviewRequest;
 use App\Models\Review;
 use App\Transformers\ReviewTransformer;
 use Illuminate\Http\Request;
@@ -26,11 +27,23 @@ class ReviewController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @lrd:start
+     * レビューを登録
+     * @lrd:end
      */
-    public function store(Request $request)
+    public function store(StoreReviewRequest $request, string $hospitalUuid)
     {
-        //
+        $success = $this->reviewService->create(
+            hospitalUuid: $hospitalUuid,
+            rating: $request->getRating(),
+            title: $request->getTitle(),
+            body: $request->getBody(),
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**
@@ -38,9 +51,9 @@ class ReviewController extends Controller
      * レビューの詳細
      * @lrd:end
      */
-    public function show(string $uuid)
+    public function show(string $hospitalUuid, string $uuid)
     {
-        $review = $this->reviewService->getOwnByUuid($uuid);
+        $review = $this->reviewService->getOwnByUuidInHospital($hospitalUuid, $uuid);
 
         return fractal($review, new ReviewTransformer())->respond();
     }

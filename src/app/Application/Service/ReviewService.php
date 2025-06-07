@@ -4,26 +4,49 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
+use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Domains\Review\Enum\Rating;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Exceptions\NotFoundException;
 use App\Models\Review;
+use Illuminate\Support\Str;
 
 class ReviewService
 {
     public function __construct(
         private AuthActorService $authActorService,
         private ReviewRepositoryInterface $reviewRepository,
+        private HospitalRepositoryInterface $hospitalRepository,
     ) {
     }
 
-    public function getOwnByUuid(string $uuid): Review
+    public function getOwnByUuidInHospital(string $hospitalUuid, string $uuid): Review
     {
-        $review = $this->reviewRepository->getByUuid($uuid);
+        $review = $this->reviewRepository->getByUuidInHospital(
+            hospitalUuid: $hospitalUuid,
+            reviewUuid: $uuid,
+        );
 
         if ($review->user_id != $this->authActorService->getUserId()) {
             throw new NotFoundException();
         }
 
         return $review;
+    }
+
+    public function create(
+        string $hospitalUuid,
+        Rating $rating,
+        string $title,
+        string $body,
+    ) {
+        return $this->reviewRepository->create(
+            uuid: (string)Str::uuid(),
+            hospitalId: $this->hospitalRepository->getByUuid($hospitalUuid)->id,
+            userId: $this->authActorService->getUserId(),
+            rating: $rating,
+            title: $title,
+            body: $body,
+        );
     }
 }
