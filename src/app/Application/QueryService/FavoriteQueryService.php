@@ -20,7 +20,8 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
         $query = Favorite::query()
             ->where('user_id', $userId)
             ->join('hospitals', 'favorites.hospital_id', '=', 'hospitals.id')
-            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name');
+            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name')
+            ->orderBy('favorites.id', 'desc');;
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort);
 

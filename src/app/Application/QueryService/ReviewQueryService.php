@@ -30,7 +30,8 @@ class ReviewQueryService implements ReviewQueryServiceInterface
                 $join->on('reviews.hospital_id', '=', 'hospitals.id')
                     ->where('hospitals.uuid', '=', $hospitalUuid);
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
+            ->orderBy('reviews.id', 'desc');
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort);
 
@@ -52,7 +53,8 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
+            ->orderBy('reviews.id', 'desc');
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort);
 
