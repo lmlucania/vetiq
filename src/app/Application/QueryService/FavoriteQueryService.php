@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
+use App\Infrastructure\QueryService\FavoriteQueryServiceInterface;
 use App\Models\Favorite;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class FavoriteQueryService
+class FavoriteQueryService implements FavoriteQueryServiceInterface
 {
     use SortableQuery;
 
