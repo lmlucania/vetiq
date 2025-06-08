@@ -9,14 +9,24 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface ReviewQueryServiceInterface
 {
-    public function listByCriteria(
+    public function listByCriteriaInHospital(
         string $hospitalUuid,
         int $page,
         int $perPage,
         string $keyword,
         array $rating,
         array $sort,
-        $queryParam
+        array $queryParam
+    ):LengthAwarePaginator;
+
+    public function listByCriteriaInUser(
+        int $userId,
+        int $page,
+        int $perPage,
+        string $keyword,
+        array $rating,
+        array $sort,
+        array $queryParam
     ):LengthAwarePaginator;
 
     public function querySort(Builder $query, array $sortable, array $sortParams): Builder;

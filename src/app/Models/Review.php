@@ -13,8 +13,10 @@ class Review extends Model
     use HasFactory;
 
     protected $fillable = [
+        'uuid',
         'hospital_id',
         'user_id',
+        'rating',
         'title',
         'body',
     ];

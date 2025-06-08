@@ -6,13 +6,12 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\ReviewService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\IndexOwnReviewRequest;
 use App\Http\Requests\User\IndexReviewRequest;
 use App\Http\Requests\User\StoreReviewRequest;
 use App\Http\Requests\User\UpdateReviewRequest;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
-use App\Models\Review;
 use App\Transformers\ReviewTransformer;
-use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ReviewController extends Controller
@@ -30,7 +29,7 @@ class ReviewController extends Controller
      */
     public function index(IndexReviewRequest $request, string $hospitalUuid)
     {
-        $paginator = $this->reviewQueryService->listByCriteria(
+        $paginator = $this->reviewQueryService->listByCriteriaInHospital(
             hospitalUuid: $hospitalUuid,
             page:$request->getPage(),
             perPage: $request->getPerPage(),
@@ -99,10 +98,23 @@ class ReviewController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @lrd:start
+     * ログインユーザーが投稿したレビューの一覧
+     * @lrd:end
      */
-    public function destroy(Review $review)
+    public function indexOwn(IndexOwnReviewRequest $request)
     {
-        //
+        $paginator = $this->reviewService->listOwn(
+            page:$request->getPage(),
+            perPage: $request->getPerPage(),
+            keyword: $request->getKeyword(),
+            rating: $request->getRating(),
+            sort: $request->getSort(),
+            queryParam: $request->getAllQuery(),
+        );
+
+        return fractal($paginator->getCollection(), new ReviewTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+            ->respond();
     }
 }

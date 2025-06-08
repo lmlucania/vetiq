@@ -26,10 +26,11 @@ Route::middleware('auth:users')->group(static function () {
         Route::post('{uuid}', 'attach')->name('attach');
         Route::delete('{uuid}', 'detach')->name('detach');
     });
-    Route::controller(ReviewController::class)->prefix('hospital')->name('hospital.')->group(static function () {
-        Route::get('{hospitalUuid}/review', 'index')->name('index');
-        Route::get('{hospitalUuid}/review/{uuid}', 'show')->name('show');
-        Route::post('{hospitalUuid}/review', 'store')->name('store');
-        Route::put('{hospitalUuid}/review/{uuid}', 'update')->name('update');
+    Route::controller(ReviewController::class)->prefix('hospital')->name('hospital.reviews.')->group(static function () {
+        Route::get('{hospitalUuid}/reviews', 'index')->name('index');
+        Route::get('{hospitalUuid}/reviews/{uuid}', 'show')->name('show');
+        Route::post('{hospitalUuid}/reviews', 'store')->name('store');
+        Route::put('{hospitalUuid}/reviews/{uuid}', 'update')->name('update');
     });
+    Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews');
 });

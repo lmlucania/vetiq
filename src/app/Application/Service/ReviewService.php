@@ -8,15 +8,18 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Review\Enum\Rating;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Exceptions\NotFoundException;
+use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 use App\Models\Review;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Str;
 
 class ReviewService
 {
     public function __construct(
         private AuthActorService $authActorService,
-        private ReviewRepositoryInterface $reviewRepository,
         private HospitalRepositoryInterface $hospitalRepository,
+        private ReviewRepositoryInterface $reviewRepository,
+        private ReviewQueryServiceInterface $reviewQueryService,
     ) {
     }
 
@@ -38,7 +41,7 @@ class ReviewService
         string $hospitalUuid,
         Rating $rating,
         string $title,
-        string $body,
+        ?string $body,
     ) {
         return $this->reviewRepository->create(
             uuid: (string)Str::uuid(),
@@ -67,6 +70,27 @@ class ReviewService
             rating: $rating,
             title: $title,
             body: $body,
+        );
+    }
+
+    public function listOwn(
+        int $page,
+        int $perPage,
+        string $keyword,
+        array $rating,
+        array $sort,
+        array $queryParam
+    ): LengthAwarePaginator {
+        $userId = $this->authActorService->getUserId();
+
+        return $this->reviewQueryService->listByCriteriaInUser(
+            userId: $userId,
+            page:$page,
+            perPage: $perPage,
+            keyword: $keyword,
+            rating: $rating,
+            sort: $sort,
+            queryParam: $queryParam,
         );
     }
 }

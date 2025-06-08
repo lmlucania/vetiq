@@ -16,7 +16,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
 
     private $sortable = ['id', 'rating'];
 
-    public function listByCriteria(
+    public function listByCriteriaInHospital(
         string $hospitalUuid,
         int $page,
         int $perPage,
@@ -29,6 +29,28 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) use ($hospitalUuid) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id')
                     ->where('hospitals.uuid', '=', $hospitalUuid);
+            })
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
+
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+
+        $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $rating);
+
+        return $filteredQuery->paginate($perPage, ['*'], 'page', $page);
+    }
+
+    public function listByCriteriaInUser(
+        int $userId,
+        int $page,
+        int $perPage,
+        string $keyword,
+        array $rating,
+        array $sort,
+        array $queryParam
+    ): LengthAwarePaginator {
+        $query = Review::where('user_id', $userId)
+            ->join('hospitals', function ($join) {
+                $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
             ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
