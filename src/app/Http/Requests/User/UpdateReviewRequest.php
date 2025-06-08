@@ -8,7 +8,7 @@ use App\Domains\Review\Enum\Rating;
 use App\Http\Requests\Base\ApiRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class StoreReviewRequest extends ApiRequest
+class UpdateReviewRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

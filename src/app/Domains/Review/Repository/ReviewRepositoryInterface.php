@@ -17,6 +17,13 @@ interface ReviewRepositoryInterface
         int $userId,
         Rating $rating,
         string $title,
-        string $body
+        ?string $body
     ): Review;
+
+    public function update(
+        int $id,
+        Rating $rating,
+        string $title,
+        ?string $body
+    ): bool;
 }

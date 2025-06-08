@@ -8,6 +8,7 @@ use App\Application\Service\ReviewService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexReviewRequest;
 use App\Http\Requests\User\StoreReviewRequest;
+use App\Http\Requests\User\UpdateReviewRequest;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 use App\Models\Review;
 use App\Transformers\ReviewTransformer;
@@ -77,11 +78,24 @@ class ReviewController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * @lrd:start
+     * レビューの更新
+     * @lrd:end
      */
-    public function update(Request $request, Review $review)
+    public function update(UpdateReviewRequest $request, string $hospitalUuid, string $uuid)
     {
-        //
+        $success = $this->reviewService->updateOwn(
+            hospitalUuid: $hospitalUuid,
+            uuid: $uuid,
+            rating: $request->getRating(),
+            title: $request->getTitle(),
+            body: $request->getBody(),
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**

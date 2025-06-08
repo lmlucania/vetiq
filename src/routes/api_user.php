@@ -30,5 +30,6 @@ Route::middleware('auth:users')->group(static function () {
         Route::get('{hospitalUuid}/review', 'index')->name('index');
         Route::get('{hospitalUuid}/review/{uuid}', 'show')->name('show');
         Route::post('{hospitalUuid}/review', 'store')->name('store');
+        Route::put('{hospitalUuid}/review/{uuid}', 'update')->name('update');
     });
 });

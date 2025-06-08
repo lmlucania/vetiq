@@ -30,7 +30,7 @@ class ReviewRepository implements ReviewRepositoryInterface
         int $userId,
         Rating $rating,
         string $title,
-        string $body
+        ?string $body
     ): Review {
         return Review::create([
             'uuid'        => $uuid,
@@ -40,5 +40,16 @@ class ReviewRepository implements ReviewRepositoryInterface
             'title'       => $title,
             'body'        => $body,
         ]);
+    }
+
+    public function update(int $id, Rating $rating, string $title, ?string $body): bool
+    {
+        $model = Review::findOrFail($id);
+
+        $model->rating = $rating;
+        $model->title  = $title;
+        $model->body   = $body;
+
+        return $model->save();
     }
 }

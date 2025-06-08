@@ -49,4 +49,24 @@ class ReviewService
             body: $body,
         );
     }
+
+    public function updateOwn(
+        string $hospitalUuid,
+        string $uuid,
+        Rating $rating,
+        string $title,
+        ?string $body,
+    ): bool {
+        $review = $this->getOwnByUuidInHospital(
+            hospitalUuid: $hospitalUuid,
+            uuid: $uuid,
+        );
+
+        return $this->reviewRepository->update(
+            id: $review->id,
+            rating: $rating,
+            title: $title,
+            body: $body,
+        );
+    }
 }
