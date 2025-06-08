@@ -23,18 +23,12 @@ class ReviewService
     ) {
     }
 
-    public function getOwnByUuidInHospital(string $hospitalUuid, string $uuid): Review
+    public function getByUuidInHospital(string $hospitalUuid, string $uuid): Review
     {
-        $review = $this->reviewRepository->getByUuidInHospital(
+        return $this->reviewRepository->getByUuidInHospital(
             hospitalUuid: $hospitalUuid,
             reviewUuid: $uuid,
         );
-
-        if ($review->user_id != $this->authActorService->getUserId()) {
-            throw new NotFoundException();
-        }
-
-        return $review;
     }
 
     public function create(
@@ -92,5 +86,19 @@ class ReviewService
             sort: $sort,
             queryParam: $queryParam,
         );
+    }
+
+    private function getOwnByUuidInHospital(string $hospitalUuid, string $uuid): Review
+    {
+        $review = $this->reviewRepository->getByUuidInHospital(
+            hospitalUuid: $hospitalUuid,
+            reviewUuid: $uuid,
+        );
+
+        if ($review->user_id != $this->authActorService->getUserId()) {
+            throw new NotFoundException();
+        }
+
+        return $review;
     }
 }
