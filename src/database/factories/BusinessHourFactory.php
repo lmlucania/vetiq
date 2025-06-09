@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
+use App\Domains\Schedule\Enum\DayOfWeek;
+use App\Domains\Schedule\Enum\TimePeriod;
+use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BusinessHourModel>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\BusinessHour>
  */
-class BusinessHourModelFactory extends Factory
+class BusinessHourFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,7 +22,7 @@ class BusinessHourModelFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'        => Str::uuid(),
+            'hospital_id' => Hospital::factory()->create()->id,
             'day_of_week' => DayOfWeek::SUNDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',

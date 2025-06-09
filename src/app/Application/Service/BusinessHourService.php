@@ -5,188 +5,91 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use App\Application\Dto\Request\BusinessHourDto;
-use App\Application\QueryService\BusinessHourQueryService;
-use App\Domains\BusinessHour\Entity\BusinessHour;
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
-use App\Domains\BusinessHour\Factory\BusinessHourFactory;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
-use App\Domains\BusinessHour\ValueObjects\BusinessHourUuid;
-use App\Domains\BusinessHour\ValueObjects\EndTime;
-use App\Domains\BusinessHour\ValueObjects\StartTime;
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Exceptions\NotFoundException;
-use App\Models\BusinessHourModel;
+use App\Models\BusinessHour;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class BusinessHourService
 {
     public function __construct(
         private readonly BusinessHourRepositoryInterface $businessHourRepository,
-        private readonly BusinessHourQueryService $businessHourQueryService,
-        private readonly BusinessHourFactory $businessHourFactory,
-        private readonly AuthStaffService $authStaffService,
+        private readonly AuthActorService $authActorService,
     ) {
     }
 
-    public function getByUuid(string $uuid): BusinessHour
+    public function getOwnById(int $id): BusinessHour
     {
-        $hospitalId = $this->authStaffService->getHospitalId();
+        $hospitalId = $this->authActorService->getHospitalId();
 
-        $businessHourModel  = $this->businessHourRepository->getByUuid(new BusinessHourUuid($uuid));
-        $businessHourEntity = $this->businessHourFactory->modelToEntity($businessHourModel);
-
-        if (! $businessHourEntity->belongsToHospital($hospitalId)) {
-            throw new NotFoundException();
-        }
-
-        return $businessHourEntity;
+        return $this->businessHourRepository->getByIdInHospital($hospitalId, $id);
     }
 
-    public function getList(): Collection
+    public function getListOwn(): Collection
     {
-        $hospitalId = $this->authStaffService->getHospitalId();
+        $hospitalId = $this->authActorService->getHospitalId();
 
-        $businessHourModels = $this->businessHourRepository->getListByHospitalId($hospitalId);
-
-        return $businessHourModels->map(function (BusinessHourModel $model) {
-            return $this->businessHourFactory->modelToEntity($model);
-        });
+        return $this->businessHourRepository->getListByHospitalId($hospitalId);
     }
 
     public function sync(BusinessHourDto $businessHourDto): bool
     {
-        $hospitalId     = $this->authStaffService->getHospitalId();
-        $dayOfWeek      = $businessHourDto->getDayOfWeek();
-        $periodDtoArray = $businessHourDto->getPeriods();
-        $isSuccess      = true;
+        $hospitalId = $this->authActorService->getHospitalId();
 
-        // 指定した曜日において、指定された時間帯以外のデータを削除する
-        $isSuccess = $isSuccess && $this->deleteByDayOfWeekExcludingTimePeriods(
-            hospitalId: $hospitalId,
-            dayOfWeek: $dayOfWeek,
-            periodDtoArray: $periodDtoArray,
-        );
-
-        foreach ($periodDtoArray as $periodDto) {
-            $entity = $this->findBySchedule(
-                dayOfWeek: $dayOfWeek,
-                timePeriod: $periodDto->getTimePeriod(),
-            );
-
-            $result = ($entity !== null)
-                ? $this->update(
-                    businessHour: $entity,
-                    startTime: $periodDto->getStartTime(),
-                    endTime: $periodDto->getEndTime(),
-                )
-                : $this->create(
+        try {
+            DB::transaction(function () use ($hospitalId, $businessHourDto) {
+                $this->businessHourRepository->deleteByDayOfWeekInHospital(
                     hospitalId: $hospitalId,
-                    dayOfWeek: $dayOfWeek,
-                    timePeriod: $periodDto->getTimePeriod(),
-                    startTime: $periodDto->getStartTime(),
-                    endTime: $periodDto->getEndTime(),
+                    dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-            // 1回でも失敗した場合はfalseを返す
-            $isSuccess = $isSuccess && $result;
+                $this->businessHourRepository->createMany(
+                    $this->buildInsertRows(
+                        hospitalId: $hospitalId,
+                        dto: $businessHourDto,
+                    ),
+                );
+            });
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error('Business hour sync failed', ['error' => $e]);
+            return false;
         }
-
-        return $isSuccess;
     }
 
-    public function delete(string $uuid):bool
+    public function delete(int $id): bool
     {
-        $entity      = $this->getByUuid($uuid);
-        $deletableId = $entity->getDeletableId();
+        $businessHour = $this->getOwnById($id);
 
-        return $this->businessHourRepository->delete($deletableId);
-    }
-
-    private function findBySchedule(DayOfWeek $dayOfWeek, TimePeriod $timePeriod): ?BusinessHour
-    {
-        $hospitalId = $this->authStaffService->getHospitalId();
-
-        $businessHourModel = $this->businessHourRepository->findBySchedule(
-            hospitalId: $hospitalId,
-            dayOfWeek: $dayOfWeek,
-            timePeriod: $timePeriod,
-        );
-
-        if ($businessHourModel == null) {
-            return null;
-        }
-
-        return $this->businessHourFactory->modelToEntity($businessHourModel);
-    }
-
-    private function create(
-        HospitalId $hospitalId,
-        DayOfWeek $dayOfWeek,
-        TimePeriod $timePeriod,
-        StartTime $startTime,
-        EndTime $endTime
-    ): bool {
-        $id = $this->businessHourRepository->generateId(BusinessHourModel::class);
-
-        $businessHour = $this->businessHourFactory->createEntityFromPrimitive(
-            id:$id,
-            uuid:(string)Str::uuid(),
-            hospitalId: $hospitalId->getValue(),
-            dayOfWeek: $dayOfWeek->value,
-            timePeriod: $timePeriod->value,
-            startTime: $startTime->getValue(),
-            endTime: $endTime->getValue(),
-        );
-
-        return $this->businessHourRepository->create($businessHour);
-    }
-
-    private function update(BusinessHour $businessHour, StartTime $startTime, EndTime $endTime): bool
-    {
-        $businessHour = $businessHour->update(
-            startTime: $startTime->getValue(),
-            endTime: $endTime->getValue(),
-        );
-
-        return $this->businessHourRepository->update($businessHour);
+        return $this->businessHourRepository->delete($businessHour->id);
     }
 
     /**
-     * 指定した曜日において、指定された時間帯以外のデータを削除する
-     * @param HospitalId $hospitalId
-     * @param DayOfWeek $dayOfWeek
-     * @param array $periodDtoArray
-     * @return bool
+     * insert用の配列を作成する
+     * @param int $hospitalId
+     * @param BusinessHourDto $dto
+     * @return array
      */
-    private function deleteByDayOfWeekExcludingTimePeriods(
-        HospitalId $hospitalId,
-        DayOfWeek $dayOfWeek,
-        array $periodDtoArray
-    ): bool {
-        $timePeriods = array_map(
-            fn ($periodDto) => $periodDto->getTimePeriod(),
-            $periodDtoArray,
-        );
+    private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
+    {
+        $now  = now();
+        $rows = [];
 
-        $models = $this->businessHourQueryService->getByDayOfWeekExcludingTimePeriods(
-            $hospitalId,
-            $dayOfWeek,
-            $timePeriods,
-        );
-        $isSuccess = true;
-
-        foreach ($models as $model) {
-            $entity      = $this->businessHourFactory->modelToEntity($model);
-            $deletableId = $entity->getDeletableId();
-
-            $result = $this->businessHourRepository->delete($deletableId);
-
-            // 1回でも失敗した場合はfalseを返す
-            $isSuccess = $isSuccess && $result;
+        foreach ($dto->getPeriods() as $period) {
+            $rows[] = [
+                'hospital_id' => $hospitalId,
+                'day_of_week' => $dto->getDayOfWeek()->value,
+                'time_period' => $period->getTimePeriod()->value,
+                'start_time'  => $period->getStartTime(),
+                'end_time'    => $period->getEndTime(),
+                'created_at'  => $now,
+                'updated_at'  => $now,
+            ];
         }
 
-        return $isSuccess;
+        return $rows;
     }
 }

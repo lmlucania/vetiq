@@ -12,7 +12,6 @@ class Hospital extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table    = 'hospitals';
     protected $fillable = ['id', 'uuid', 'name', 'zipcode', 'address', 'phone', 'is_published'];
 
     protected function casts(): array

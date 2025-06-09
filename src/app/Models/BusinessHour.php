@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Models;
 
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
+use App\Domains\Schedule\Enum\DayOfWeek;
+use App\Domains\Schedule\Enum\TimePeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class BusinessHourModel extends Model
+class BusinessHour extends Model
 {
     use HasFactory;
 
-    protected $table    = 'business_hours';
     protected $fillable = [
         'hospital_id',
         'day_of_week',

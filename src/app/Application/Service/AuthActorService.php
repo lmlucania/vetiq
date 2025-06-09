@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
-use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Exceptions\UnauthorizedException;
 use App\Models\StaffModel;
 use App\Models\User;
@@ -57,10 +56,8 @@ class AuthActorService
         return $this->getUser()->id;
     }
 
-    // fixme 一旦value objectを返すようにする
-    public function getHospitalId(): HospitalId
+    public function getHospitalId(): int
     {
-        $id = $this->getStaff()->hospital_id;
-        return new HospitalId($id);
+        return $this->getStaff()->hospital_id;
     }
 }

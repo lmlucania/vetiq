@@ -14,7 +14,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
 {
     use SortableQuery;
 
-    private array $sortable = ['id', 'rating'];
+    private array $sortable    = ['id', 'rating'];
     private array $defaultSort = ['-id'];
 
     public function listByCriteriaInHospital(

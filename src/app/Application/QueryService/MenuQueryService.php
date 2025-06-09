@@ -14,7 +14,7 @@ class MenuQueryService implements MenuQueryServiceInterface
 {
     use SortableQuery;
 
-    private array $sortable = ['id', 'name', 'detail', 'required_time', 'is_published', 'created_at', 'updated_at'];
+    private array $sortable    = ['id', 'name', 'detail', 'required_time', 'is_published', 'created_at', 'updated_at'];
     private array $defaultSort = ['id'];
 
     public function __construct(

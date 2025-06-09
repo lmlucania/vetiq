@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Dto\Request;
 
-use App\Domains\BusinessHour\Enum\DayOfWeek;
+use App\Domains\Schedule\Enum\DayOfWeek;
 
 class BusinessHourDto
 {
@@ -19,6 +19,9 @@ class BusinessHourDto
         return $this->dayOfWeek;
     }
 
+    /**
+     * @return BusinessHourPeriodDto[]
+     */
     public function getPeriods(): array
     {
         return $this->periods;
@@ -27,7 +30,7 @@ class BusinessHourDto
     public static function fromPrimitive(int $dayOfWeek, array $periods): self
     {
         return new self(
-            dayOfWeek: DayOfWeek::fromInt($dayOfWeek),
+            dayOfWeek: DayOfWeek::from($dayOfWeek),
             periods: array_map(fn ($period) => BusinessHourPeriodDto::fromPrimitive(
                 timePeriod: $period['time_period'],
                 startTime: $period['start_time'],
