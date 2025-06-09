@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\HospitalInfo\ShowHospitalInfoByAuthStaffUseCase;
+use App\Application\Service\HospitalService;
 use App\Application\UseCase\Hospital\HospitalInfo\UpdateHospitalInfoByAuthStaffUseCase;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\StoreHospitalRequest;
+use App\Http\Requests\Hospital\UpdateHospitalRequest;
 use App\Transformers\HospitalTransformer;
 
 class HospitalController extends Controller
 {
     public function __construct(
-        private readonly ShowHospitalInfoByAuthStaffUseCase $showHospitalInfoByAuthStaffUseCase,
-        private readonly UpdateHospitalInfoByAuthStaffUseCase $updateHospitalInfoByAuthStaffUseCase
+        private readonly UpdateHospitalInfoByAuthStaffUseCase $updateHospitalInfoByAuthStaffUseCase,
+        private HospitalService $hospitalService,
     ) {
     }
 
@@ -25,22 +25,25 @@ class HospitalController extends Controller
      */
     public function show()
     {
-        $dto = $this->showHospitalInfoByAuthStaffUseCase->show();
-        return fractal($dto, new HospitalTransformer())->respond();
+        $hospital = $this->hospitalService->getOwn();
+        return fractal($hospital, new HospitalTransformer())->respond();
     }
+
     /**
      * @lrd:start
      * 病院情報を更新
      * @lrd:end
      */
-    public function update(StoreHospitalRequest $request)
+    public function update(UpdateHospitalRequest $request)
     {
-        $success = $this->updateHospitalInfoByAuthStaffUseCase->update(
-            $request->name,
-            $request->zipcode,
-            $request->address,
-            $request->phone,
-            $request->is_published,
+        $success = $this->hospitalService->updateOwn(
+            name: $request->getName(),
+            phone: $request->getPhone(),
+            postCode: $request->getPostCode(),
+            prefecture: $request->getPrefecture(),
+            address1: $request->getAddress1(),
+            address2: $request->getAddress2(),
+            isPublished: $request->isPublished(),
         );
 
         if ($success) {

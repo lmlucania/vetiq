@@ -4,18 +4,13 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
-use App\Application\Dto\Response\HospitalDto;
-use App\Domains\Hospital\Entity\Hospital;
-use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Domains\Location\Enum\Prefecture;
 use App\Models\Hospital;
-use Illuminate\Support\Str;
-use Ramsey\Collection\Collection;
 
 class HospitalService
 {
     public function __construct(
-        private readonly HospitalFactory $hospitalFactory,
         private readonly HospitalRepositoryInterface $hospitalRepository,
         private readonly AuthActorService $authActorService,
     ) {
@@ -26,72 +21,33 @@ class HospitalService
         return $this->hospitalRepository->getByUuid($uuid);
     }
 
-    public function getList():Collection
-    {
-        $hospitals = $this->hospitalRepository->getList();
-        return $hospitals->map(static function (Hospital $hospital) {
-            $entity = $this->hospitalFactory->modelToEntity($hospital);
-
-            return new HospitalDto(
-                uuid: $entity->getUuid(),
-                name: $entity->getName(),
-                zipcode: $entity->getZipcode(),
-                address: $entity->getAddress(),
-                phone: $entity->getPhone(),
-                isPublished: $entity->getIsPublished(),
-            );
-        });
-    }
-
-    public function findByAuthStaff():Hospital
+    public function getOwn(): Hospital
     {
         $hospitalId = $this->authActorService->getHospitalId();
 
-        $hospitalModel  = $this->hospitalRepository->getById($hospitalId);
-        $hospitalEntity = $this->hospitalFactory->modelToEntity($hospitalModel);
-
-        return $hospitalEntity;
+        return $this->hospitalRepository->getById($hospitalId);
     }
 
-    public function create(
+    public function updateOwn(
         string $name,
-        string $zipcode,
-        string $address,
         string $phone,
+        string $postCode,
+        Prefecture $prefecture,
+        string $address1,
+        string $address2,
         bool $isPublished
     ): bool {
-        $id = $this->hospitalRepository->generateId(Hospital::class);
+        $hospitalId = $this->authActorService->getHospitalId();
 
-        $hospitalEntity = $this->hospitalFactory->createEntityFromPrimitive(
-            id:$id,
-            uuid:(string)Str::uuid(),
-            name:$name,
-            zipcode: $zipcode,
-            address: $address,
+        return $this->hospitalRepository->update(
+            id: $hospitalId,
+            name: $name,
             phone: $phone,
+            postCode: $postCode,
+            prefecture: $prefecture,
+            address1: $address1,
+            address2: $address2,
             isPublished: $isPublished,
         );
-
-        return $this->hospitalRepository->create($hospitalEntity);
-    }
-
-    public function updateByAuthStaff(
-        string $name,
-        string $zipcode,
-        string $address,
-        string $phone,
-        bool $isPublished
-    ): bool {
-        $hospitalEntity = $this->findByAuthStaff();
-
-        $hospitalEntity = $hospitalEntity->update(
-            name:$name,
-            zipcode: $zipcode,
-            address: $address,
-            phone: $phone,
-            isPublished: $isPublished,
-        );
-
-        return $this->hospitalRepository->update($hospitalEntity);
     }
 }
