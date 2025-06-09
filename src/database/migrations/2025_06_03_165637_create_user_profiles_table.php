@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('last_name');
             $table->string('first_name_kana');
             $table->string('last_name_kana');
-            $table->string('phone_number');
+            $table->string('phone');
             $table->string('post_code', 7)->nullable();
             $table->integer('prefecture')->nullable();
             $table->string('address1')->nullable();
