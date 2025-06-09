@@ -5,10 +5,11 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
+use App\Infrastructure\QueryService\FavoriteQueryServiceInterface;
 use App\Models\Favorite;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class FavoriteQueryService
+class FavoriteQueryService implements FavoriteQueryServiceInterface
 {
     use SortableQuery;
 
@@ -19,7 +20,8 @@ class FavoriteQueryService
         $query = Favorite::query()
             ->where('user_id', $userId)
             ->join('hospitals', 'favorites.hospital_id', '=', 'hospitals.id')
-            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name');
+            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name')
+            ->orderBy('favorites.id', 'desc');
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort);
 
