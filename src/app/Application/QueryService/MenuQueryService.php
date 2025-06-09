@@ -15,6 +15,7 @@ class MenuQueryService implements MenuQueryServiceInterface
     use SortableQuery;
 
     private array $sortable = ['id', 'name', 'detail', 'required_time', 'is_published', 'created_at', 'updated_at'];
+    private array $defaultSort = ['id'];
 
     public function __construct(
         private readonly AuthStaffService $authStaffService
@@ -26,7 +27,7 @@ class MenuQueryService implements MenuQueryServiceInterface
 
         $query = MenuModel::query()->where('hospital_id', $hospitalId->getValue());
 
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $sortedQuery->where(function ($query) use ($keyword) {
             $query->where('name', 'LIKE', "%{$keyword}%")

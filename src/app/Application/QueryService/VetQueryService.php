@@ -15,6 +15,7 @@ class VetQueryService implements VetQueryServiceInterface
     use SortableQuery;
 
     private array $sortable = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
+    private array $defaultSort = ['id'];
 
     public function __construct(
         private readonly AuthStaffService $authStaffService
@@ -27,7 +28,7 @@ class VetQueryService implements VetQueryServiceInterface
 
         $query = VetModel::query()->where('hospital_id', $hospitalId->getValue());
 
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $sortedQuery->where(function ($query) use ($keyword) {
             $query->where('last_name', 'LIKE', "%{$keyword}%")
