@@ -24,7 +24,7 @@ class UserProfileFactory extends Factory
             'first_name'      => $this->faker->firstName(),
             'last_name_kana'  => $this->faker->lastKanaName(),
             'first_name_kana' => $this->faker->firstKanaName(),
-            'phone_number'    => $this->faker->phoneNumber(),
+            'phone'           => $this->faker->phoneNumber(),
             'post_code'       => $this->faker->postcode(),
             'prefecture'      => Prefecture::Hokkaido,
             'address1'        => $this->faker->streetAddress(),

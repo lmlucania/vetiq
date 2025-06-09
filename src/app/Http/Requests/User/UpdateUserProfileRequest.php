@@ -26,7 +26,7 @@ class UpdateUserProfileRequest extends ApiRequest
             'last_name'       => ['required', 'string', 'max:255'],
             'first_name_kana' => ['required', 'string', 'max:255'],
             'last_name_kana'  => ['required', 'string', 'max:255'],
-            'phone_number'    => ['required', 'string', 'max:11'],
+            'phone'           => ['required', 'string', 'max:11'],
             'post_code'       => ['nullable', 'digits:7'],
             'prefecture'      => ['nullable', 'integer', new Enum(Prefecture::class)],
             'address1'        => ['nullable', 'string', 'max:255'],
@@ -61,7 +61,7 @@ class UpdateUserProfileRequest extends ApiRequest
 
     public function getPhoneNumber(): string
     {
-        return $this->validated('phone_number');
+        return $this->validated('phone');
     }
 
     public function getPostCode(): ?string

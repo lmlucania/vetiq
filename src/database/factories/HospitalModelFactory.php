@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Domains\Location\Enum\Prefecture;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -23,9 +24,11 @@ class HospitalModelFactory extends Factory
         return [
             'uuid'         => Str::uuid(),
             'name'         => $this->faker->firstName() . '病院',
-            'zipcode'      => $this->faker->postcode(),
-            'address'      => mb_substr($address, 9),
             'phone'        => '0' . $this->faker->numberBetween(100000000, 9999999999),
+            'post_code'    => $this->faker->postcode(),
+            'prefecture'   => Prefecture::Hokkaido,
+            'address1'     => $this->faker->streetAddress(),
+            'address2'     => $this->faker->secondaryAddress(),
             'is_published' => true,
         ];
     }

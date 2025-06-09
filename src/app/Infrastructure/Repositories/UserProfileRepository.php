@@ -29,7 +29,7 @@ class UserProfileRepository implements UserProfileRepositoryInterface
                     'last_name'       => $lastName,
                     'first_name_kana' => $firstNameKana,
                     'last_name_kana'  => $lastNameKana,
-                    'phone_number'    => $phoneNumber,
+                    'phone'           => $phoneNumber,
                     'post_code'       => $postCode,
                     'prefecture'      => $prefecture,
                     'address1'        => $address1,

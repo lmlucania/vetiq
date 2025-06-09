@@ -46,7 +46,7 @@ class UserControllerTest extends TestCase
                     'last_name'       => null,
                     'first_name_kana' => null,
                     'last_name_kana'  => null,
-                    'phone_number'    => null,
+                    'phone'           => null,
                     'post_code'       => null,
                     'prefecture'      => null,
                     'address1'        => null,
@@ -79,7 +79,7 @@ class UserControllerTest extends TestCase
                     'last_name'       => $profile->last_name,
                     'first_name_kana' => $profile->first_name_kana,
                     'last_name_kana'  => $profile->last_name_kana,
-                    'phone_number'    => $profile->phone_number,
+                    'phone'           => $profile->phone,
                     'post_code'       => $profile->post_code,
                     'prefecture'      => $profile->prefecture,
                     'address1'        => $profile->address1,
@@ -102,7 +102,7 @@ class UserControllerTest extends TestCase
             'last_name'       => '伊藤',
             'first_name_kana' => 'アスカ',
             'last_name_kana'  => 'ミヤケ',
-            'phone_number'    => '0123456789',
+            'phone'           => '0123456789',
             'post_code'       => '2675423',
             'prefecture'      => Prefecture::Okinawa->value,
             'address1'        => '田辺町津田9-8-6',
@@ -124,7 +124,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals($postData['last_name'], $record->last_name);
         $this->assertEquals($postData['first_name_kana'], $record->first_name_kana);
         $this->assertEquals($postData['last_name_kana'], $record->last_name_kana);
-        $this->assertEquals($postData['phone_number'], $record->phone_number);
+        $this->assertEquals($postData['phone'], $record->phone);
         $this->assertEquals($postData['post_code'], $record->post_code);
         $this->assertEquals($postData['prefecture'], $record->prefecture->value); // モデルでキャストされている
         $this->assertEquals($postData['address1'], $record->address1);
@@ -146,7 +146,7 @@ class UserControllerTest extends TestCase
             'last_name'       => '伊藤',
             'first_name_kana' => 'アスカ',
             'last_name_kana'  => 'ミヤケ',
-            'phone_number'    => '0123456789',
+            'phone'           => '0123456789',
             'post_code'       => '2675423',
             'prefecture'      => Prefecture::Okinawa->value,
             'address1'        => '田辺町津田9-8-6',
@@ -168,7 +168,7 @@ class UserControllerTest extends TestCase
         $this->assertEquals($postData['last_name'], $record->last_name);
         $this->assertEquals($postData['first_name_kana'], $record->first_name_kana);
         $this->assertEquals($postData['last_name_kana'], $record->last_name_kana);
-        $this->assertEquals($postData['phone_number'], $record->phone_number);
+        $this->assertEquals($postData['phone'], $record->phone);
         $this->assertEquals($postData['post_code'], $record->post_code);
         $this->assertEquals($postData['prefecture'], $record->prefecture->value); // モデルでキャストされている
         $this->assertEquals($postData['address1'], $record->address1);
