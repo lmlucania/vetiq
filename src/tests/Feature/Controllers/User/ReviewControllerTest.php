@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Feature\Controllers\User;
 
-use App\Domains\Pet\Enum\Gender;
 use App\Domains\Review\Enum\Rating;
 use App\Models\HospitalModel;
-use App\Models\Pet;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -131,7 +129,7 @@ class ReviewControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'user_id' => $this->user->id,
+            'user_id'     => $this->user->id,
         ]);
         $postData = [
             'rating' => Rating::One->value,
@@ -140,8 +138,10 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route('user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,]), $postData);
+        $response = $this->put(route(
+            'user.hospital.reviews.update',
+            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+        ), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -165,7 +165,7 @@ class ReviewControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'user_id' => User::factory()->create()->id, // 他のユーザー
+            'user_id'     => User::factory()->create()->id, // 他のユーザー
         ]);
         $postData = [
             'rating' => Rating::One->value,
@@ -174,8 +174,10 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route('user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,]), $postData);
+        $response = $this->put(route(
+            'user.hospital.reviews.update',
+            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+        ), $postData);
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -190,7 +192,7 @@ class ReviewControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
             'hospital_id' => HospitalModel::factory()->create()->id, // 他の病院
-            'user_id' => $this->user->id,
+            'user_id'     => $this->user->id,
         ]);
         $postData = [
             'rating' => Rating::One->value,
@@ -199,8 +201,10 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route('user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,]), $postData);
+        $response = $this->put(route(
+            'user.hospital.reviews.update',
+            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+        ), $postData);
 
         // 検証（Assert）
         $response->assertStatus(404);
