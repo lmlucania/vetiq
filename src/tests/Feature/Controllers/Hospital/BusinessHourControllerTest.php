@@ -7,7 +7,7 @@ namespace Tests\Feature\Controllers\Hospital;
 use App\Domains\BusinessHour\Enum\DayOfWeek;
 use App\Domains\BusinessHour\Enum\TimePeriod;
 use App\Models\BusinessHourModel;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -23,7 +23,7 @@ class BusinessHourControllerTest extends TestCase
         parent::setUp();
 
         // ログインする病院のデータをセットアップ
-        $this->hospital = HospitalModel::factory()->create();
+        $this->hospital = Hospital::factory()->create();
         $this->staff    = StaffModel::factory()->create([
             'hospital_id' => $this->hospital->id,
         ]);
@@ -61,7 +61,7 @@ class BusinessHourControllerTest extends TestCase
         ]);
 
         // ログインしない病院のデータをセットアップ
-        $nonLoginHospital = HospitalModel::factory()->create();
+        $nonLoginHospital = Hospital::factory()->create();
         BusinessHourModel::factory()->create([
             'hospital_id' => $nonLoginHospital->id,
         ]);
@@ -274,7 +274,7 @@ class BusinessHourControllerTest extends TestCase
     {
         // 準備（Arrange）
         $model = BusinessHourModel::factory()->create([
-            'hospital_id' => HospitalModel::factory()->create()->id,
+            'hospital_id' => Hospital::factory()->create()->id,
             'day_of_week' => DayOfWeek::FRIDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',

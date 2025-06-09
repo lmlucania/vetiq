@@ -50,7 +50,7 @@ class User extends _User
     public function favoriteHospitals()
     {
         return $this->belongsToMany(
-            HospitalModel::class,
+            Hospital::class,
             'favorites',
             'user_id',
             'hospital_id',

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\MenuModel;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +21,7 @@ class MenuControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->hospital = HospitalModel::factory()->create([
+        $this->hospital = Hospital::factory()->create([
             'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
             'name'         => '裕美子病院',
             'zipcode'      => '1234567',
@@ -66,7 +66,7 @@ class MenuControllerTest extends TestCase
         ]);
 
         // 他の病院の診察メニューを作成
-        $hospital = HospitalModel::factory()->create();
+        $hospital = Hospital::factory()->create();
         StaffModel::factory()->create(['hospital_id' => $hospital->id]);
         $this->otherHospitalMenu = MenuModel::factory()->create(['hospital_id' => $hospital->id]);
     }

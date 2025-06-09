@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Feature\Controllers\User;
 
 use App\Domains\Review\Enum\Rating;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -22,7 +22,7 @@ class ReviewControllerTest extends TestCase
         parent::setUp();
 
         $this->user     = User::factory()->create();
-        $this->hospital = HospitalModel::factory()->create();
+        $this->hospital = Hospital::factory()->create();
     }
 
     /**
@@ -191,7 +191,7 @@ class ReviewControllerTest extends TestCase
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
-            'hospital_id' => HospitalModel::factory()->create()->id, // 他の病院
+            'hospital_id' => Hospital::factory()->create()->id, // 他の病院
             'user_id'     => $this->user->id,
         ]);
         $postData = [

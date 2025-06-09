@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
@@ -22,7 +22,7 @@ class AuthControllerTest extends TestCase
 
         $this->staff = StaffModel::factory()->create([
             'id'          => 1,
-            'hospital_id' => HospitalModel::factory()->create()->id,
+            'hospital_id' => Hospital::factory()->create()->id,
             'name'        => 'test',
             'email'       => 'test@example.com',
             'password'    => Hash::make('password'),

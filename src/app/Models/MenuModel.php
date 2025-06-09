@@ -24,6 +24,6 @@ class MenuModel extends Model
 
     public function hospital()
     {
-        return $this->belongsTo(HospitalModel::class);
+        return $this->belongsTo(Hospital::class);
     }
 }

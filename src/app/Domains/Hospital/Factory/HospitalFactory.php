@@ -12,11 +12,11 @@ use App\Domains\Hospital\ValueObjects\IsPublished;
 use App\Domains\Hospital\ValueObjects\Name;
 use App\Domains\Hospital\ValueObjects\Phone;
 use App\Domains\Hospital\ValueObjects\Zipcode;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 
 class HospitalFactory
 {
-    public function modelToEntity(HospitalModel $hospitalModel): Hospital
+    public function modelToEntity(Hospital $hospitalModel): Hospital
     {
         return new Hospital(
             new HospitalId($hospitalModel->id),
@@ -29,9 +29,9 @@ class HospitalFactory
         );
     }
 
-    public function entityToModel(Hospital $hospital): HospitalModel
+    public function entityToModel(Hospital $hospital): Hospital
     {
-        $hospitalModel = new HospitalModel();
+        $hospitalModel = new Hospital();
 
         $hospitalModel->id           = $hospital->getId()->getValue();
         $hospitalModel->uuid         = $hospital->getUuid()->getValue();

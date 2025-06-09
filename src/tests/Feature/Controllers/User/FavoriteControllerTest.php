@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Feature\Controllers\User;
 
 use App\Models\Favorite;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -21,7 +21,7 @@ class FavoriteControllerTest extends TestCase
         parent::setUp();
 
         $this->user     = User::factory()->create();
-        $this->hospital = HospitalModel::factory()->create();
+        $this->hospital = Hospital::factory()->create();
     }
 
     /**

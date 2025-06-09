@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -20,7 +20,7 @@ class HospitalControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->hospital = HospitalModel::factory()->create([
+        $this->hospital = Hospital::factory()->create([
             'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
             'name'         => '裕美子病院',
             'zipcode'      => '1234567',
@@ -83,7 +83,7 @@ class HospitalControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(200);
 
-        $hospital = HospitalModel::firstWhere('id', $this->staff->hospital->id);
+        $hospital = Hospital::firstWhere('id', $this->staff->hospital->id);
         $this->assertEquals('b90612f5-3446-47d7-b66a-12ff54963050', $hospital->uuid);
         $this->assertEquals('裕美子病院x', $hospital->name);
         $this->assertEquals('1234560', $hospital->zipcode);

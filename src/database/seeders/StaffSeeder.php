@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\StaffModel;
 use Illuminate\Database\Seeder;
 
@@ -15,7 +15,7 @@ class StaffSeeder extends Seeder
      */
     public function run(): void
     {
-        $hospitals = HospitalModel::all();
+        $hospitals = Hospital::all();
         foreach ($hospitals as $hospital) {
             StaffModel::factory()->count(10)->create(['hospital_id' => $hospital->id]);
         }

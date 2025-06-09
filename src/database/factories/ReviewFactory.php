@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\Review\Enum\Rating;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
@@ -24,7 +24,7 @@ class ReviewFactory extends Factory
     {
         return [
             'uuid'        => Str::uuid(),
-            'hospital_id' => HospitalModel::factory()->create()->id,
+            'hospital_id' => Hospital::factory()->create()->id,
             'user_id'     => User::factory()->create()->id,
             'rating'      => Rating::One,
             'title'       => $this->faker->sentence,

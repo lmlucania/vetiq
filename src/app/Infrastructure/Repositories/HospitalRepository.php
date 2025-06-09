@@ -10,7 +10,7 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Exceptions\NotFoundException;
 use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\VetModel;
 use Illuminate\Support\Collection;
 
@@ -23,14 +23,14 @@ class HospitalRepository implements HospitalRepositoryInterface
     ) {
     }
 
-    public function getById(HospitalId $id): HospitalModel
+    public function getById(HospitalId $id): Hospital
     {
-        return HospitalModel::findOrFail($id->getValue());
+        return Hospital::findOrFail($id->getValue());
     }
 
-    public function getByUuid(string $uuid): HospitalModel
+    public function getByUuid(string $uuid): Hospital
     {
-        $hospital = HospitalModel::firstWhere('uuid', $uuid);
+        $hospital = Hospital::firstWhere('uuid', $uuid);
         if ($hospital == null) {
             throw new NotFoundException();
         }
@@ -40,7 +40,7 @@ class HospitalRepository implements HospitalRepositoryInterface
 
     public function getList(): Collection
     {
-        return HospitalModel::all();
+        return Hospital::all();
     }
 
     public function create(Hospital $hospitalEntity): bool
@@ -51,7 +51,7 @@ class HospitalRepository implements HospitalRepositoryInterface
 
     public function update(Hospital $hospitalEntity): bool
     {
-        $hospitalModel = HospitalModel::findOrFail($hospitalEntity->getId()->getValue());
+        $hospitalModel = Hospital::findOrFail($hospitalEntity->getId()->getValue());
 
         $hospitalModel->name         = $hospitalEntity->getName()->getValue();
         $hospitalModel->zipcode      = $hospitalEntity->getZipcode()->getValue();

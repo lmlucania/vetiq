@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -22,7 +22,7 @@ class FavoriteFactory extends Factory
     {
         return [
             'user_id'     => User::factory()->create()->id,
-            'hospital_id' => HospitalModel::factory()->create()->id,
+            'hospital_id' => Hospital::factory()->create()->id,
         ];
     }
 }

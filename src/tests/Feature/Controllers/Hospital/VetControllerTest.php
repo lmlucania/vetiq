@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\StaffModel;
 use App\Models\VetModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -21,7 +21,7 @@ class VetControllerTest extends TestCase
         parent::setUp();
 
         // ログインする病院のデータをセットアップ
-        $this->hospital = HospitalModel::factory()->create(['id' => 1]);
+        $this->hospital = Hospital::factory()->create(['id' => 1]);
         $this->staff    = StaffModel::factory()->create([
             'id'          => 1,
             'hospital_id' => $this->hospital->id,
@@ -57,7 +57,7 @@ class VetControllerTest extends TestCase
         ]);
 
         // ログインしない病院のデータをセットアップ
-        $nonLoginHospital = HospitalModel::factory()->create();
+        $nonLoginHospital = Hospital::factory()->create();
         StaffModel::factory()->create([
             'hospital_id' => $nonLoginHospital->id,
         ]);

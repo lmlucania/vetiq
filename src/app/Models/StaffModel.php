@@ -51,6 +51,6 @@ class StaffModel extends User
 
     public function hospital()
     {
-        return $this->belongsTo(HospitalModel::class);
+        return $this->belongsTo(Hospital::class);
     }
 }

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class HospitalModel extends Model
+class Hospital extends Model
 {
     use HasFactory, SoftDeletes;
 

@@ -36,6 +36,6 @@ class ExceptionHourModel extends Model
 
     public function hospital()
     {
-        return $this->belongsTo(HospitalModel::class);
+        return $this->belongsTo(Hospital::class);
     }
 }

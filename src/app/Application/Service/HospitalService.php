@@ -8,7 +8,7 @@ use App\Application\Dto\Response\HospitalDto;
 use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use Illuminate\Support\Str;
 use Ramsey\Collection\Collection;
 
@@ -29,7 +29,7 @@ class HospitalService
     public function getList():Collection
     {
         $hospitals = $this->hospitalRepository->getList();
-        return $hospitals->map(static function (HospitalModel $hospital) {
+        return $hospitals->map(static function (Hospital $hospital) {
             $entity = $this->hospitalFactory->modelToEntity($hospital);
 
             return new HospitalDto(
@@ -60,7 +60,7 @@ class HospitalService
         string $phone,
         bool $isPublished
     ): bool {
-        $id = $this->hospitalRepository->generateId(HospitalModel::class);
+        $id = $this->hospitalRepository->generateId(Hospital::class);
 
         $hospitalEntity = $this->hospitalFactory->createEntityFromPrimitive(
             id:$id,
