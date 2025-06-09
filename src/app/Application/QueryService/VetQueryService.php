@@ -14,7 +14,7 @@ class VetQueryService implements VetQueryServiceInterface
 {
     use SortableQuery;
 
-    private $sortable = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
+    private array $sortable = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
 
     public function __construct(
         private readonly AuthStaffService $authStaffService

@@ -13,7 +13,7 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
 {
     use SortableQuery;
 
-    private $sortable = ['id', 'name'];
+    private array $sortable = ['id', 'name'];
 
     public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {

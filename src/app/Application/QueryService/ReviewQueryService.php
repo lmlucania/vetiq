@@ -14,7 +14,8 @@ class ReviewQueryService implements ReviewQueryServiceInterface
 {
     use SortableQuery;
 
-    private $sortable = ['id', 'rating'];
+    private array $sortable = ['id', 'rating'];
+    private array $defaultSort = ['-id'];
 
     public function listByCriteriaInHospital(
         string $hospitalUuid,
@@ -33,7 +34,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
             ->orderBy('reviews.id', 'desc');
 
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $rating);
 
@@ -56,7 +57,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
             ->orderBy('reviews.id', 'desc');
 
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $rating);
 
@@ -65,7 +66,8 @@ class ReviewQueryService implements ReviewQueryServiceInterface
 
     private function applyFilter(Builder $query, ?string $keyword, array $ratings): Builder
     {
-        if (is_null($keyword) || ! empty(trim($keyword))) {
+        $trimmed = trim((string) $keyword);
+        if ($trimmed !== '') {
             $query = $query->where(function ($subQuery) use ($keyword) {
                 $subQuery->where('title', 'LIKE', "%{$keyword}%")
                     ->orWhere('body', 'LIKE', "%{$keyword}%");
