@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service\Menu;
+namespace App\Application\Service\Hospital\Menu;
 
-use App\Application\Service\AuthActorService;
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 
 class SwitchPublishMenuService

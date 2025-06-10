@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service\Menu;
+namespace App\Application\Service\Hospital\Menu;
 
-use App\Application\Service\AuthActorService;
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 
-class DeleteMenuService
+class SwitchUnPublishMenuService
 {
     public function __construct(
         private AuthActorService $authActorService,
@@ -15,7 +15,7 @@ class DeleteMenuService
     ) {
     }
 
-    public function execute(int $id): bool
+    public function execute(int $id)
     {
         $hospitalId = $this->authActorService->getHospitalId();
         $menu       = $this->menuRepository->getByIdAndHospital(
@@ -23,6 +23,12 @@ class DeleteMenuService
             id: $id,
         );
 
-        return $this->menuRepository->delete($menu->id);
+        return $this->menuRepository->update(
+            id: $menu->id,
+            name: $menu->name,
+            detail: $menu->detail,
+            requiredTime: $menu->requiredTime,
+            isPublished: false,
+        );
     }
 }

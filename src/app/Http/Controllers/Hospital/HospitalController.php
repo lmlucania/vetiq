@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\Service\HospitalService;
-use App\Application\UseCase\Hospital\HospitalInfo\UpdateHospitalInfoByAuthStaffUseCase;
+use App\Application\Service\Hospital\HospitalInfo\GetHospitalDetailService;
+use App\Application\Service\Hospital\HospitalInfo\UpdateHospitalInfoService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\UpdateHospitalRequest;
 use App\Transformers\HospitalTransformer;
@@ -13,8 +13,8 @@ use App\Transformers\HospitalTransformer;
 class HospitalController extends Controller
 {
     public function __construct(
-        private readonly UpdateHospitalInfoByAuthStaffUseCase $updateHospitalInfoByAuthStaffUseCase,
-        private HospitalService $hospitalService,
+        private GetHospitalDetailService $getHospitalDetailService,
+        private UpdateHospitalInfoService $updateHospitalInfoService,
     ) {
     }
 
@@ -25,7 +25,7 @@ class HospitalController extends Controller
      */
     public function show()
     {
-        $hospital = $this->hospitalService->getOwn();
+        $hospital = $this->getHospitalDetailService->execute();
         return fractal($hospital, new HospitalTransformer())->respond();
     }
 
@@ -36,7 +36,7 @@ class HospitalController extends Controller
      */
     public function update(UpdateHospitalRequest $request)
     {
-        $success = $this->hospitalService->updateOwn(
+        $success = $this->updateHospitalInfoService->execute(
             name: $request->getName(),
             phone: $request->getPhone(),
             postCode: $request->getPostCode(),

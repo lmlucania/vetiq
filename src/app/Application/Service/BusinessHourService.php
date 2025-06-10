@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use App\Application\Dto\Request\BusinessHourDto;
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
 use App\Models\BusinessHour;
 use Illuminate\Support\Collection;

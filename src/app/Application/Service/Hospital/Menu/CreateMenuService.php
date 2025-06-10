@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service\Menu;
+namespace App\Application\Service\Hospital\Menu;
 
-use App\Application\Service\AuthActorService;
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
+use App\Models\Menu;
 
-class UpdateMenuService
+class CreateMenuService
 {
     public function __construct(
         private AuthActorService $authActorService,
@@ -15,16 +16,12 @@ class UpdateMenuService
     ) {
     }
 
-    public function execute(int $id, string $name, string $detail, int $requiredTime, bool $isPublished): bool
+    public function execute(string $name, string $detail, int $requiredTime, bool $isPublished): Menu
     {
         $hospitalId = $this->authActorService->getHospitalId();
-        $menu       = $this->menuRepository->getByIdAndHospital(
-            hospitalId: $hospitalId,
-            id: $id,
-        );
 
-        return $this->menuRepository->update(
-            id: $menu->id,
+        return $this->menuRepository->create(
+            hospitalId: $hospitalId,
             name: $name,
             detail: $detail,
             requiredTime: $requiredTime,

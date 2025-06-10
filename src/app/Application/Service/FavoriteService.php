@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use App\Application\QueryService\FavoriteQueryService;
+use App\Application\Service\Auth\AuthActorService;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class FavoriteService

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service;
 
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Enum\Gender;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Exceptions\NotFoundException;

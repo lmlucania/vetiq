@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service;
+namespace App\Application\Service\Hospital\HospitalInfo;
 
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Location\Enum\Prefecture;
-use App\Models\Hospital;
 
-class HospitalService
+class UpdateHospitalInfoService
 {
     public function __construct(
         private readonly HospitalRepositoryInterface $hospitalRepository,
@@ -16,19 +16,7 @@ class HospitalService
     ) {
     }
 
-    public function getByUuid(string $uuid)
-    {
-        return $this->hospitalRepository->getByUuid($uuid);
-    }
-
-    public function getOwn(): Hospital
-    {
-        $hospitalId = $this->authActorService->getHospitalId();
-
-        return $this->hospitalRepository->getById($hospitalId);
-    }
-
-    public function updateOwn(
+    public function execute(
         string $name,
         string $phone,
         string $postCode,

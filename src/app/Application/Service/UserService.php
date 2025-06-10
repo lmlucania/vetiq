@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Service;
 
 use App\Application\QueryService\UserQueryService;
+use App\Application\Service\Auth\AuthActorService;
 use App\Domains\User\Repository\UserProfileRepositoryInterface;
 use App\Domains\User\Repository\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
