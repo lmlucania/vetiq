@@ -25,4 +25,24 @@ class StoreMenuRequest extends ApiRequest
             'is_published'  => 'required|boolean',
         ];
     }
+
+    public function getName(): string
+    {
+        return $this->validated('name');
+    }
+
+    public function getDetail(): string
+    {
+        return $this->validated('detail');
+    }
+
+    public function getRequiredTime(): int
+    {
+        return $this->validated('required_time');
+    }
+
+    public function isPublished(): bool
+    {
+        return $this->validated('is_published');
+    }
 }

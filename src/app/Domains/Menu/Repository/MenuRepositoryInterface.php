@@ -4,20 +4,15 @@ declare(strict_types=1);
 
 namespace App\Domains\Menu\Repository;
 
-use App\Domains\Menu\Entity\Menu;
-use App\Domains\Menu\ValueObjects\DeletableMenuId;
-use App\Domains\Menu\ValueObjects\MenuUuid;
-use App\Models\MenuModel;
+use App\Models\Menu;
 
 interface MenuRepositoryInterface
 {
-    public function generateId(string $modelClass): int;
+    public function getByIdAndHospital(int $hospitalId, int $id): Menu;
 
-    public function getByUuid(MenuUuid $uuid): MenuModel;
+    public function create(int $hospitalId, string $name, string $detail, int $requiredTime, bool $isPublished):Menu;
 
-    public function create(Menu $menuEntity):bool;
+    public function update(int $id, string $name, string $detail, int $requiredTime, bool $isPublished):bool;
 
-    public function update(Menu $menuEntity):bool;
-
-    public function delete(DeletableMenuId $id):bool;
+    public function delete(int $id):bool;
 }

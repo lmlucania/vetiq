@@ -13,11 +13,11 @@ use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Menu\ValueObjects\MenuUuid;
 use App\Domains\Menu\ValueObjects\Name;
 use App\Domains\Menu\ValueObjects\RequiredTime;
-use App\Models\MenuModel;
+use App\Models\Menu;
 
 class MenuFactory
 {
-    public function modelToEntity(MenuModel $menuModel): Menu
+    public function modelToEntity(Menu $menuModel): Menu
     {
         return new Menu(
             new MenuId($menuModel->id),
@@ -30,9 +30,9 @@ class MenuFactory
         );
     }
 
-    public function entityToModel(Menu $menuEntity): MenuModel
+    public function entityToModel(Menu $menuEntity): Menu
     {
-        $menuModel = new MenuModel();
+        $menuModel = new Menu();
 
         $menuModel->id            = $menuEntity->getId()->getValue();
         $menuModel->uuid          = $menuEntity->getUuid()->getValue();

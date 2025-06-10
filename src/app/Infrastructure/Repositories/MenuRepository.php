@@ -4,57 +4,52 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Hospital\Factory\HospitalFactory;
-use App\Domains\Menu\Entity\Menu;
-use App\Domains\Menu\Factory\MenuFactory;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
-use App\Domains\Menu\ValueObjects\DeletableMenuId;
-use App\Domains\Menu\ValueObjects\MenuUuid;
-use App\Exceptions\NotFoundException;
-use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\MenuModel;
+use App\Models\Menu;
 
 class MenuRepository implements MenuRepositoryInterface
 {
-    use GenerationId;
-
-    public function __construct(
-        private readonly HospitalFactory $hospitalFactory,
-        private readonly MenuFactory $menuFactory
-    ) {
+    public function getByIdAndHospital(int $hospitalId, int $id): Menu
+    {
+        return Menu::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function getByUuid(MenuUuid $uuid): MenuModel
-    {
-        $menu = MenuModel::firstWhere('uuid', $uuid->getValue());
-        if ($menu == null) {
-            throw new NotFoundException();
-        }
-
-        return $menu;
+    // fixme ここから先を直す
+    public function create(
+        int $hospitalId,
+        string $name,
+        string $detail,
+        int $requiredTime,
+        bool $isPublished
+    ): Menu {
+        return Menu::create([
+            'hospital_id'   => $hospitalId,
+            'name'          => $name,
+            'detail'        => $detail,
+            'required_time' => $requiredTime,
+            'is_published'  => $isPublished,
+        ]);
     }
 
-    public function create(Menu $menuEntity): bool
-    {
-        $menuModel = $this->menuFactory->entityToModel($menuEntity);
-        return $menuModel->save();
+    public function update(
+        int $id,
+        string $name,
+        string $detail,
+        int $requiredTime,
+        bool $isPublished
+    ): bool {
+        $menu                = Menu::findOrFail($id);
+        $menu->name          = $name;
+        $menu->detail        = $detail;
+        $menu->required_time = $requiredTime;
+        $menu->is_published  = $isPublished;
+
+        return $menu->save();
     }
 
-    public function update(Menu $menuEntity): bool
+    public function delete(int $id): bool
     {
-        $menuModel = MenuModel::findOrFail($menuEntity->getId()->getValue());
-
-        $menuModel->name          = $menuEntity->getName()->getValue();
-        $menuModel->detail        = $menuEntity->getDetail()->getValue();
-        $menuModel->required_time = $menuEntity->getRequiredTime()->getValue();
-        $menuModel->is_published  = $menuEntity->getIsPublished()->getValue();
-
-        return $menuModel->update();
-    }
-
-    public function delete(DeletableMenuId $id): bool
-    {
-        $menuModel = MenuModel::findOrFail($id->getValue());
+        $menuModel = Menu::findOrFail($id->getValue());
 
         return $menuModel->delete();
     }

@@ -5,9 +5,8 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
-use App\Application\Service\AuthStaffService;
 use App\Infrastructure\QueryService\MenuQueryServiceInterface;
-use App\Models\MenuModel;
+use App\Models\Menu;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class MenuQueryService implements MenuQueryServiceInterface
@@ -17,15 +16,9 @@ class MenuQueryService implements MenuQueryServiceInterface
     private array $sortable    = ['id', 'name', 'detail', 'required_time', 'is_published', 'created_at', 'updated_at'];
     private array $defaultSort = ['id'];
 
-    public function __construct(
-        private readonly AuthStaffService $authStaffService
-    ) {
-    }
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {
-        $hospitalId = $this->authStaffService->getHospitalId();
-
-        $query = MenuModel::query()->where('hospital_id', $hospitalId->getValue());
+        $query = Menu::query()->where('hospital_id', $hospitalId);
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\Hospital;
-use App\Models\MenuModel;
+use App\Models\Menu;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -37,7 +37,7 @@ class MenuControllerTest extends TestCase
             'password'    => Hash::make('password'),
         ]);
 
-        $this->menu = MenuModel::factory()->create([
+        $this->menu = Menu::factory()->create([
             'id'            => 1,
             'uuid'          => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'hospital_id'   => $this->hospital->id,
@@ -47,7 +47,7 @@ class MenuControllerTest extends TestCase
             'is_published'  => true,
         ]);
 
-        MenuModel::factory()->create([
+        Menu::factory()->create([
             'uuid'          => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
             'hospital_id'   => $this->hospital->id,
             'name'          => '一般診察',
@@ -56,7 +56,7 @@ class MenuControllerTest extends TestCase
             'is_published'  => true,
         ]);
 
-        MenuModel::factory()->create([
+        Menu::factory()->create([
             'uuid'          => '3667d80e-9f20-46f4-854b-8efa648c71c0',
             'hospital_id'   => $this->hospital->id,
             'name'          => 'ワクチン接種',
@@ -68,7 +68,7 @@ class MenuControllerTest extends TestCase
         // 他の病院の診察メニューを作成
         $hospital = Hospital::factory()->create();
         StaffModel::factory()->create(['hospital_id' => $hospital->id]);
-        $this->otherHospitalMenu = MenuModel::factory()->create(['hospital_id' => $hospital->id]);
+        $this->otherHospitalMenu = Menu::factory()->create(['hospital_id' => $hospital->id]);
     }
 
     /**
@@ -118,7 +118,7 @@ class MenuControllerTest extends TestCase
     public function testIndexNotGetDeletedMenuSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->delete();
+        Menu::query()->delete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -136,7 +136,7 @@ class MenuControllerTest extends TestCase
     public function testIndexDefaultPerPageSuccess()
     {
         // 準備（Arrange）
-        MenuModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
+        Menu::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -154,7 +154,7 @@ class MenuControllerTest extends TestCase
     public function testIndexParamPerPageSuccess()
     {
         // 準備（Arrange）
-        MenuModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
+        Menu::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -172,8 +172,8 @@ class MenuControllerTest extends TestCase
     public function testIndexParamPageSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
-        MenuModel::factory()->count(59)->create(['hospital_id' => $this->hospital->id]);
+        Menu::query()->forceDelete();
+        Menu::factory()->count(59)->create(['hospital_id' => $this->hospital->id]);
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -194,10 +194,10 @@ class MenuControllerTest extends TestCase
     public function testIndexSortByNameAscSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは三番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは一番目にくる
+        Menu::query()->forceDelete();
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは三番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは一番目にくる
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -219,10 +219,10 @@ class MenuControllerTest extends TestCase
     public function testIndexSortByNameDescSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは三番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは一番目にくる
+        Menu::query()->forceDelete();
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a']); // レスポンスでは三番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'b']); // レスポンスでは二番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c']); // レスポンスでは一番目にくる
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -244,10 +244,10 @@ class MenuControllerTest extends TestCase
     public function testIndexMultiSortByNameDescAndDetailAscSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'aa']); // レスポンスでは二番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'bb']); // レスポンスでは三番目にくる
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c', 'detail' => 'cc']); // レスポンスでは一番目にくる
+        Menu::query()->forceDelete();
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'aa']); // レスポンスでは二番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'a', 'detail' => 'bb']); // レスポンスでは三番目にくる
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'c', 'detail' => 'cc']); // レスポンスでは一番目にくる
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -271,14 +271,14 @@ class MenuControllerTest extends TestCase
     public function testIndexSearchKeywordSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'テストあ', 'detail' => 'あ']);            // name：前方一致
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あテスト', 'detail' => 'あ']);            // name：後方一致
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あテストあ', 'detail' => 'あ']);          // name：部分一致
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'テストあ']);            // detail：前方一致
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテスト']);            // detail：後方一致
-        MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテストあ']);          // detail：部分一致
-        $missingMenu = MenuModel::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あ']);  // 一致しない
+        Menu::query()->forceDelete();
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'テストあ', 'detail' => 'あ']);            // name：前方一致
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あテスト', 'detail' => 'あ']);            // name：後方一致
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あテストあ', 'detail' => 'あ']);          // name：部分一致
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'テストあ']);            // detail：前方一致
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテスト']);            // detail：後方一致
+        Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あテストあ']);          // detail：部分一致
+        $missingMenu = Menu::factory()->create(['hospital_id' => $this->hospital->id, 'name' => 'あ', 'detail' => 'あ']);  // 一致しない
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -311,7 +311,7 @@ class MenuControllerTest extends TestCase
     public function testStoreSuccess()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
+        Menu::query()->forceDelete();
         $postData = [
             'name'          => 'テスト名前',
             'detail'        => 'テスト説明',
@@ -328,7 +328,7 @@ class MenuControllerTest extends TestCase
 
         $this->assertDatabaseCount('menus', 1);
 
-        $createdMenu = MenuModel::first();
+        $createdMenu = Menu::first();
         $this->assertEquals('テスト名前', $createdMenu->name);
         $this->assertEquals('テスト説明', $createdMenu->detail);
         $this->assertEquals(30, $createdMenu->required_time);
@@ -423,7 +423,7 @@ class MenuControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(200);
 
-        $updatedMenu = MenuModel::find($this->menu->id);
+        $updatedMenu = Menu::find($this->menu->id);
         $this->assertEquals('テスト名前update', $updatedMenu->name);
         $this->assertEquals('テスト説明update', $updatedMenu->detail);
         $this->assertEquals(100, $updatedMenu->required_time);
@@ -457,7 +457,7 @@ class MenuControllerTest extends TestCase
     public function testUpdateNotExistFailure()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
+        Menu::query()->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -473,7 +473,7 @@ class MenuControllerTest extends TestCase
     public function testDestroySuccess()
     {
         // 準備（Arrange）
-        MenuModel::where('id', '!=', $this->menu->id)->forceDelete();
+        Menu::where('id', '!=', $this->menu->id)->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -498,7 +498,7 @@ class MenuControllerTest extends TestCase
     public function testDestroyNotHospitalOwnFailure()
     {
         // 準備（Arrange）
-        MenuModel::where('id', '!=', $this->otherHospitalMenu->id)->forceDelete();
+        Menu::where('id', '!=', $this->otherHospitalMenu->id)->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -516,7 +516,7 @@ class MenuControllerTest extends TestCase
     public function testDestroyNotExistFailure()
     {
         // 準備（Arrange）
-        MenuModel::query()->forceDelete();
+        Menu::query()->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）

@@ -24,7 +24,7 @@ class BusinessHourService
     {
         $hospitalId = $this->authActorService->getHospitalId();
 
-        return $this->businessHourRepository->getByIdInHospital($hospitalId, $id);
+        return $this->businessHourRepository->getByIdAndHospital($hospitalId, $id);
     }
 
     public function getListOwn(): Collection
