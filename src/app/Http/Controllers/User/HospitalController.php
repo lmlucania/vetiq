@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Service\User\Hospital\ListHospitalsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexHospitalRequest;
-use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 use App\Transformers\HospitalTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class HospitalController extends Controller
 {
     public function __construct(
-        private HospitalQueryServiceInterface $hospitalQueryService,
+        private ListHospitalsService $listHospitalsService,
     ) {
     }
 
@@ -24,7 +24,7 @@ class HospitalController extends Controller
      */
     public function index(IndexHospitalRequest $request)
     {
-        $paginator = $this->hospitalQueryService->listByCriteria(
+        $paginator = $this->listHospitalsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
