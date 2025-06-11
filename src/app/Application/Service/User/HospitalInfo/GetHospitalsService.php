@@ -6,7 +6,7 @@ namespace App\Application\Service\User\HospitalInfo;
 
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 
-class ListHospitalsService
+class GetHospitalsService
 {
     public function __construct(
         private HospitalQueryServiceInterface $hospitalQueryService,

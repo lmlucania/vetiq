@@ -8,7 +8,7 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use Illuminate\Support\Collection;
 
-class MyPetsService
+class GetMyPetsService
 {
     public function __construct(
         private PetRepositoryInterface $petRepository,

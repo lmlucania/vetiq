@@ -8,7 +8,7 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Infrastructure\QueryService\FavoriteQueryServiceInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
-class MyFavoriteHospitalsService
+class GetMyFavoriteHospitalsService
 {
     public function __construct(
         private AuthActorService $authActorService,

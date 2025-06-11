@@ -9,12 +9,9 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 
-class HospitalReviewsService
+class GetHospitalReviewsService
 {
     public function __construct(
-        private AuthActorService $authActorService,
-        private HospitalRepositoryInterface $hospitalRepository,
-        private ReviewRepositoryInterface $reviewRepository,
         private ReviewQueryServiceInterface $reviewQueryService,
     ) {
     }

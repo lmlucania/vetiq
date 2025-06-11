@@ -7,7 +7,7 @@ namespace App\Application\Service\User\Review;
 use App\Application\Service\Auth\AuthActorService;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 
-class MyReviewsService
+class GetMyReviewsService
 {
     public function __construct(
         private AuthActorService $authActorService,

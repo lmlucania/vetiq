@@ -8,7 +8,7 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Infrastructure\QueryService\MenuQueryServiceInterface;
 use Illuminate\Pagination\LengthAwarePaginator;
 
-class ListHospitalMenusService
+class GetOwnMenusService
 {
     public function __construct(
         private AuthActorService $authActorService,
