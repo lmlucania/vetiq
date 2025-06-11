@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Review\CreateReviewService;
+use App\Application\Service\User\Review\GetHospitalReviewsService;
+use App\Application\Service\User\Review\GetMyReviewsService;
 use App\Application\Service\User\Review\GetReviewDetailService;
 use App\Application\Service\User\Review\HospitalReviewsService;
 use App\Application\Service\User\Review\MyReviewsService;
@@ -20,11 +22,11 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class ReviewController extends Controller
 {
     public function __construct(
-        private HospitalReviewsService $hospitalReviewsService,
+        private GetHospitalReviewsService $getHospitalReviewsService,
         private CreateReviewService $createReviewService,
         private GetReviewDetailService $getReviewDetailService,
         private UpdateReviewService $updateReviewService,
-        private MyReviewsService $myReviewsService,
+        private GetMyReviewsService $getMyReviewsService,
     ) {
     }
 
@@ -35,7 +37,7 @@ class ReviewController extends Controller
      */
     public function index(IndexReviewRequest $request, string $hospitalUuid)
     {
-        $paginator = $this->hospitalReviewsService->execute(
+        $paginator = $this->getHospitalReviewsService->execute(
             hospitalUuid: $hospitalUuid,
             page:$request->getPage(),
             perPage: $request->getPerPage(),
@@ -110,7 +112,7 @@ class ReviewController extends Controller
      */
     public function indexOwn(IndexOwnReviewRequest $request)
     {
-        $paginator = $this->myReviewsService->execute(
+        $paginator = $this->getMyReviewsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),

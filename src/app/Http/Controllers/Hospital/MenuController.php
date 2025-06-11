@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Hospital;
 use App\Application\Service\Hospital\Menu\CreateMenuService;
 use App\Application\Service\Hospital\Menu\DeleteMenuService;
 use App\Application\Service\Hospital\Menu\GetMenuDetailService;
-use App\Application\Service\Hospital\Menu\ListHospitalMenusService;
+use App\Application\Service\Hospital\Menu\GetOwnMenusService;
 use App\Application\Service\Hospital\Menu\SwitchPublishMenuService;
 use App\Application\Service\Hospital\Menu\SwitchUnPublishMenuService;
 use App\Application\Service\Hospital\Menu\UpdateMenuService;
@@ -22,7 +22,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class MenuController extends Controller
 {
     public function __construct(
-        private ListHospitalMenusService $hospitalMenusService,
+        private GetOwnMenusService $getOwnMenusService,
         private CreateMenuService $createMenuService,
         private GetMenuDetailService $getMenuDetailService,
         private UpdateMenuService $updateMenuService,
@@ -39,7 +39,7 @@ class MenuController extends Controller
      */
     public function index(IndexMenuRequest $request): JsonResponse
     {
-        $paginator = $this->hospitalMenusService->execute(
+        $paginator = $this->getOwnMenusService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),

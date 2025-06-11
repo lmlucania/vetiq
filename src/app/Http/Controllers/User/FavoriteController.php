@@ -6,7 +6,7 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Favorite\AttachFavoriteService;
 use App\Application\Service\User\Favorite\DetachFavoriteService;
-use App\Application\Service\User\Favorite\MyFavoriteHospitalsService;
+use App\Application\Service\User\Favorite\GetMyFavoriteHospitalsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Favorite\IndexFavoriteRequest;
 use App\Transformers\FavoriteTransformer;
@@ -15,7 +15,7 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class FavoriteController extends Controller
 {
     public function __construct(
-        private MyFavoriteHospitalsService $myFavoriteHospitalsService,
+        private GetMyFavoriteHospitalsService $getMyFavoriteHospitalsService,
         private AttachFavoriteService $attachFavoriteService,
         private DetachFavoriteService $detachFavoriteService,
     ) {
@@ -28,7 +28,7 @@ class FavoriteController extends Controller
      */
     public function index(IndexFavoriteRequest $request)
     {
-        $paginator = $this->myFavoriteHospitalsService->execute(
+        $paginator = $this->getMyFavoriteHospitalsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
