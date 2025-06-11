@@ -30,7 +30,7 @@ class ReviewController extends Controller
 
     /**
      * @lrd:start
-     * 病院のレビュー一覧
+     * 指定する病院のレビュー一覧
      * @lrd:end
      */
     public function index(IndexReviewRequest $request, string $hospitalUuid)

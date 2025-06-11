@@ -16,7 +16,12 @@ class ReviewController
     ) {
     }
 
-    public function index(IndexReviewRequest $request, string $hospitalUuid)
+    /**
+     * @lrd:start
+     * 病院のレビュー一覧
+     * @lrd:end
+     */
+    public function index(IndexReviewRequest $request)
     {
         $paginator = $this->getOwnReviewsService->execute(
             page:$request->getPage(),
