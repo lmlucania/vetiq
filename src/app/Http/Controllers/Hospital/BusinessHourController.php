@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\BusinessHourService;
+use App\Application\Service\Hospital\BusinessHour\DeleteOwnBusinessHourService;
+use App\Application\Service\Hospital\BusinessHour\GetOwnBusinessHoursService;
+use App\Application\Service\Hospital\BusinessHour\SyncOwnBusinessHoursByDayOfWeekService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\BusinessHour\StoreBusinessHourRequest;
 use App\Transformers\BusinessHourTransformer;
@@ -13,7 +16,9 @@ use Illuminate\Http\JsonResponse;
 class BusinessHourController extends Controller
 {
     public function __construct(
-        private BusinessHourService $businessHourService,
+        private GetOwnBusinessHoursService $getOwnBusinessHoursService,
+        private SyncOwnBusinessHoursByDayOfWeekService $syncOwnBusinessHoursByDayOfWeekService,
+        private DeleteOwnBusinessHourService $deleteOwnBusinessHourService,
     ) {
     }
 
@@ -24,7 +29,7 @@ class BusinessHourController extends Controller
      */
     public function index()
     {
-        $businessHours = $this->businessHourService->getListOwn();
+        $businessHours = $this->getOwnBusinessHoursService->execute();
         return fractal($businessHours, new BusinessHourTransformer())->respond();
     }
 
@@ -35,7 +40,7 @@ class BusinessHourController extends Controller
      */
     public function store(StoreBusinessHourRequest $request)
     {
-        $success = $this->businessHourService->sync($request->getDto());
+        $success = $this->syncOwnBusinessHoursByDayOfWeekService->execute($request->getDto());
 
         if ($success) {
             return response()->success();
@@ -50,7 +55,7 @@ class BusinessHourController extends Controller
      */
     public function destroy(int $id): JsonResponse
     {
-        $success = $this->businessHourService->delete($id);
+        $success = $this->deleteOwnBusinessHourService->execute($id);
 
         if ($success) {
             return response()->success();

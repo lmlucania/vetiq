@@ -1,19 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
-namespace App\Application\Service;
+namespace App\Application\Service\Hospital\BusinessHour;
 
 use App\Application\Dto\Request\BusinessHourDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
-use App\Models\BusinessHour;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
-class BusinessHourService
+class SyncOwnBusinessHoursByDayOfWeekService
 {
     public function __construct(
         private readonly BusinessHourRepositoryInterface $businessHourRepository,
@@ -21,21 +17,7 @@ class BusinessHourService
     ) {
     }
 
-    public function getOwnById(int $id): BusinessHour
-    {
-        $hospitalId = $this->authActorService->getHospitalId();
-
-        return $this->businessHourRepository->getByHospitalIdAndId($hospitalId, $id);
-    }
-
-    public function getListOwn(): Collection
-    {
-        $hospitalId = $this->authActorService->getHospitalId();
-
-        return $this->businessHourRepository->getListByHospitalId($hospitalId);
-    }
-
-    public function sync(BusinessHourDto $businessHourDto): bool
+    public function execute(BusinessHourDto $businessHourDto): bool
     {
         $hospitalId = $this->authActorService->getHospitalId();
 
@@ -59,13 +41,6 @@ class BusinessHourService
             Log::error('Business hour sync failed', ['error' => $e]);
             return false;
         }
-    }
-
-    public function delete(int $id): bool
-    {
-        $businessHour = $this->getOwnById($id);
-
-        return $this->businessHourRepository->delete($businessHour->id);
     }
 
     /**
@@ -93,4 +68,5 @@ class BusinessHourService
 
         return $rows;
     }
+
 }
