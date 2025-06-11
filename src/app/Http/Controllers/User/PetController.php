@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\PetService;
 use App\Application\Service\User\Pet\CreatePetService;
 use App\Application\Service\User\Pet\DeletePetService;
 use App\Application\Service\User\Pet\GetPetDetailService;
 use App\Application\Service\User\Pet\MyPetsService;
 use App\Application\Service\User\Pet\UpdatePetService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\StorePetRequest;
-use App\Http\Requests\User\UpdatePetRequest;
+use App\Http\Requests\User\Pet\StorePetRequest;
+use App\Http\Requests\User\Pet\UpdatePetRequest;
 use App\Transformers\PetTransformer;
 
 class PetController extends Controller

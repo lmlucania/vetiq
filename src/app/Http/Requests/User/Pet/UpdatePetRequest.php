@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Pet;
 
 use App\Domains\Pet\Enum\Gender;
 use App\Http\Requests\Base\ApiRequest;
