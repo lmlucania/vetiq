@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\BusinessHourModel;
-use App\Models\HospitalModel;
+use App\Models\BusinessHour;
+use App\Models\Hospital;
 use Illuminate\Database\Seeder;
 
 class BusinessHourSeeder extends Seeder
@@ -15,9 +15,9 @@ class BusinessHourSeeder extends Seeder
      */
     public function run(): void
     {
-        $hospitals = HospitalModel::all();
+        $hospitals = Hospital::all();
         foreach ($hospitals as $hospital) {
-            BusinessHourModel::factory()->create(['hospital_id' => $hospital->id]);
+            BusinessHour::factory()->create(['hospital_id' => $hospital->id]);
         }
     }
 }

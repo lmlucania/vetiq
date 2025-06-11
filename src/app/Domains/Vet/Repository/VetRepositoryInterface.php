@@ -4,20 +4,31 @@ declare(strict_types=1);
 
 namespace App\Domains\Vet\Repository;
 
-use App\Domains\Vet\Entity\Vet;
-use App\Domains\Vet\ValueObjects\DeletableVetId;
-use App\Domains\Vet\ValueObjects\VetUuid;
-use App\Models\VetModel;
+use App\Models\Vet;
 
 interface VetRepositoryInterface
 {
-    public function generateId(string $modelClass): int;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Vet;
 
-    public function getByUuid(VetUuid $uuid): VetModel;
+    public function create(
+        string $uuid,
+        int $hospitalId,
+        string $lastName,
+        string $firstName,
+        bool $acceptAppointment,
+        string $remark,
+    ): Vet;
 
-    public function create(Vet $vetEntity):bool;
+    public function update(
+        int $id,
+        int $hospitalId,
+        string $lastName,
+        string $firstName,
+        bool $acceptAppointment,
+        string $remark,
+    ):bool;
 
-    public function update(Vet $vetEntity):bool;
+    public function delete(int $id):bool;
 
-    public function delete(DeletableVetId $id):bool;
+    public function countByHospitalId(int $hospitalId): int;
 }

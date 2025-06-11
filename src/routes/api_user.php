@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\FavoriteController;
+use App\Http\Controllers\User\HospitalController;
 use App\Http\Controllers\User\PetController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\UserController;
@@ -33,4 +34,5 @@ Route::middleware('auth:users')->group(static function () {
         Route::put('{hospitalUuid}/reviews/{uuid}', 'update')->name('update');
     });
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
+    Route::resource('hospitals', HospitalController::class)->only(['index']);
 });

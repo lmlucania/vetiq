@@ -4,21 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\ReviewService;
+use App\Application\Service\User\Review\CreateReviewService;
+use App\Application\Service\User\Review\GetHospitalReviewsService;
+use App\Application\Service\User\Review\GetMyReviewsService;
+use App\Application\Service\User\Review\GetReviewDetailService;
+use App\Application\Service\User\Review\UpdateReviewService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\IndexOwnReviewRequest;
-use App\Http\Requests\User\IndexReviewRequest;
-use App\Http\Requests\User\StoreReviewRequest;
-use App\Http\Requests\User\UpdateReviewRequest;
-use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
+use App\Http\Requests\User\Review\IndexOwnReviewRequest;
+use App\Http\Requests\User\Review\IndexReviewRequest;
+use App\Http\Requests\User\Review\StoreReviewRequest;
+use App\Http\Requests\User\Review\UpdateReviewRequest;
 use App\Transformers\ReviewTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class ReviewController extends Controller
 {
     public function __construct(
-        private ReviewService $reviewService,
-        private ReviewQueryServiceInterface $reviewQueryService,
+        private GetHospitalReviewsService $getHospitalReviewsService,
+        private CreateReviewService $createReviewService,
+        private GetReviewDetailService $getReviewDetailService,
+        private UpdateReviewService $updateReviewService,
+        private GetMyReviewsService $getMyReviewsService,
     ) {
     }
 
@@ -29,7 +35,7 @@ class ReviewController extends Controller
      */
     public function index(IndexReviewRequest $request, string $hospitalUuid)
     {
-        $paginator = $this->reviewQueryService->listByCriteriaInHospital(
+        $paginator = $this->getHospitalReviewsService->execute(
             hospitalUuid: $hospitalUuid,
             page:$request->getPage(),
             perPage: $request->getPerPage(),
@@ -51,7 +57,7 @@ class ReviewController extends Controller
      */
     public function store(StoreReviewRequest $request, string $hospitalUuid)
     {
-        $success = $this->reviewService->create(
+        $success = $this->createReviewService->execute(
             hospitalUuid: $hospitalUuid,
             rating: $request->getRating(),
             title: $request->getTitle(),
@@ -71,7 +77,7 @@ class ReviewController extends Controller
      */
     public function show(string $hospitalUuid, string $uuid)
     {
-        $review = $this->reviewService->getByUuidInHospital($hospitalUuid, $uuid);
+        $review = $this->getReviewDetailService->execute($hospitalUuid, $uuid);
 
         return fractal($review, new ReviewTransformer())->respond();
     }
@@ -83,7 +89,7 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, string $hospitalUuid, string $uuid)
     {
-        $success = $this->reviewService->updateOwn(
+        $success = $this->updateReviewService->execute(
             hospitalUuid: $hospitalUuid,
             uuid: $uuid,
             rating: $request->getRating(),
@@ -104,7 +110,7 @@ class ReviewController extends Controller
      */
     public function indexOwn(IndexOwnReviewRequest $request)
     {
-        $paginator = $this->reviewService->listOwn(
+        $paginator = $this->getMyReviewsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),

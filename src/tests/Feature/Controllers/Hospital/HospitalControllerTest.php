@@ -4,8 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
-use App\Models\StaffModel;
+use App\Domains\Location\Enum\Prefecture;
+use App\Models\Hospital;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
@@ -14,22 +15,24 @@ class HospitalControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
         parent::setUp();
 
-        $this->hospital = HospitalModel::factory()->create([
+        $this->hospital = Hospital::factory()->create([
             'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
             'name'         => '裕美子病院',
-            'zipcode'      => '1234567',
-            'address'      => '岩手県佐藤市東区吉本町佐々木1-2-3',
+            'post_code'    => '1234567',
+            'prefecture'   => Prefecture::Okinawa->value,
+            'address1'     => '佐藤市東区吉本町',
+            'address2'     => '佐々木1-2-3',
             'phone'        => '0123456789',
             'is_published' => true,
         ]);
 
-        $this->staff = StaffModel::factory()->create([
+        $this->staff = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
             'name'        => '山岸太一',
             'email'       => 'staff+1@example.com',
@@ -51,12 +54,14 @@ class HospitalControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
+            ->assertJsonCount(8, 'data')
             ->assertJsonFragment([
                 'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
                 'name'         => '裕美子病院',
-                'zipcode'      => '1234567',
-                'address'      => '岩手県佐藤市東区吉本町佐々木1-2-3',
+                'post_code'    => '1234567',
+                'prefecture'   => Prefecture::Okinawa->value,
+                'address1'     => '佐藤市東区吉本町',
+                'address2'     => '佐々木1-2-3',
                 'phone'        => '0123456789',
                 'is_published' => true,
             ]);
@@ -68,13 +73,17 @@ class HospitalControllerTest extends TestCase
     public function testUpdateSuccess()
     {
         // 準備（Arrange）
-        $this->actingAs($this->staff, $this->guard);
+        $hospital = Hospital::factory()->create();
+        $staff    = StaffMember::factory()->create(['hospital_id' => $hospital->id]);
+        $this->actingAs($staff, $this->guard);
         $postData = [
-            'name'         => '裕美子病院x',
-            'zipcode'      => '1234560',
-            'address'      => '岩手県佐藤市東区吉本町佐々木1-2-0',
-            'phone'        => '0123456780',
-            'is_published' => false,
+            'name'         => '裕美子病院',
+            'post_code'    => '1234567',
+            'prefecture'   => Prefecture::Okinawa->value,
+            'address1'     => '佐藤市東区吉本町',
+            'address2'     => '佐々木1-2-3',
+            'phone'        => '0123456789',
+            'is_published' => true,
         ];
 
         // 実行（Act）
@@ -83,12 +92,14 @@ class HospitalControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(200);
 
-        $hospital = HospitalModel::firstWhere('id', $this->staff->hospital->id);
-        $this->assertEquals('b90612f5-3446-47d7-b66a-12ff54963050', $hospital->uuid);
-        $this->assertEquals('裕美子病院x', $hospital->name);
-        $this->assertEquals('1234560', $hospital->zipcode);
-        $this->assertEquals('岩手県佐藤市東区吉本町佐々木1-2-0', $hospital->address);
-        $this->assertEquals('0123456780', $hospital->phone);
-        $this->assertFalse($hospital->is_published);
+        $record = Hospital::firstWhere('id', $staff->hospital_id);
+        $this->assertEquals($hospital->uuid, $record->uuid);  // uuidは変更されないこと
+        $this->assertEquals('裕美子病院', $record->name);
+        $this->assertEquals('1234567', $record->post_code);
+        $this->assertEquals(Prefecture::Okinawa->value, $record->prefecture);
+        $this->assertEquals('佐藤市東区吉本町', $record->address1);
+        $this->assertEquals('佐々木1-2-3', $record->address2);
+        $this->assertEquals('0123456789', $record->phone);
+        $this->assertTrue($record->is_published);
     }
 }

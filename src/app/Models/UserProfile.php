@@ -20,7 +20,7 @@ class UserProfile extends Model
         'last_name',
         'first_name_kana',
         'last_name_kana',
-        'phone_number',
+        'phone',
         'post_code',
         'prefecture',
         'address1',

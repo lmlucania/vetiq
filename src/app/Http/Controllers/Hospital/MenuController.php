@@ -4,32 +4,31 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\Menu\DestroyMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\IndexMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\PublishMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\ShowMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\StoreMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\UnpublishMenuUseCase;
-use App\Application\UseCase\Hospital\Menu\UpdateMenuUseCase;
+use App\Application\Service\Hospital\Menu\CreateMenuService;
+use App\Application\Service\Hospital\Menu\DeleteMenuService;
+use App\Application\Service\Hospital\Menu\GetMenuDetailService;
+use App\Application\Service\Hospital\Menu\GetOwnMenusService;
+use App\Application\Service\Hospital\Menu\SwitchPublishMenuService;
+use App\Application\Service\Hospital\Menu\SwitchUnPublishMenuService;
+use App\Application\Service\Hospital\Menu\UpdateMenuService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\IndexMenuRequest;
-use App\Http\Requests\Hospital\StoreMenuRequest;
-use App\Http\Requests\Hospital\UpdateMenuRequest;
+use App\Http\Requests\Hospital\Menu\IndexMenuRequest;
+use App\Http\Requests\Hospital\Menu\StoreMenuRequest;
+use App\Http\Requests\Hospital\Menu\UpdateMenuRequest;
 use App\Transformers\MenuTransformer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class MenuController extends Controller
 {
     public function __construct(
-        private readonly IndexMenuUseCase $indexMenuUseCase,
-        private readonly StoreMenuUseCase $storeMenuUseCase,
-        private readonly ShowMenuUseCase $showMenuUseCase,
-        private readonly UpdateMenuUseCase $updateMenuUseCase,
-        private readonly DestroyMenuUseCase $destroyMenuUseCase,
-        private readonly PublishMenuUseCase $publishMenuUseCase,
-        private readonly UnpublishMenuUseCase $unpublishMenuUseCase,
+        private GetOwnMenusService $getOwnMenusService,
+        private CreateMenuService $createMenuService,
+        private GetMenuDetailService $getMenuDetailService,
+        private UpdateMenuService $updateMenuService,
+        private DeleteMenuService $deleteMenuService,
+        private SwitchPublishMenuService $switchPublishMenuService,
+        private SwitchUnPublishMenuService $switchUnPublishMenuService,
     ) {
     }
 
@@ -40,7 +39,7 @@ class MenuController extends Controller
      */
     public function index(IndexMenuRequest $request): JsonResponse
     {
-        $paginatedDto = $this->indexMenuUseCase->index(
+        $paginator = $this->getOwnMenusService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
@@ -48,8 +47,8 @@ class MenuController extends Controller
             queryParam: $request->getAllQuery(),
         );
 
-        return fractal($paginatedDto->getCollection(), new MenuTransformer())
-            ->paginateWith(new IlluminatePaginatorAdapter($paginatedDto->getPaginate()))
+        return fractal($paginator->getCollection(), new MenuTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
 
@@ -58,13 +57,13 @@ class MenuController extends Controller
      * 診察メニューの登録
      * @lrd:end
      */
-    public function store(StoreMenuRequest $request)
+    public function store(StoreMenuRequest $request): JsonResponse
     {
-        $success = $this->storeMenuUseCase->store(
-            $request->name,
-            $request->detail,
-            $request->required_time,
-            $request->is_published,
+        $success = $this->createMenuService->execute(
+            $request->getName(),
+            $request->getDetail(),
+            $request->getRequiredTime(),
+            $request->isPublished(),
         );
 
         if ($success) {
@@ -78,10 +77,10 @@ class MenuController extends Controller
      * 診察メニューの詳細
      * @lrd:end
      */
-    public function show(Request $request, string $uuid): JsonResponse
+    public function show(int $id): JsonResponse
     {
-        $menuDto = $this->showMenuUseCase->show($uuid);
-        return fractal($menuDto, new MenuTransformer())->respond();
+        $menu = $this->getMenuDetailService->execute($id);
+        return fractal($menu, new MenuTransformer())->respond();
     }
 
     /**
@@ -89,14 +88,14 @@ class MenuController extends Controller
      * 診察メニューの更新
      * @lrd:end
      */
-    public function update(UpdateMenuRequest $request, string $uuid): JsonResponse
+    public function update(UpdateMenuRequest $request, int $id): JsonResponse
     {
-        $success = $this->updateMenuUseCase->update(
-            $uuid,
-            $request->name,
-            $request->detail,
-            $request->required_time,
-            $request->is_published,
+        $success = $this->updateMenuService->execute(
+            $id,
+            $request->getName(),
+            $request->getDetail(),
+            $request->getRequiredTime(),
+            $request->isPublished(),
         );
 
         if ($success) {
@@ -110,9 +109,9 @@ class MenuController extends Controller
      * 診察メニューの削除
      * @lrd:end
      */
-    public function destroy(Request $request, string $uuid): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $success = $this->destroyMenuUseCase->destroy($uuid);
+        $success = $this->deleteMenuService->execute($id);
 
         if ($success) {
             return response()->success();
@@ -125,9 +124,9 @@ class MenuController extends Controller
      * 診察メニューを公開に変更
      * @lrd:end
      */
-    public function publish(Request $request, string $uuid): JsonResponse
+    public function publish(int $id): JsonResponse
     {
-        $success = $this->publishMenuUseCase->publish($uuid);
+        $success = $this->switchPublishMenuService->execute($id);
 
         if ($success) {
             return response()->success();
@@ -140,9 +139,9 @@ class MenuController extends Controller
      * 診察メニューを非公開に変更
      * @lrd:end
      */
-    public function unpublish(Request $request, string $uuid): JsonResponse
+    public function unpublish(int $id): JsonResponse
     {
-        $success = $this->unpublishMenuUseCase->unpublish($uuid);
+        $success = $this->switchUnPublishMenuService->execute($id);
 
         if ($success) {
             return response()->success();

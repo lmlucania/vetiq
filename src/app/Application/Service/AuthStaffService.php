@@ -8,7 +8,7 @@ use App\Domains\Hospital\Entity\Hospital;
 use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Exceptions\UnauthorizedException;
-use App\Models\StaffModel;
+use App\Models\Staff;
 
 class AuthStaffService
 {
@@ -20,7 +20,7 @@ class AuthStaffService
         $authUser = auth()->user();
 
         // ログインユーザーがスタッフ以外の時にエラーを返す
-        if (! ($authUser instanceof StaffModel)) {
+        if (! ($authUser instanceof Staff)) {
             throw new UnauthorizedException('スタッフ以外は許可されていません。');
         }
 

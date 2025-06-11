@@ -4,33 +4,23 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Hospital\Entity\Hospital;
-use App\Domains\Hospital\Factory\HospitalFactory;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Hospital\ValueObjects\HospitalId;
+use App\Domains\Location\Enum\Prefecture;
 use App\Exceptions\NotFoundException;
-use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\HospitalModel;
+use App\Models\Hospital;
 use App\Models\VetModel;
-use Illuminate\Support\Collection;
 
 class HospitalRepository implements HospitalRepositoryInterface
 {
-    use GenerationId;
-
-    public function __construct(
-        private readonly HospitalFactory $hospitalFactory
-    ) {
+    public function getById(int $id): Hospital
+    {
+        return Hospital::findOrFail($id);
     }
 
-    public function getById(HospitalId $id): HospitalModel
+    public function getByUuid(string $uuid): Hospital
     {
-        return HospitalModel::findOrFail($id->getValue());
-    }
-
-    public function getByUuid(string $uuid): HospitalModel
-    {
-        $hospital = HospitalModel::firstWhere('uuid', $uuid);
+        $hospital = Hospital::firstWhere('uuid', $uuid);
         if ($hospital == null) {
             throw new NotFoundException();
         }
@@ -38,28 +28,27 @@ class HospitalRepository implements HospitalRepositoryInterface
         return $hospital;
     }
 
-    public function getList(): Collection
-    {
-        return HospitalModel::all();
-    }
+    public function update(
+        int $id,
+        string $name,
+        string $phone,
+        string $postCode,
+        Prefecture $prefecture,
+        string $address1,
+        string $address2,
+        bool $isPublished
+    ): bool {
+        $hospital = Hospital::findOrFail($id);
 
-    public function create(Hospital $hospitalEntity): bool
-    {
-        $hospitalModel = $this->hospitalFactory->entityToModel($hospitalEntity);
-        return $hospitalModel->save();
-    }
+        $hospital->name         = $name;
+        $hospital->phone        = $phone;
+        $hospital->post_code    = $postCode;
+        $hospital->prefecture   = $prefecture;
+        $hospital->address1     = $address1;
+        $hospital->address2     = $address2;
+        $hospital->is_published = $isPublished;
 
-    public function update(Hospital $hospitalEntity): bool
-    {
-        $hospitalModel = HospitalModel::findOrFail($hospitalEntity->getId()->getValue());
-
-        $hospitalModel->name         = $hospitalEntity->getName()->getValue();
-        $hospitalModel->zipcode      = $hospitalEntity->getZipcode()->getValue();
-        $hospitalModel->address      = $hospitalEntity->getAddress()->getValue();
-        $hospitalModel->phone        = $hospitalEntity->getPhone()->getValue();
-        $hospitalModel->is_published = $hospitalEntity->getIsPublished()->getValue();
-
-        return $hospitalModel->update();
+        return $hospital->save();
     }
 
     /**

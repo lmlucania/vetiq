@@ -4,76 +4,42 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\BusinessHour\Entity\BusinessHour;
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
-use App\Domains\BusinessHour\Factory\BusinessHourFactory;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
-use App\Domains\BusinessHour\ValueObjects\BusinessHourUuid;
-use App\Domains\BusinessHour\ValueObjects\DeletableBusinessHourId;
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Exceptions\NotFoundException;
-use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\BusinessHourModel;
+use App\Domains\Schedule\Enum\DayOfWeek;
+use App\Models\BusinessHour;
 use Illuminate\Database\Eloquent\Collection;
 
 class BusinessHourRepository implements BusinessHourRepositoryInterface
 {
-    use GenerationId;
-
-    public function __construct(
-        private readonly BusinessHourFactory $businessHourFactory
-    ) {
-    }
-
-    public function getByUuid(BusinessHourUuid $uuid): BusinessHourModel
+    public function getByHospitalIdAndId(int $hospitalId, int $id): BusinessHour
     {
-        $businessHour = BusinessHourModel::firstWhere('uuid', $uuid->getValue());
-        if ($businessHour == null) {
-            throw new NotFoundException();
-        }
-
-        return $businessHour;
+        return BusinessHour::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function findBySchedule(
-        HospitalId $hospitalId,
-        DayOfWeek $dayOfWeek,
-        TimePeriod $timePeriod
-    ): ?BusinessHourModel {
-        return BusinessHourModel::where('hospital_id', $hospitalId->getValue())
-            ->where('day_of_week', $dayOfWeek)
-            ->firstWhere('time_period', $timePeriod);
-    }
-
-    public function getListByHospitalId(HospitalId $hospitalId): Collection
+    public function getListByHospitalId(int $hospitalId): Collection
     {
-        return BusinessHourModel::where('hospital_id', $hospitalId->getValue())
+        return BusinessHour::where('hospital_id', $hospitalId)
             ->orderBy('day_of_week')
             ->orderBy('time_period')
             ->get();
     }
 
-    public function create(BusinessHour $businessHourEntity): bool
+    public function delete(int $id): bool
     {
-        $model = $this->businessHourFactory->entityToModel($businessHourEntity);
-        return $model->save();
-    }
-
-    public function update(BusinessHour $businessHourEntity): bool
-    {
-        $model = BusinessHourModel::findOrFail($businessHourEntity->getId()->getValue());
-
-        $model->start_time = $businessHourEntity->getStartTime()->getValue();
-        $model->end_time   = $businessHourEntity->getEndTime()->getValue();
-
-        return $model->update();
-    }
-
-    public function delete(DeletableBusinessHourId $id): bool
-    {
-        $model = BusinessHourModel::findOrFail($id->getValue());
+        $model = BusinessHour::findOrFail($id);
 
         return $model->delete();
+    }
+
+    public function deleteByDayOfWeekInHospital(int $hospitalId, DayOfWeek $dayOfWeek): int
+    {
+        return BusinessHour::where('hospital_id', $hospitalId)
+            ->where('day_of_week', $dayOfWeek->value)
+            ->delete();
+    }
+
+    public function createMany(array $rows): bool
+    {
+        return BusinessHour::insert($rows);
     }
 }

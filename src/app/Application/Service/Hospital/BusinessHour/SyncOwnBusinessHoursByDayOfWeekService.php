@@ -1,0 +1,72 @@
+<?php
+
+namespace App\Application\Service\Hospital\BusinessHour;
+
+use App\Application\Dto\Request\BusinessHourDto;
+use App\Application\Service\Auth\AuthActorService;
+use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use Throwable;
+
+class SyncOwnBusinessHoursByDayOfWeekService
+{
+    public function __construct(
+        private readonly BusinessHourRepositoryInterface $businessHourRepository,
+        private readonly AuthActorService $authActorService,
+    ) {
+    }
+
+    public function execute(BusinessHourDto $businessHourDto): bool
+    {
+        $hospitalId = $this->authActorService->getHospitalId();
+
+        try {
+            DB::transaction(function () use ($hospitalId, $businessHourDto) {
+                $this->businessHourRepository->deleteByDayOfWeekInHospital(
+                    hospitalId: $hospitalId,
+                    dayOfWeek: $businessHourDto->getDayOfWeek(),
+                );
+
+                $this->businessHourRepository->createMany(
+                    $this->buildInsertRows(
+                        hospitalId: $hospitalId,
+                        dto: $businessHourDto,
+                    ),
+                );
+            });
+
+            return true;
+        } catch (Throwable $e) {
+            Log::error('Business hour sync failed', ['error' => $e]);
+            return false;
+        }
+    }
+
+    /**
+     * insert用の配列を作成する
+     * @param int $hospitalId
+     * @param BusinessHourDto $dto
+     * @return array
+     */
+    private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
+    {
+        $now  = now();
+        $rows = [];
+
+        foreach ($dto->getPeriods() as $period) {
+            $rows[] = [
+                'hospital_id' => $hospitalId,
+                'day_of_week' => $dto->getDayOfWeek()->value,
+                'time_period' => $period->getTimePeriod()->value,
+                'start_time'  => $period->getStartTime(),
+                'end_time'    => $period->getEndTime(),
+                'created_at'  => $now,
+                'updated_at'  => $now,
+            ];
+        }
+
+        return $rows;
+    }
+
+}

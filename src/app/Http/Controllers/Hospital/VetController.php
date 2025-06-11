@@ -4,28 +4,27 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\Menu\IndexVetUseCase;
-use App\Application\UseCase\Hospital\Vet\DestroyVetUseCase;
-use App\Application\UseCase\Hospital\Vet\ShowVetUseCase;
-use App\Application\UseCase\Hospital\Vet\StoreVetUseCase;
-use App\Application\UseCase\Hospital\Vet\UpdateVetUseCase;
+use App\Application\Service\Hospital\Vet\CreateVetService;
+use App\Application\Service\Hospital\Vet\DeleteVetService;
+use App\Application\Service\Hospital\Vet\GetOwnVetDetailService;
+use App\Application\Service\Hospital\Vet\GetOwnVetsService;
+use App\Application\Service\Hospital\Vet\UpdateVetService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\IndexVetRequest;
-use App\Http\Requests\Hospital\StoreVetRequest;
-use App\Http\Requests\Hospital\UpdateVetRequest;
+use App\Http\Requests\Hospital\Vet\IndexVetRequest;
+use App\Http\Requests\Hospital\Vet\StoreVetRequest;
+use App\Http\Requests\Hospital\Vet\UpdateVetRequest;
 use App\Transformers\VetTransformer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class VetController extends Controller
 {
     public function __construct(
-        private readonly IndexVetUseCase $indexVetUseCase,
-        private readonly StoreVetUseCase $storeVetUseCase,
-        private readonly ShowVetUseCase $showVetUseCase,
-        private readonly UpdateVetUseCase $updateVetUseCase,
-        private readonly DestroyVetUseCase $destroyVetUseCase,
+        private GetOwnVetsService $getOwnVetsService,
+        private CreateVetService $createVetService,
+        private GetOwnVetDetailService $getOwnVetDetailService,
+        private UpdateVetService $updateVetService,
+        private DeleteVetService $deleteVetService,
     ) {
     }
 
@@ -36,7 +35,7 @@ class VetController extends Controller
      */
     public function index(IndexVetRequest $request): JsonResponse
     {
-        $paginatedDto = $this->indexVetUseCase->execute(
+        $paginator = $this->getOwnVetsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
@@ -44,8 +43,8 @@ class VetController extends Controller
             queryParam: $request->getAllQuery(),
         );
 
-        return fractal($paginatedDto->getCollection(), new VetTransformer())
-            ->paginateWith(new IlluminatePaginatorAdapter($paginatedDto->getPaginate()))
+        return fractal($paginator->getCollection(), new VetTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
 
@@ -56,7 +55,7 @@ class VetController extends Controller
      */
     public function store(StoreVetRequest $request)
     {
-        $success = $this->storeVetUseCase->store(
+        $success = $this->createVetService->execute(
             $request->getLastName(),
             $request->getFirstName(),
             $request->getAcceptAppointment(),
@@ -74,10 +73,10 @@ class VetController extends Controller
      * 獣医師の詳細
      * @lrd:end
      */
-    public function show(Request $request, string $uuid):JsonResponse
+    public function show(int $id):JsonResponse
     {
-        $vetDto = $this->showVetUseCase->show($uuid);
-        return fractal($vetDto, new VetTransformer())->respond();
+        $vet = $this->getOwnVetDetailService->execute($id);
+        return fractal($vet, new VetTransformer())->respond();
     }
 
     /**
@@ -85,10 +84,10 @@ class VetController extends Controller
      * 獣医師の更新
      * @lrd:end
      */
-    public function update(UpdateVetRequest $request, string $uuid):JsonResponse
+    public function update(UpdateVetRequest $request, int $id):JsonResponse
     {
-        $success = $this->updateVetUseCase->update(
-            uuid: $uuid,
+        $success = $this->updateVetService->execute(
+            id: $id,
             lastName: $request->getLastName(),
             firstName: $request->getFirstName(),
             acceptAppointment: $request->getAcceptAppointment(),
@@ -106,9 +105,9 @@ class VetController extends Controller
      * 獣医師の削除
      * @lrd:end
      */
-    public function destroy(Request $request, string $uuid): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $success = $this->destroyVetUseCase->destroy($uuid);
+        $success = $this->deleteVetService->execute($id);
 
         if ($success) {
             return response()->success();

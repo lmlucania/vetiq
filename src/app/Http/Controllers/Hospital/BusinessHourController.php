@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\BusinessHour\DestroyBusinessHourUseCase;
-use App\Application\UseCase\Hospital\BusinessHour\IndexBusinessHourUseCase;
-use App\Application\UseCase\Hospital\BusinessHour\StoreBusinessHourUseCase;
+use App\Application\Service\BusinessHourService;
+use App\Application\Service\Hospital\BusinessHour\DeleteOwnBusinessHourService;
+use App\Application\Service\Hospital\BusinessHour\GetOwnBusinessHoursService;
+use App\Application\Service\Hospital\BusinessHour\SyncOwnBusinessHoursByDayOfWeekService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\StoreBusinessHourRequest;
+use App\Http\Requests\Hospital\BusinessHour\StoreBusinessHourRequest;
 use App\Transformers\BusinessHourTransformer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 
 class BusinessHourController extends Controller
 {
     public function __construct(
-        private readonly IndexBusinessHourUseCase $indexBusinessHourUseCaseUseCase,
-        private readonly StoreBusinessHourUseCase $storeBusinessHourUseCase,
-        private readonly DestroyBusinessHourUseCase $destroyBusinessHourUseCase,
+        private GetOwnBusinessHoursService $getOwnBusinessHoursService,
+        private SyncOwnBusinessHoursByDayOfWeekService $syncOwnBusinessHoursByDayOfWeekService,
+        private DeleteOwnBusinessHourService $deleteOwnBusinessHourService,
     ) {
     }
 
@@ -29,8 +29,8 @@ class BusinessHourController extends Controller
      */
     public function index()
     {
-        $dto = $this->indexBusinessHourUseCaseUseCase->execute();
-        return fractal($dto->getCollection(), new BusinessHourTransformer())->respond();
+        $businessHours = $this->getOwnBusinessHoursService->execute();
+        return fractal($businessHours, new BusinessHourTransformer())->respond();
     }
 
     /**
@@ -40,10 +40,7 @@ class BusinessHourController extends Controller
      */
     public function store(StoreBusinessHourRequest $request)
     {
-        $success = $this->storeBusinessHourUseCase->execute(
-            dayOfWeek: $request->day_of_week,
-            periods: $request->periods,
-        );
+        $success = $this->syncOwnBusinessHoursByDayOfWeekService->execute($request->getDto());
 
         if ($success) {
             return response()->success();
@@ -56,9 +53,9 @@ class BusinessHourController extends Controller
      * 予約受付時間の削除
      * @lrd:end
      */
-    public function destroy(Request $request, string $uuid): JsonResponse
+    public function destroy(int $id): JsonResponse
     {
-        $success = $this->destroyBusinessHourUseCase->execute($uuid);
+        $success = $this->deleteOwnBusinessHourService->execute($id);
 
         if ($success) {
             return response()->success();

@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Models\HospitalModel;
-use App\Models\StaffModel;
-use App\Models\VetModel;
+use App\Models\Hospital;
+use App\Models\StaffMember;
+use App\Models\Vet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 
@@ -14,20 +14,20 @@ class VetControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
         parent::setUp();
 
         // ログインする病院のデータをセットアップ
-        $this->hospital = HospitalModel::factory()->create(['id' => 1]);
-        $this->staff    = StaffModel::factory()->create([
+        $this->hospital = Hospital::factory()->create(['id' => 1]);
+        $this->staff    = StaffMember::factory()->create([
             'id'          => 1,
             'hospital_id' => $this->hospital->id,
             ]);
 
-        $this->vet = VetModel::factory()->create([
+        $this->vet = Vet::factory()->create([
             'id'                 => 1,
             'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'hospital_id'        => $this->hospital->id,
@@ -37,7 +37,7 @@ class VetControllerTest extends TestCase
             'remark'             => 'テスト備考1',
 
         ]);
-        VetModel::factory()->create([
+        Vet::factory()->create([
             'id'                 => 2,
             'uuid'               => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
             'hospital_id'        => $this->hospital->id,
@@ -46,7 +46,7 @@ class VetControllerTest extends TestCase
             'accept_appointment' => false,
             'remark'             => 'テスト備考2',
         ]);
-        VetModel::factory()->create([
+        Vet::factory()->create([
             'id'                 => 3,
             'uuid'               => '3667d80e-9f20-46f4-854b-8efa648c71c0',
             'hospital_id'        => $this->hospital->id,
@@ -57,11 +57,11 @@ class VetControllerTest extends TestCase
         ]);
 
         // ログインしない病院のデータをセットアップ
-        $nonLoginHospital = HospitalModel::factory()->create();
-        StaffModel::factory()->create([
+        $nonLoginHospital = Hospital::factory()->create();
+        StaffMember::factory()->create([
             'hospital_id' => $nonLoginHospital->id,
         ]);
-        $this->nonLoginHospitalVet = VetModel::factory()->create([
+        $this->nonLoginHospitalVet = Vet::factory()->create([
             'id'          => 4,
             'hospital_id' => $nonLoginHospital->id,
         ]);
@@ -85,6 +85,7 @@ class VetControllerTest extends TestCase
             ->assertJsonFragment([
                 'data' => [
                     [
+                        'id'                 => 1,
                         'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                         'last_name'          => 'テスト姓1',
                         'first_name'         => 'テスト名1',
@@ -92,6 +93,7 @@ class VetControllerTest extends TestCase
                         'remark'             => 'テスト備考1',
                     ],
                     [
+                        'id'                 => 2,
                         'uuid'               => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
                         'last_name'          => 'テスト姓2',
                         'first_name'         => 'テスト名2',
@@ -99,6 +101,7 @@ class VetControllerTest extends TestCase
                         'remark'             => 'テスト備考2',
                     ],
                     [
+                        'id'                 => 3,
                         'uuid'               => '3667d80e-9f20-46f4-854b-8efa648c71c0',
                         'last_name'          => 'テスト姓3',
                         'first_name'         => 'テスト名3',
@@ -114,7 +117,7 @@ class VetControllerTest extends TestCase
     public function testIndexNotGetDeletedMenuSuccess()
     {
         // 準備（Arrange）
-        VetModel::query()->delete();
+        Vet::query()->delete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -132,7 +135,7 @@ class VetControllerTest extends TestCase
     public function testIndexDefaultPerPageSuccess()
     {
         // 準備（Arrange）
-        VetModel::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
+        Vet::factory()->count(60)->create(['hospital_id' => $this->hospital->id]);
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -150,14 +153,14 @@ class VetControllerTest extends TestCase
     public function testIndexSearchKeywordSuccess()
     {
         // 準備（Arrange）
-        VetModel::query()->forceDelete();
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'テストあ', 'first_name' => 'あ']);            // last_name：前方一致
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あテスト', 'first_name' => 'あ']);            // last_name：後方一致
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あテストあ', 'first_name' => 'あ']);          // last_name：部分一致
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'テストあ']);            // first_name：前方一致
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテスト']);            // first_name：後方一致
-        VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテストあ']);          // first_name：部分一致
-        $missingVet = VetModel::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あ']);  // 一致しない
+        Vet::query()->forceDelete();
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'テストあ', 'first_name' => 'あ']);            // last_name：前方一致
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あテスト', 'first_name' => 'あ']);            // last_name：後方一致
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あテストあ', 'first_name' => 'あ']);          // last_name：部分一致
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'テストあ']);            // first_name：前方一致
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテスト']);            // first_name：後方一致
+        Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あテストあ']);          // first_name：部分一致
+        $missingVet = Vet::factory()->create(['hospital_id' => $this->hospital->id, 'last_name' => 'あ', 'first_name' => 'あ']);  // 一致しない
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
@@ -167,7 +170,7 @@ class VetControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingVet->uuid]);
+            ->assertJsonMissing(['uuid' => $missingVet->id]);
     }
 
     /**
@@ -190,7 +193,7 @@ class VetControllerTest extends TestCase
     public function testStoreSuccess()
     {
         // 準備（Arrange）
-        VetModel::query()->forceDelete();
+        Vet::query()->forceDelete();
         $postData = [
             'last_name'          => 'テスト姓',
             'first_name'         => 'テスト名',
@@ -207,7 +210,7 @@ class VetControllerTest extends TestCase
 
         $this->assertDatabaseCount('vets', 1);
 
-        $newRecord = VetModel::first();
+        $newRecord = Vet::first();
         $this->assertEquals('テスト姓', $newRecord->last_name);
         $this->assertEquals('テスト名', $newRecord->first_name);
         $this->assertTrue($newRecord->accept_appointment);
@@ -255,13 +258,14 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.vets.show', ['vet' => $this->vet->uuid]));
+        $response = $this->get(route('hospital.vets.show', ['vet' => $this->vet->id]));
 
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(5, 'data')
+            ->assertJsonCount(6, 'data')
             ->assertJsonFragment([
+                'id'                 => 1,
                 'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                 'last_name'          => 'テスト姓1',
                 'first_name'         => 'テスト名1',
@@ -279,7 +283,7 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.vets.show', ['vet' => $this->nonLoginHospitalVet->uuid]));
+        $response = $this->get(route('hospital.vets.show', ['vet' => $this->nonLoginHospitalVet->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -300,12 +304,12 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->put(route('hospital.vets.update', ['vet' => $this->vet->uuid]), $postData);
+        $response = $this->put(route('hospital.vets.update', ['vet' => $this->vet->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
 
-        $updatedRecord = VetModel::find($this->vet->id);
+        $updatedRecord = Vet::find($this->vet->id);
         $this->assertEquals('テスト姓', $updatedRecord->last_name);
         $this->assertEquals('テスト名', $updatedRecord->first_name);
         $this->assertFalse($updatedRecord->accept_appointment);
@@ -327,7 +331,7 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->put(route('hospital.vets.update', ['vet' => $this->nonLoginHospitalVet->uuid]), $postData);
+        $response = $this->put(route('hospital.vets.update', ['vet' => $this->nonLoginHospitalVet->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -339,7 +343,7 @@ class VetControllerTest extends TestCase
     public function testUpdateNotExistFailure()
     {
         // 準備（Arrange）
-        VetModel::query()->forceDelete();
+        Vet::query()->forceDelete();
         $postData = [
             'last_name'          => 'テスト姓',
             'first_name'         => 'テスト名',
@@ -349,7 +353,7 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->put(route('hospital.vets.update', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']), $postData);
+        $response = $this->put(route('hospital.vets.update', ['vet' => 0]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -364,7 +368,7 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->uuid]));
+        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -388,7 +392,7 @@ class VetControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->nonLoginHospitalVet->uuid]));
+        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->nonLoginHospitalVet->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -400,11 +404,11 @@ class VetControllerTest extends TestCase
     public function testDestroyHospitalHasOneVetFailure()
     {
         // 準備（Arrange）
-        VetModel::where('id', '!=', $this->vet->id)->forceDelete();
+        Vet::where('id', '!=', $this->vet->id)->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->uuid]));
+        $response = $this->delete(route('hospital.vets.destroy', ['vet' => $this->vet->id]));
 
         // 検証（Assert）
         $response
@@ -412,7 +416,7 @@ class VetControllerTest extends TestCase
             ->assertJsonCount(2)
             ->assertJsonFragment([
                 'error'   => 'Unprocessable Entity',
-                'message' => 'この病院には1人の獣医師しかいないため、削除できません。',
+                'message' => '獣医が1人しかいないため削除できません。',
             ]);
         ;
 
@@ -425,11 +429,11 @@ class VetControllerTest extends TestCase
     public function testDestroyNotExistFailure()
     {
         // 準備（Arrange）
-        VetModel::query()->forceDelete();
+        Vet::query()->forceDelete();
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.vets.destroy', ['vet' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
+        $response = $this->delete(route('hospital.vets.destroy', ['vet' => 0]));
 
         // 検証（Assert）
         $response->assertStatus(404);

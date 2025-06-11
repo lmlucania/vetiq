@@ -4,16 +4,24 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\PetService;
+use App\Application\Service\User\Pet\CreatePetService;
+use App\Application\Service\User\Pet\DeletePetService;
+use App\Application\Service\User\Pet\GetMyPetsService;
+use App\Application\Service\User\Pet\GetPetDetailService;
+use App\Application\Service\User\Pet\UpdatePetService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\StorePetRequest;
-use App\Http\Requests\User\UpdatePetRequest;
+use App\Http\Requests\User\Pet\StorePetRequest;
+use App\Http\Requests\User\Pet\UpdatePetRequest;
 use App\Transformers\PetTransformer;
 
 class PetController extends Controller
 {
     public function __construct(
-        private PetService $petService,
+        private GetMyPetsService $getMyPetsService,
+        private CreatePetService $createPetService,
+        private GetPetDetailService $getPetDetailService,
+        private UpdatePetService $updatePetService,
+        private DeletePetService $deletePetService,
     ) {
     }
 
@@ -24,7 +32,7 @@ class PetController extends Controller
      */
     public function index()
     {
-        $petCollection = $this->petService->getMyPets();
+        $petCollection = $this->getMyPetsService->execute();
 
         return fractal($petCollection, new PetTransformer())->respond();
     }
@@ -36,7 +44,7 @@ class PetController extends Controller
      */
     public function store(StorePetRequest $request)
     {
-        $success = $this->petService->create(
+        $success = $this->createPetService->execute(
             name: $request->getName(),
             gender: $request->getGender(),
             birthday: $request->getBirthday(),
@@ -57,7 +65,7 @@ class PetController extends Controller
      */
     public function show(string $uuid)
     {
-        $pet = $this->petService->getByUuid($uuid);
+        $pet = $this->getPetDetailService->execute($uuid);
 
         return fractal($pet, new PetTransformer())->respond();
     }
@@ -69,7 +77,7 @@ class PetController extends Controller
      */
     public function update(UpdatePetRequest $request, string $uuid)
     {
-        $success = $this->petService->update(
+        $success = $this->updatePetService->execute(
             uuid: $uuid,
             name: $request->getName(),
             gender: $request->getGender(),
@@ -91,7 +99,7 @@ class PetController extends Controller
      */
     public function destroy(string $uuid)
     {
-        $success = $this->petService->delete(
+        $success = $this->deletePetService->execute(
             uuid: $uuid,
         );
 

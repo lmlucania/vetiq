@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace Tests\Feature\Controllers\Hospital;
 
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
-use App\Models\BusinessHourModel;
-use App\Models\HospitalModel;
-use App\Models\StaffModel;
+use App\Domains\Schedule\Enum\DayOfWeek;
+use App\Domains\Schedule\Enum\TimePeriod;
+use App\Models\BusinessHour;
+use App\Models\Hospital;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,15 +16,15 @@ class BusinessHourControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
         parent::setUp();
 
         // ログインする病院のデータをセットアップ
-        $this->hospital = HospitalModel::factory()->create();
-        $this->staff    = StaffModel::factory()->create([
+        $this->hospital = Hospital::factory()->create();
+        $this->staff    = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
         ]);
     }
@@ -35,25 +35,22 @@ class BusinessHourControllerTest extends TestCase
     public function testIndexSuccess()
     {
         // 準備（Arrange）
-        BusinessHourModel::factory()->create([
+        BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'uuid'        => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'day_of_week' => DayOfWeek::SUNDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',
             'end_time'    => '12:00',
         ]);
-        BusinessHourModel::factory()->create([
+        BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'uuid'        => '226f1b66-26d0-43b5-8160-1ce09ad3f683',
             'day_of_week' => DayOfWeek::SUNDAY,
             'time_period' => TimePeriod::PM,
             'start_time'  => '13:00',
             'end_time'    => '16:00',
         ]);
-        BusinessHourModel::factory()->create([
+        BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'uuid'        => '326f1b66-26d0-43b5-8160-1ce09ad3f683',
             'day_of_week' => DayOfWeek::MONDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
@@ -61,8 +58,8 @@ class BusinessHourControllerTest extends TestCase
         ]);
 
         // ログインしない病院のデータをセットアップ
-        $nonLoginHospital = HospitalModel::factory()->create();
-        BusinessHourModel::factory()->create([
+        $nonLoginHospital = Hospital::factory()->create();
+        BusinessHour::factory()->create([
             'hospital_id' => $nonLoginHospital->id,
         ]);
 
@@ -77,7 +74,6 @@ class BusinessHourControllerTest extends TestCase
             ->assertJsonCount(3, 'data')
             ->assertJsonFragment(
                 [
-                    'uuid'        => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                     'day_of_week' => DayOfWeek::SUNDAY,
                     'time_period' => TimePeriod::AM,
                     'start_time'  => '09:00',
@@ -86,7 +82,6 @@ class BusinessHourControllerTest extends TestCase
             )
             ->assertJsonFragment(
                 [
-                    'uuid'        => '226f1b66-26d0-43b5-8160-1ce09ad3f683',
                     'day_of_week' => DayOfWeek::SUNDAY,
                     'time_period' => TimePeriod::PM,
                     'start_time'  => '13:00',
@@ -95,7 +90,6 @@ class BusinessHourControllerTest extends TestCase
             )
             ->assertJsonFragment(
                 [
-                    'uuid'        => '326f1b66-26d0-43b5-8160-1ce09ad3f683',
                     'day_of_week' => DayOfWeek::MONDAY,
                     'time_period' => TimePeriod::AM,
                     'start_time'  => '10:00',
@@ -159,7 +153,7 @@ class BusinessHourControllerTest extends TestCase
     public function testStoreCreateRecordAndUpdateRecordSuccess()
     {
         // 準備（Arrange）
-        BusinessHourModel::factory()->create([
+        BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
             'time_period' => TimePeriod::AM,
@@ -191,7 +185,7 @@ class BusinessHourControllerTest extends TestCase
 
         $this->assertDatabaseCount('business_hours', 2);
 
-        $records = BusinessHourModel::orderBy('id', 'asc')->get();
+        $records = BusinessHour::orderBy('id', 'asc')->get();
         $this->assertEquals(DayOfWeek::FRIDAY, $records[0]->day_of_week);
         $this->assertEquals(TimePeriod::AM, $records[0]->time_period);
         $this->assertEquals('09:00', $records[0]->start_time->format('H:i'));
@@ -209,7 +203,7 @@ class BusinessHourControllerTest extends TestCase
     public function testStoreCreateRecordAndDeleteRecordSuccess()
     {
         // 準備（Arrange）
-        BusinessHourModel::factory()->create([
+        BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
             'time_period' => TimePeriod::AM,
@@ -236,7 +230,7 @@ class BusinessHourControllerTest extends TestCase
 
         $this->assertDatabaseCount('business_hours', 1);
 
-        $record = BusinessHourModel::first();
+        $record = BusinessHour::first();
         $this->assertEquals(DayOfWeek::FRIDAY, $record->day_of_week);
         $this->assertEquals(TimePeriod::PM, $record->time_period);
         $this->assertEquals('13:00', $record->start_time->format('H:i'));
@@ -249,7 +243,7 @@ class BusinessHourControllerTest extends TestCase
     public function testDestroySuccess()
     {
         // 準備（Arrange）
-        $model = BusinessHourModel::factory()->create([
+        $model = BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
             'time_period' => TimePeriod::AM,
@@ -259,7 +253,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->uuid]));
+        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -273,8 +267,8 @@ class BusinessHourControllerTest extends TestCase
     public function testDestroyNotHospitalOwnFailure()
     {
         // 準備（Arrange）
-        $model = BusinessHourModel::factory()->create([
-            'hospital_id' => HospitalModel::factory()->create()->id,
+        $model = BusinessHour::factory()->create([
+            'hospital_id' => Hospital::factory()->create()->id,
             'day_of_week' => DayOfWeek::FRIDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
@@ -283,7 +277,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->uuid]));
+        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);

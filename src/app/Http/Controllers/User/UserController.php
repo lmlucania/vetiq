@@ -4,15 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\UserService;
+use App\Application\Service\User\UserProfile\DeleteMyProfileService;
+use App\Application\Service\User\UserProfile\GetMyProfileService;
+use App\Application\Service\User\UserProfile\UpdateMyProfileService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\UpdateUserProfileRequest;
+use App\Http\Requests\User\UseProfile\UpdateUserProfileRequest;
 use App\Transformers\UserProfileTransformer;
 
 class UserController extends Controller
 {
     public function __construct(
-        private UserService $userService,
+        private GetMyProfileService $getMyProfileService,
+        private UpdateMyProfileService $updateMyProfileService,
+        private DeleteMyProfileService $deleteMyProfileService,
     ) {
     }
 
@@ -23,7 +27,7 @@ class UserController extends Controller
      */
     public function me()
     {
-        $userProfile = $this->userService->getAuthUser();
+        $userProfile = $this->getMyProfileService->execute();
 
         return fractal($userProfile, new UserProfileTransformer())->respond();
     }
@@ -35,7 +39,7 @@ class UserController extends Controller
      */
     public function update(UpdateUserProfileRequest $request)
     {
-        $success = $this->userService->update(
+        $success = $this->updateMyProfileService->execute(
             email: $request->getEmail(),
             firstName: $request->getFirstName(),
             lastName: $request->getLastName(),
@@ -61,7 +65,7 @@ class UserController extends Controller
      */
     public function destroy()
     {
-        $success = $this->userService->deleteMe();
+        $success = $this->deleteMyProfileService->execute();
 
         if ($success) {
             return response()->success();

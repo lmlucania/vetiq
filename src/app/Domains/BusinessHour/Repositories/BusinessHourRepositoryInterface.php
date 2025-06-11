@@ -4,32 +4,19 @@ declare(strict_types=1);
 
 namespace App\Domains\BusinessHour\Repositories;
 
-use App\Domains\BusinessHour\Entity\BusinessHour;
-use App\Domains\BusinessHour\Enum\DayOfWeek;
-use App\Domains\BusinessHour\Enum\TimePeriod;
-use App\Domains\BusinessHour\ValueObjects\BusinessHourUuid;
-use App\Domains\BusinessHour\ValueObjects\DeletableBusinessHourId;
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Models\BusinessHourModel;
+use App\Domains\Schedule\Enum\DayOfWeek;
+use App\Models\BusinessHour;
 use Illuminate\Database\Eloquent\Collection;
 
 interface BusinessHourRepositoryInterface
 {
-    public function generateId(string $modelClass): int;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): BusinessHour;
 
-    public function getByUuid(BusinessHourUuid $uuid): BusinessHourModel;
+    public function getListByHospitalId(int $hospitalId): Collection;
 
-    public function findBySchedule(
-        HospitalId $hospitalId,
-        DayOfWeek $dayOfWeek,
-        TimePeriod $timePeriod
-    ): ?BusinessHourModel;
+    public function delete(int $id): bool;
 
-    public function getListByHospitalId(HospitalId $hospitalId): Collection;
+    public function deleteByDayOfWeekInHospital(int $hospitalId, DayOfWeek $dayOfWeek): int;
 
-    public function create(BusinessHour $businessHourEntity): bool;
-
-    public function update(BusinessHour $businessHourEntity): bool;
-
-    public function delete(DeletableBusinessHourId $id): bool;
+    public function createMany(array $rows): bool;
 }

@@ -13,7 +13,8 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
 {
     use SortableQuery;
 
-    private $sortable = ['id', 'name'];
+    private array $sortable    = ['id', 'name'];
+    private array $defaultSort = ['-id'];
 
     public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {
@@ -23,7 +24,7 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
             ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name')
             ->orderBy('favorites.id', 'desc');
 
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $sortedQuery->where(function ($query) use ($keyword) {
             $query->where('name', 'LIKE', "%{$keyword}%");

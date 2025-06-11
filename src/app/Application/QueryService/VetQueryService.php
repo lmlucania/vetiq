@@ -5,29 +5,22 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
-use App\Application\Service\AuthStaffService;
 use App\Infrastructure\QueryService\VetQueryServiceInterface;
-use App\Models\VetModel;
+use App\Models\Vet;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class VetQueryService implements VetQueryServiceInterface
 {
     use SortableQuery;
 
-    private $sortable = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
+    private array $sortable    = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
+    private array $defaultSort = ['id'];
 
-    public function __construct(
-        private readonly AuthStaffService $authStaffService
-    ) {
-    }
-
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {
-        $hospitalId = $this->authStaffService->getHospitalId();
+        $query = Vet::query()->where('hospital_id', $hospitalId);
 
-        $query = VetModel::query()->where('hospital_id', $hospitalId->getValue());
-
-        $sortedQuery = $this->querySort($query, $this->sortable, $sort);
+        $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $sortedQuery->where(function ($query) use ($keyword) {
             $query->where('last_name', 'LIKE', "%{$keyword}%")
