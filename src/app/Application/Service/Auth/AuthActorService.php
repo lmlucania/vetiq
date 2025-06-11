@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Service\Auth;
 
 use App\Exceptions\UnauthorizedException;
-use App\Models\Staff;
 use App\Models\StaffMember;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as _User;
