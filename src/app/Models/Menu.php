@@ -12,8 +12,14 @@ class Menu extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table    = 'menus';
-    protected $fillable = ['hospital_id', 'name', 'email', 'required_time', 'is_published'];
+    protected $fillable = [
+        'uuid',
+        'hospital_id',
+        'name',
+        'detail',
+        'required_time',
+        'is_published',
+        ];
 
     protected function casts(): array
     {

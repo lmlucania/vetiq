@@ -14,8 +14,8 @@ class MenuRepository implements MenuRepositoryInterface
         return Menu::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    // fixme ここから先を直す
     public function create(
+        string $uuid,
         int $hospitalId,
         string $name,
         string $detail,
@@ -23,6 +23,7 @@ class MenuRepository implements MenuRepositoryInterface
         bool $isPublished
     ): Menu {
         return Menu::create([
+            'uuid'          => $uuid,
             'hospital_id'   => $hospitalId,
             'name'          => $name,
             'detail'        => $detail,
@@ -49,8 +50,8 @@ class MenuRepository implements MenuRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $menuModel = Menu::findOrFail($id->getValue());
+        $menu = Menu::findOrFail($id);
 
-        return $menuModel->delete();
+        return $menu->delete();
     }
 }

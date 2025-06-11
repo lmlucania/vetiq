@@ -4,20 +4,19 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\Service\Menu\CreateMenuService;
-use App\Application\Service\Menu\DeleteMenuService;
-use App\Application\Service\Menu\GetMenuDetailService;
-use App\Application\Service\Menu\ListHospitalMenusService;
-use App\Application\Service\Menu\SwitchPublishMenuService;
-use App\Application\Service\Menu\SwitchUnPublishMenuService;
-use App\Application\Service\Menu\UpdateMenuService;
+use App\Application\Service\Hospital\Menu\CreateMenuService;
+use App\Application\Service\Hospital\Menu\DeleteMenuService;
+use App\Application\Service\Hospital\Menu\GetMenuDetailService;
+use App\Application\Service\Hospital\Menu\ListHospitalMenusService;
+use App\Application\Service\Hospital\Menu\SwitchPublishMenuService;
+use App\Application\Service\Hospital\Menu\SwitchUnPublishMenuService;
+use App\Application\Service\Hospital\Menu\UpdateMenuService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\IndexMenuRequest;
 use App\Http\Requests\Hospital\StoreMenuRequest;
 use App\Http\Requests\Hospital\UpdateMenuRequest;
 use App\Transformers\MenuTransformer;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class MenuController extends Controller
@@ -125,9 +124,9 @@ class MenuController extends Controller
      * 診察メニューを公開に変更
      * @lrd:end
      */
-    public function publish(Request $request, string $uuid): JsonResponse
+    public function publish(int $id): JsonResponse
     {
-        $success = $this->publishMenuUseCase->publish($uuid);
+        $success = $this->switchPublishMenuService->execute($id);
 
         if ($success) {
             return response()->success();
@@ -140,9 +139,9 @@ class MenuController extends Controller
      * 診察メニューを非公開に変更
      * @lrd:end
      */
-    public function unpublish(Request $request, string $uuid): JsonResponse
+    public function unpublish(int $id): JsonResponse
     {
-        $success = $this->unpublishMenuUseCase->unpublish($uuid);
+        $success = $this->switchUnPublishMenuService->execute($id);
 
         if ($success) {
             return response()->success();

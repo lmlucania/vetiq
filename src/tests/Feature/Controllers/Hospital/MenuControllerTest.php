@@ -9,7 +9,6 @@ use App\Models\Menu;
 use App\Models\StaffModel;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
-use Illuminate\Support\Facades\Hash;
 
 class MenuControllerTest extends TestCase
 {
@@ -21,20 +20,9 @@ class MenuControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->hospital = Hospital::factory()->create([
-            'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
-            'name'         => '裕美子病院',
-            'zipcode'      => '1234567',
-            'address'      => '岩手県佐藤市東区吉本町佐々木1-2-3',
-            'phone'        => '0123456789',
-            'is_published' => true,
-        ]);
-
-        $this->staff = StaffModel::factory()->create([
+        $this->hospital = Hospital::factory()->create();
+        $this->staff    = StaffModel::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'name'        => '山岸太一',
-            'email'       => 'staff+1@example.com',
-            'password'    => Hash::make('password'),
         ]);
 
         $this->menu = Menu::factory()->create([
@@ -288,7 +276,7 @@ class MenuControllerTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingMenu->uuid]);
+            ->assertJsonMissing(['uuid' => $missingMenu->id]);
     }
 
     /**
@@ -373,7 +361,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.menus.show', ['menu' => $this->menu->uuid]));
+        $response = $this->get(route('hospital.menus.show', ['menu' => $this->menu->id]));
 
         // 検証（Assert）
         $response
@@ -397,7 +385,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.menus.show', ['menu' => $this->otherHospitalMenu->uuid]));
+        $response = $this->get(route('hospital.menus.show', ['menu' => $this->otherHospitalMenu->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -418,7 +406,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->put(route('hospital.menus.update', ['menu' => $this->menu->uuid]), $postData);
+        $response = $this->put(route('hospital.menus.update', ['menu' => $this->menu->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -445,7 +433,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->put(route('hospital.menus.update', ['menu' => $this->otherHospitalMenu->uuid]), $postData);
+        $response = $this->put(route('hospital.menus.update', ['menu' => $this->otherHospitalMenu->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -461,7 +449,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
+        $response = $this->delete(route('hospital.menus.destroy', ['menu' => 0]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -477,7 +465,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->menu->uuid]));
+        $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->menu->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -502,7 +490,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->otherHospitalMenu->uuid]));
+        $response = $this->delete(route('hospital.menus.destroy', ['menu' => $this->otherHospitalMenu->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -520,7 +508,7 @@ class MenuControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.menus.destroy', ['menu' => '1667cff9-71e5-4719-953c-e074507d2d3d']));
+        $response = $this->delete(route('hospital.menus.destroy', ['menu' => 0]));
 
         // 検証（Assert）
         $response->assertStatus(404);

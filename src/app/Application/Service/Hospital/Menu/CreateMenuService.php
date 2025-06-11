@@ -7,6 +7,7 @@ namespace App\Application\Service\Hospital\Menu;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Models\Menu;
+use Illuminate\Support\Str;
 
 class CreateMenuService
 {
@@ -21,6 +22,7 @@ class CreateMenuService
         $hospitalId = $this->authActorService->getHospitalId();
 
         return $this->menuRepository->create(
+            uuid: (string)Str::uuid(),
             hospitalId: $hospitalId,
             name: $name,
             detail: $detail,

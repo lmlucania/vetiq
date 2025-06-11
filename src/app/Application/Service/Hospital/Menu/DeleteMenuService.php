@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Service\Hospital\Menu;
 
-nu;
-
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 

@@ -7,7 +7,6 @@ namespace App\Http\Controllers\User;
 use App\Application\Service\User\UserProfile\DeleteMyProfileService;
 use App\Application\Service\User\UserProfile\GetMyProfileService;
 use App\Application\Service\User\UserProfile\UpdateMyProfileService;
-use App\Application\Service\UserService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\UseProfile\UpdateUserProfileRequest;
 use App\Transformers\UserProfileTransformer;
