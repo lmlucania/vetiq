@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\User\Hospital\ListHospitalsService;
+use App\Application\Service\User\HospitalInfo\ListHospitalsService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\IndexHospitalRequest;
+use App\Http\Requests\User\HospitalInfo\IndexHospitalRequest;
 use App\Transformers\HospitalTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 

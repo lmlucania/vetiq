@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service\User\Hospital;
+namespace App\Application\Service\User\HospitalInfo;
 
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 

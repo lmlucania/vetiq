@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\ReviewService;
 use App\Application\Service\User\Review\CreateReviewService;
 use App\Application\Service\User\Review\GetReviewDetailService;
 use App\Application\Service\User\Review\HospitalReviewsService;
@@ -15,7 +14,6 @@ use App\Http\Requests\User\Review\IndexOwnReviewRequest;
 use App\Http\Requests\User\Review\IndexReviewRequest;
 use App\Http\Requests\User\Review\StoreReviewRequest;
 use App\Http\Requests\User\Review\UpdateReviewRequest;
-use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 use App\Transformers\ReviewTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
@@ -27,7 +25,6 @@ class ReviewController extends Controller
         private GetReviewDetailService $getReviewDetailService,
         private UpdateReviewService $updateReviewService,
         private MyReviewsService $myReviewsService,
-
     ) {
     }
 

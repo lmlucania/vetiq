@@ -2,33 +2,23 @@
 
 declare(strict_types=1);
 
-namespace App\Application\Service;
+namespace App\Application\Service\User\UserProfile;
 
-use App\Application\QueryService\UserQueryService;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\User\Repository\UserProfileRepositoryInterface;
 use App\Domains\User\Repository\UserRepositoryInterface;
 use Illuminate\Support\Facades\DB;
-use stdClass;
 
-class UserService
+class UpdateMyProfileService
 {
     public function __construct(
         private AuthActorService $authActorService,
-        private UserQueryService $userQueryService,
         private UserRepositoryInterface $userRepository,
         private UserProfileRepositoryInterface $userProfileRepository,
     ) {
     }
 
-    public function getAuthUser(): ?stdClass
-    {
-        $userId = $this->authActorService->getUserId();
-
-        return $this->userQueryService->getById($userId);
-    }
-
-    public function update(
+    public function execute(
         string $email,
         string $firstName,
         string $lastName,
@@ -73,14 +63,5 @@ class UserService
             // 両方成功した場合は、trueを返す
             return ($updated === true && $upserted >= 1);
         });
-    }
-
-    public function deleteMe()
-    {
-        $userId = $this->authActorService->getUserId();
-
-        // fixme 未受診の予約がある場合は削除させない
-
-        return $this->userRepository->delete($userId);
     }
 }
