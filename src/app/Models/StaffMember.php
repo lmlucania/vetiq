@@ -8,11 +8,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User;
 
-class StaffModel extends User
+class StaffMember extends User
 {
     use HasFactory, SoftDeletes;
-
-    protected $table = 'staffs';
 
     /**
      * Get the attributes that should be cast.

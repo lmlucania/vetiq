@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Hospital;
-use App\Models\VetModel;
+use App\Models\Vet;
 use Illuminate\Database\Seeder;
 
 class VetSeeder extends Seeder
@@ -17,7 +17,7 @@ class VetSeeder extends Seeder
     {
         $hospitals = Hospital::all();
         foreach ($hospitals as $hospital) {
-            VetModel::factory(3)->create(['hospital_id' => $hospital->id]);
+            Vet::factory(3)->create(['hospital_id' => $hospital->id]);
         }
     }
 }

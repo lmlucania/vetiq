@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Database\Seeders;
 
 use App\Models\Hospital;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use Illuminate\Database\Seeder;
 
-class StaffSeeder extends Seeder
+class StaffMemberSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,10 +17,10 @@ class StaffSeeder extends Seeder
     {
         $hospitals = Hospital::all();
         foreach ($hospitals as $hospital) {
-            StaffModel::factory()->count(10)->create(['hospital_id' => $hospital->id]);
+            StaffMember::factory()->count(3)->create(['hospital_id' => $hospital->id]);
         }
         // OpenAPIからログインできるようにデータを作成
-        StaffModel::factory()->create([
+        StaffMember::factory()->create([
             'hospital_id' => $hospital->id,
             'email'       => 'staff+1@example.com',
         ]);

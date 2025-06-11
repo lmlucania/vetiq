@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\Hospital;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use App\Models\Vet;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
@@ -14,7 +14,7 @@ class VetControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
@@ -22,7 +22,7 @@ class VetControllerTest extends TestCase
 
         // ログインする病院のデータをセットアップ
         $this->hospital = Hospital::factory()->create(['id' => 1]);
-        $this->staff    = StaffModel::factory()->create([
+        $this->staff    = StaffMember::factory()->create([
             'id'          => 1,
             'hospital_id' => $this->hospital->id,
             ]);
@@ -58,7 +58,7 @@ class VetControllerTest extends TestCase
 
         // ログインしない病院のデータをセットアップ
         $nonLoginHospital = Hospital::factory()->create();
-        StaffModel::factory()->create([
+        StaffMember::factory()->create([
             'hospital_id' => $nonLoginHospital->id,
         ]);
         $this->nonLoginHospitalVet = Vet::factory()->create([
@@ -85,7 +85,7 @@ class VetControllerTest extends TestCase
             ->assertJsonFragment([
                 'data' => [
                     [
-                        'id' => 1,
+                        'id'                 => 1,
                         'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                         'last_name'          => 'テスト姓1',
                         'first_name'         => 'テスト名1',
@@ -93,7 +93,7 @@ class VetControllerTest extends TestCase
                         'remark'             => 'テスト備考1',
                     ],
                     [
-                        'id' => 2,
+                        'id'                 => 2,
                         'uuid'               => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
                         'last_name'          => 'テスト姓2',
                         'first_name'         => 'テスト名2',
@@ -101,7 +101,7 @@ class VetControllerTest extends TestCase
                         'remark'             => 'テスト備考2',
                     ],
                     [
-                        'id' => 3,
+                        'id'                 => 3,
                         'uuid'               => '3667d80e-9f20-46f4-854b-8efa648c71c0',
                         'last_name'          => 'テスト姓3',
                         'first_name'         => 'テスト名3',
@@ -265,7 +265,7 @@ class VetControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(6, 'data')
             ->assertJsonFragment([
-                'id' => 1,
+                'id'                 => 1,
                 'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                 'last_name'          => 'テスト姓1',
                 'first_name'         => 'テスト名1',

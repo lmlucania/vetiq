@@ -8,11 +8,10 @@ use App\Domains\ExceptionHour\Enum\TimePeriod;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ExceptionHourModel extends Model
+class ExceptionHour extends Model
 {
     use HasFactory;
 
-    protected $table    = 'exception_hours';
     protected $fillable = [
         'hospital_id',
         'date',

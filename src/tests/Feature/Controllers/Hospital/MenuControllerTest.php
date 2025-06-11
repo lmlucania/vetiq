@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\Hospital;
 use App\Models\Menu;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 
@@ -14,14 +14,14 @@ class MenuControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
         parent::setUp();
 
         $this->hospital = Hospital::factory()->create();
-        $this->staff    = StaffModel::factory()->create([
+        $this->staff    = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
         ]);
 
@@ -55,7 +55,7 @@ class MenuControllerTest extends TestCase
 
         // 他の病院の診察メニューを作成
         $hospital = Hospital::factory()->create();
-        StaffModel::factory()->create(['hospital_id' => $hospital->id]);
+        StaffMember::factory()->create(['hospital_id' => $hospital->id]);
         $this->otherHospitalMenu = Menu::factory()->create(['hospital_id' => $hospital->id]);
     }
 

@@ -19,7 +19,7 @@ class AuthController extends Controller
      */
     public function login(LoginRequest $request)
     {
-        if (Auth::guard('staffs')->attempt($request->only(['email', 'password']))) {
+        if (Auth::guard('staff-members')->attempt($request->only(['email', 'password']))) {
             $request->session()->regenerate();
             return response()->json(['message' => 'ログインが成功しました。']);
         }

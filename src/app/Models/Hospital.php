@@ -31,11 +31,6 @@ class Hospital extends Model
         ];
     }
 
-    public function staffs()
-    {
-        return $this->hasMany(StaffModel::class);
-    }
-
     public function favoredByUsers()
     {
         return $this->belongsToMany(

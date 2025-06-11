@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\Vet\Repository\VetRepositoryInterface;
-use App\Models\Menu;
 use App\Models\Vet;
 
 class VetRepository implements VetRepositoryInterface

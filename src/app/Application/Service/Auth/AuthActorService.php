@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace App\Application\Service\Auth;
 
 use App\Exceptions\UnauthorizedException;
-use App\Models\StaffModel;
+use App\Models\Staff;
+use App\Models\StaffMember;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as _User;
 
@@ -20,7 +21,7 @@ class AuthActorService
 
     public function isStaff(): bool
     {
-        return $this->authUser instanceof StaffModel;
+        return $this->authUser instanceof StaffMember;
     }
 
     public function isUser(): bool
@@ -28,7 +29,7 @@ class AuthActorService
         return $this->authUser instanceof User;
     }
 
-    public function getStaff(): StaffModel
+    public function getStaff(): StaffMember
     {
         if (! ($this->isStaff())) {
             throw new UnauthorizedException('スタッフ以外は許可されていません。');

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -21,6 +22,7 @@ class VetFactory extends Factory
     {
         return [
             'uuid'               => Str::uuid(),
+            'hospital_id'        => Hospital::factory()->create()->id,
             'last_name'          => $this->faker->lastName(),
             'first_name'         => $this->faker->firstName(),
             'accept_appointment' => true,

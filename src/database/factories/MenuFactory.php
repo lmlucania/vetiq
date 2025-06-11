@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
+use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -31,6 +32,7 @@ class MenuFactory extends Factory
         $menu = $this->faker->randomElement($menus);
         return [
             'uuid'          => Str::uuid(),
+            'hospital_id'   => Hospital::factory()->create()->id,
             'name'          => $menu['name'],
             'detail'        => $menu['detail'],
             'required_time' => 30,

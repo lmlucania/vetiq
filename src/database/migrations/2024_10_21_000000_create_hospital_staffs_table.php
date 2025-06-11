@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('staffs', function (Blueprint $table) {
+        Schema::create('staff_members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade')->comment('病院ID');
             $table->string('name');
@@ -23,19 +23,10 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        Schema::create('staff_password_reset_tokens', function (Blueprint $table) {
+        Schema::create('staff_members_password_reset_tokens', function (Blueprint $table) {
             $table->string('email')->primary();
             $table->string('token');
             $table->timestamp('created_at')->nullable();
-        });
-
-        Schema::create('staff_sessions', function (Blueprint $table) {
-            $table->string('id')->primary();
-            $table->foreignId('user_id')->nullable()->index();
-            $table->string('ip_address', 45)->nullable();
-            $table->text('user_agent')->nullable();
-            $table->longText('payload');
-            $table->integer('last_activity')->index();
         });
     }
 
@@ -44,8 +35,7 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('staffs');
-        Schema::dropIfExists('staff_password_reset_tokens');
-        Schema::dropIfExists('staff_sessions');
+        Schema::dropIfExists('staff-members');
+        Schema::dropIfExists('staff_members_password_reset_tokens');
     }
 };

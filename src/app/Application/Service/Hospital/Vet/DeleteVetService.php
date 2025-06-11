@@ -28,7 +28,7 @@ class DeleteVetService
             id: $id,
         );
 
-        if (!$this->vetDomainService->canDelete($hospitalId)) {
+        if (! $this->vetDomainService->canDelete($hospitalId)) {
             throw new DomainException('獣医が1人しかいないため削除できません。');
         }
 

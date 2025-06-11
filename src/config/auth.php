@@ -38,9 +38,9 @@ return [
     */
 
     'guards' => [
-        'staffs' => [
+        'staff-members' => [
             'driver'   => 'session',
-            'provider' => 'staffs',
+            'provider' => 'staff-members',
         ],
         'users' => [
             'driver'   => 'session',
@@ -66,9 +66,9 @@ return [
     */
 
     'providers' => [
-        'staffs' => [
+        'staff-members' => [
             'driver' => 'eloquent',
-            'model'  => App\Models\StaffModel::class,
+            'model'  => App\Models\StaffMember::class,
         ],
         'users' => [
             'driver' => 'eloquent',
@@ -101,8 +101,8 @@ return [
     */
 
     'passwords' => [
-        'staffs' => [
-            'provider' => 'staffs',
+        'staff-members' => [
+            'provider' => 'staff-members',
             'table'    => env('AUTH_PASSWORD_RESET_TOKEN_TABLE', 'staff_password_reset_tokens'),
             'expire'   => 60,
             'throttle' => 60,

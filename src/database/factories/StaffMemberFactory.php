@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
  */
-class StaffModelFactory extends Factory
+class StaffMemberFactory extends Factory
 {
     /**
      * Define the model's default state.

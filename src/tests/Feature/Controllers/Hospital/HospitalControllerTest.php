@@ -6,7 +6,7 @@ namespace Tests\Feature\Controllers\Hospital;
 
 use App\Domains\Location\Enum\Prefecture;
 use App\Models\Hospital;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
@@ -15,7 +15,7 @@ class HospitalControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
@@ -32,7 +32,7 @@ class HospitalControllerTest extends TestCase
             'is_published' => true,
         ]);
 
-        $this->staff = StaffModel::factory()->create([
+        $this->staff = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
             'name'        => '山岸太一',
             'email'       => 'staff+1@example.com',
@@ -74,7 +74,7 @@ class HospitalControllerTest extends TestCase
     {
         // 準備（Arrange）
         $hospital = Hospital::factory()->create();
-        $staff    = StaffModel::factory()->create(['hospital_id' => $hospital->id]);
+        $staff    = StaffMember::factory()->create(['hospital_id' => $hospital->id]);
         $this->actingAs($staff, $this->guard);
         $postData = [
             'name'         => '裕美子病院',

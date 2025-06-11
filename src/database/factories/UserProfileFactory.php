@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\Location\Enum\Prefecture;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,6 +21,7 @@ class UserProfileFactory extends Factory
     public function definition(): array
     {
         return [
+            'user_id'         => User::factory()->create()->id,
             'last_name'       => $this->faker->lastName(),
             'first_name'      => $this->faker->firstName(),
             'last_name_kana'  => $this->faker->lastKanaName(),

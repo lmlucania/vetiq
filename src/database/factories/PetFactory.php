@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\Pet\Enum\Gender;
+use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
@@ -22,6 +23,7 @@ class PetFactory extends Factory
     {
         return [
             'uuid'            => (string) Str::uuid(),
+            'user_id'         => User::factory()->create()->id,
             'gender'          => Gender::Male,
             'birthday'        => $this->faker->dateTimeBetween('-15 years', '-1 year'),
             'started_care_at' => $this->faker->dateTimeBetween('-10 years', 'now'),

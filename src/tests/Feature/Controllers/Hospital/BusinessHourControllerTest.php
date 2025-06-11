@@ -8,7 +8,7 @@ use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\BusinessHour;
 use App\Models\Hospital;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -16,7 +16,7 @@ class BusinessHourControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private $guard = 'staffs';
+    private $guard = 'staff-members';
 
     public function setUp():void
     {
@@ -24,7 +24,7 @@ class BusinessHourControllerTest extends TestCase
 
         // ログインする病院のデータをセットアップ
         $this->hospital = Hospital::factory()->create();
-        $this->staff    = StaffModel::factory()->create([
+        $this->staff    = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
         ]);
     }

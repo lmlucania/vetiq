@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Hospital;
 
 use App\Models\Hospital;
-use App\Models\StaffModel;
+use App\Models\StaffMember;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
@@ -14,13 +14,13 @@ class AuthControllerTest extends TestCase
 {
     use RefreshDatabase;
 
-    private string $guard = 'staffs';
+    private string $guard = 'staff-members';
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->staff = StaffModel::factory()->create([
+        $this->staff = StaffMember::factory()->create([
             'id'          => 1,
             'hospital_id' => Hospital::factory()->create()->id,
             'name'        => 'test',
@@ -75,7 +75,7 @@ class AuthControllerTest extends TestCase
      * ログイン 論理削除済みのユーザーでログインできないことをチェック
      * @return void
      */
-    public function testLoginWithSoftDeletedStaffFailure()
+    public function testLoginWithSoftDeletedStaffMemberFailure()
     {
         // 準備（Arrange）
         $this->staff->delete();

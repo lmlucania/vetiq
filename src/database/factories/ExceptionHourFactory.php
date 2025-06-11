@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\ExceptionHour\Enum\TimePeriod;
+use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExceptionHourModel>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExceptionHour>
  */
-class ExceptionHourModelFactory extends Factory
+class ExceptionHourFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -22,6 +23,7 @@ class ExceptionHourModelFactory extends Factory
     {
         return [
             'uuid'        => Str::uuid(),
+            'hospital_id' => Hospital::factory()->create()->id,
             'date'        => '2025/02/01',
             'time_period' => TimePeriod::AM,
             'start_time'  => null,
