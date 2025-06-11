@@ -8,7 +8,7 @@ use App\Application\Service\User\Favorite\AttachFavoriteService;
 use App\Application\Service\User\Favorite\DetachFavoriteService;
 use App\Application\Service\User\Favorite\MyFavoriteHospitalsService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\User\IndexFavoriteRequest;
+use App\Http\Requests\User\Favorite\IndexFavoriteRequest;
 use App\Transformers\FavoriteTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 

@@ -18,8 +18,13 @@ class MyFavoriteHospitalsService
 
     public function execute(int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
     {
-        $userId = $this->authActorService->getUserId();
-
-        return $this->favoriteQueryService->listByCriteria($userId, $page, $perPage, $keyword, $sort, $queryParam);
+        return $this->favoriteQueryService->listByCriteria(
+            userId: $this->authActorService->getUserId(),
+            page:$page,
+            perPage: $perPage,
+            keyword: $keyword,
+            sort: $sort,
+            queryParam: $queryParam,
+        );
     }
 }

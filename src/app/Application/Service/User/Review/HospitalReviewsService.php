@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Application\Service\User\Review;
+
+use App\Application\Service\Auth\AuthActorService;
+use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Domains\Review\Repository\ReviewRepositoryInterface;
+use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
+
+class HospitalReviewsService
+{
+    public function __construct(
+        private AuthActorService $authActorService,
+        private HospitalRepositoryInterface $hospitalRepository,
+        private ReviewRepositoryInterface $reviewRepository,
+        private ReviewQueryServiceInterface $reviewQueryService,
+    ) {
+    }
+
+    public function execute(string $hospitalUuid, int $page, int $perPage, string $keyword, array $rating, array $sort, $queryParam)
+    {
+        return $this->reviewQueryService->listByCriteriaInHospital(
+            hospitalUuid: $hospitalUuid,
+            page:$page,
+            perPage: $perPage,
+            keyword: $keyword,
+            rating: $rating,
+            sort: $sort,
+            queryParam: $queryParam,
+        );
+    }
+}

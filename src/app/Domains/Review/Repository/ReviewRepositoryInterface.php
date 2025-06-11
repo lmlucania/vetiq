@@ -9,7 +9,7 @@ use App\Models\Review;
 
 interface ReviewRepositoryInterface
 {
-    public function getByUuidInHospital(string $hospitalUuid, string $reviewUuid): Review;
+    public function getByHospitalUuidAndUuid(string $hospitalUuid, string $uuid): Review;
 
     public function create(
         string $uuid,

@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Review;
 
 use App\Domains\Review\Enum\Rating;
 use App\Http\Requests\Base\ApiRequest;
 use Illuminate\Validation\Rules\Enum;
 
-class UpdateReviewRequest extends ApiRequest
+class StoreReviewRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

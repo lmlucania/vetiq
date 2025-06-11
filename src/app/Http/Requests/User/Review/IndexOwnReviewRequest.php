@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\User\Review;
 
 use App\Domains\Review\Enum\Rating;
 use App\Http\Requests\Base\ApiRequest;

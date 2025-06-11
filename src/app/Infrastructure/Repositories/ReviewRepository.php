@@ -11,9 +11,9 @@ use App\Models\Review;
 
 class ReviewRepository implements ReviewRepositoryInterface
 {
-    public function getByUuidInHospital(string $hospitalUuid, string $reviewUuid): Review
+    public function getByHospitalUuidAndUuid(string $hospitalUuid, string $uuid): Review
     {
-        $model = Review::where('uuid', $reviewUuid)
+        $model = Review::where('uuid', $uuid)
             ->whereHas('hospital', fn ($query) => $query->where('uuid', $hospitalUuid))
             ->first();
 
