@@ -8,6 +8,7 @@ use App\Domains\Location\Enum\Prefecture;
 use App\Models\Hospital;
 use App\Models\Review;
 use App\Models\StaffMember;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
 use Illuminate\Support\Facades\Hash;
@@ -22,23 +23,11 @@ class ReviewControllerTest extends TestCase
     {
         parent::setUp();
 
-        $this->hospital = Hospital::factory()->create([
-            'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
-            'name'         => '裕美子病院',
-            'post_code'    => '1234567',
-            'prefecture'   => Prefecture::Okinawa->value,
-            'address1'     => '佐藤市東区吉本町',
-            'address2'     => '佐々木1-2-3',
-            'phone'        => '0123456789',
-            'is_published' => true,
-        ]);
+        $this->hospital = Hospital::factory()->create();
 
         $this->staff = StaffMember::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'name'        => '山岸太一',
-            'email'       => 'staff+1@example.com',
-            'password'    => Hash::make('password'),
-        ]);
+            ]);
     }
 
     /**
@@ -48,11 +37,7 @@ class ReviewControllerTest extends TestCase
     {
         // 準備（Arrange）
         $this->actingAs($this->staff, $this->guard);
-        $review1 = Review::factory()->create([
-            'hospital_id' => $this->hospital->id,
-            'user_id'     => $this->staff->id,
-        ]);
-        $review2 = Review::factory()->create([
+        $reviews = Review::factory(2)->create([
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -65,18 +50,18 @@ class ReviewControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(2, 'data')
             ->assertJsonFragment([
-                'uuid'   => $review2->uuid,
-                'rating' => $review2->rating,
-                'title'  => $review2->title,
-                'body'   => $review2->body,
+                'uuid'   => $reviews[1]->uuid,
+                'rating' => $reviews[1]->rating,
+                'title'  => $reviews[1]->title,
+                'body'   => $reviews[1]->body,
             ])
             ->assertJsonFragment([
-                'uuid'   => $review1->uuid,
-                'rating' => $review1->rating,
-                'title'  => $review1->title,
-                'body'   => $review1->body,
+                'uuid'   => $reviews[0]->uuid,
+                'rating' => $reviews[0]->rating,
+                'title'  => $reviews[0]->title,
+                'body'   => $reviews[0]->body,
             ])
-            ->assertJsonPath('data.0.uuid', (string)$review2->uuid) // 新着順で取得される
-            ->assertJsonPath('data.1.uuid', (string)$review1->uuid);
+            ->assertJsonPath('data.0.uuid', (string)$reviews[1]->uuid) // 新着順で取得される
+            ->assertJsonPath('data.1.uuid', (string)$reviews[0]->uuid);
     }
 }
