@@ -4,50 +4,62 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Vet\Entity\Vet;
-use App\Domains\Vet\Factory\VetFactory;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
-use App\Domains\Vet\ValueObjects\DeletableVetId;
-use App\Domains\Vet\ValueObjects\VetUuid;
-use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\VetModel;
+use App\Models\Menu;
+use App\Models\Vet;
 
 class VetRepository implements VetRepositoryInterface
 {
-    use GenerationId;
-
-    public function __construct(
-        private readonly VetFactory $vetFactory,
-    ) {
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Vet
+    {
+        return Vet::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function getByUuid(VetUuid $uuid): VetModel
-    {
-        return VetModel::where('uuid', $uuid->getValue())->firstOrFail();
+    public function create(
+        string $uuid,
+        int $hospitalId,
+        string $lastName,
+        string $firstName,
+        bool $acceptAppointment,
+        string $remark,
+    ): Vet {
+        return Vet::create([
+            'uuid'               => $uuid,
+            'hospital_id'        => $hospitalId,
+            'first_name'         => $firstName,
+            'last_name'          => $lastName,
+            'accept_appointment' => $acceptAppointment,
+            'remark'             => $remark,
+        ]);
     }
 
-    public function create(Vet $vetEntity): bool
-    {
-        $vetModel = $this->vetFactory->entityToModel($vetEntity);
-        return $vetModel->save();
+    public function update(
+        int $id,
+        int $hospitalId,
+        string $lastName,
+        string $firstName,
+        bool $acceptAppointment,
+        string $remark,
+    ): bool {
+        $vet = Vet::findOrFail($id);
+
+        $vet->first_name         = $firstName;
+        $vet->last_name          = $lastName;
+        $vet->accept_appointment = $acceptAppointment;
+        $vet->remark             = $remark;
+
+        return $vet->save();
     }
 
-    public function update(Vet $vetEntity): bool
+    public function delete(int $id): bool
     {
-        $vetModel = VetModel::findOrFail($vetEntity->getId()->getValue());
+        $vet = Vet::findOrFail($id);
 
-        $vetModel->last_name          = $vetEntity->getLastName()->getValue();
-        $vetModel->first_name         = $vetEntity->getFirstName()->getValue();
-        $vetModel->accept_appointment = $vetEntity->getAcceptAppointment()->getValue();
-        $vetModel->remark             = $vetEntity->getRemark()->getValue();
-
-        return $vetModel->update();
+        return $vet->delete();
     }
 
-    public function delete(DeletableVetId $id): bool
+    public function countByHospitalId(int $hospitalId): int
     {
-        $vetModel = VetModel::findOrFail($id->getValue());
-
-        return $vetModel->delete();
+        return Vet::where('hospital_id', $hospitalId)->count();
     }
 }

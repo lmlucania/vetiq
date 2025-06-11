@@ -6,8 +6,8 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Pet\CreatePetService;
 use App\Application\Service\User\Pet\DeletePetService;
-use App\Application\Service\User\Pet\GetPetDetailService;
 use App\Application\Service\User\Pet\GetMyPetsService;
+use App\Application\Service\User\Pet\GetPetDetailService;
 use App\Application\Service\User\Pet\UpdatePetService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Pet\StorePetRequest;

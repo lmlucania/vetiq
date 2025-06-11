@@ -8,8 +8,6 @@ use App\Application\Service\User\Review\CreateReviewService;
 use App\Application\Service\User\Review\GetHospitalReviewsService;
 use App\Application\Service\User\Review\GetMyReviewsService;
 use App\Application\Service\User\Review\GetReviewDetailService;
-use App\Application\Service\User\Review\HospitalReviewsService;
-use App\Application\Service\User\Review\MyReviewsService;
 use App\Application\Service\User\Review\UpdateReviewService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Review\IndexOwnReviewRequest;

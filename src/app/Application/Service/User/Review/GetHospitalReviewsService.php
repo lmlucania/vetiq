@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Service\User\Review;
 
-use App\Application\Service\Auth\AuthActorService;
-use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
-use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 
 class GetHospitalReviewsService

@@ -8,11 +8,10 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class VetModel extends Model
+class Vet extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $table    = 'vets';
     protected $fillable = ['id', 'uuid', 'hospital_id', 'last_name', 'first_name', 'accept_appointment', 'remark'];
 
     protected function casts(): array
