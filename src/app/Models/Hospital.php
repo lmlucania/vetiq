@@ -12,7 +12,17 @@ class Hospital extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'uuid', 'name', 'zipcode', 'address', 'phone', 'is_published'];
+    protected $fillable = [
+        'id',
+        'uuid',
+        'name',
+        'phone',
+        'post_code',
+        'prefecture',
+        'address1',
+        'address2',
+        'is_published',
+        ];
 
     protected function casts(): array
     {

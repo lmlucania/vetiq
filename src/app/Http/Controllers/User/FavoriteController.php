@@ -36,6 +36,7 @@ class FavoriteController extends Controller
             queryParam: $request->getAllQuery(),
         );
         return fractal($paginator->getCollection(), new FavoriteTransformer())
+            ->parseIncludes(['hospital'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

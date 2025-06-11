@@ -45,24 +45,24 @@ class FavoriteControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-            'data' => [
-                [
-                    'id'       => $favorite->id,
-                    'hospital' => [
-                        'id'           => $this->hospital->id,
-                        'uuid'         => $this->hospital->uuid,
-                        'name'         => $this->hospital->name,
-                        'zipcode'      => $this->hospital->zipcode,
-                        'address'      => $this->hospital->address,
-                        'phone'        => $this->hospital->phone,
-                        'is_published' => $this->hospital->is_published,
-                        'deleted_at'   => $this->hospital->deleted_at,
-                        'created_at'   => $this->hospital->created_at,
-                        'updated_at'   => $this->hospital->updated_at,
+                'data' => [
+                    [
+                        'id'       => $favorite->id,
+                        'hospital' => [
+                            'data' => [
+                                'uuid'        => $this->hospital->uuid,
+                                'name'        => $this->hospital->name,
+                                'phone'       => $this->hospital->phone,
+                                'post_code'   => $this->hospital->post_code,
+                                'prefecture'  => $this->hospital->prefecture,
+                                'address1'    => $this->hospital->address1,
+                                'address2'    => $this->hospital->address2,
+                                'is_published'=> $this->hospital->is_published,
+                            ],
+                        ],
                     ],
                 ],
-                ],
-                ]);
+            ]);
     }
 
     /**
