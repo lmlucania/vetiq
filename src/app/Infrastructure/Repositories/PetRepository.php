@@ -14,7 +14,9 @@ class PetRepository implements PetRepositoryInterface
 {
     public function getByUserIdAndUuid(int $userId, string $uuid): Pet
     {
-        return Pet::where('user_id', $userId)->firstWhere('uuid', $uuid);
+        return Pet::where('user_id', $userId)
+            ->where('uuid', $uuid)
+            ->firstOrFail();
     }
 
     public function getListByUserId(int $userId): Collection
