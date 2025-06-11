@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\BusinessHour;
 
 use App\Application\Service\Auth\AuthActorService;
@@ -19,5 +21,4 @@ class GetOwnBusinessHoursService
 
         return $this->businessHourRepository->getListByHospitalId($hospitalId);
     }
-
 }

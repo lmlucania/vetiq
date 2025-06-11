@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\Service\BusinessHourService;
 use App\Application\Service\Hospital\BusinessHour\DeleteOwnBusinessHourService;
 use App\Application\Service\Hospital\BusinessHour\GetOwnBusinessHoursService;
 use App\Application\Service\Hospital\BusinessHour\SyncOwnBusinessHoursByDayOfWeekService;
