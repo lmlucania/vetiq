@@ -1,13 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\User\Pet;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Enum\Gender;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
-use App\Models\Pet;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class UpdatePetService
 {
@@ -18,17 +18,18 @@ class UpdatePetService
     }
 
     public function execute(
+        string $uuid,
         string $name,
         Gender $gender,
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
         ?string $remark
-    ): Pet {
-        $pet = $this->petRepository->getByUuid();
+    ): bool {
+        $useId = $this->authActorService->getUserId();
+        $pet   = $this->petRepository->getByUserIdAndUuid($useId, $uuid);
 
         return $this->petRepository->update(
-            uuid: (string)Str::uuid(),
-            userId: $this->authActorService->getUserId(),
+            id: $pet->id,
             name: $name,
             gender: $gender,
             birthday: $birthday,

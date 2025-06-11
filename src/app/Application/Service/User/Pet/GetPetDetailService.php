@@ -6,8 +6,9 @@ namespace App\Application\Service\User\Pet;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
+use App\Models\Pet;
 
-class DeletePetService
+class GetPetDetailService
 {
     public function __construct(
         private PetRepositoryInterface $petRepository,
@@ -15,11 +16,9 @@ class DeletePetService
     ) {
     }
 
-    public function execute(string $uuid): bool
+    public function execute(string $uuid): Pet
     {
         $useId = $this->authActorService->getUserId();
-        $pet   = $this->petRepository->getByUserIdAndUuid($useId, $uuid);
-
-        return $this->petRepository->delete($pet->id);
+        return $this->petRepository->getByUserIdAndUuid($useId, $uuid);
     }
 }

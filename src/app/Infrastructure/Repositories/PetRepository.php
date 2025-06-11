@@ -6,7 +6,6 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domains\Pet\Enum\Gender;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
-use App\Exceptions\NotFoundException;
 use App\Models\Pet;
 use Carbon\Carbon;
 use Illuminate\Support\Collection;
@@ -15,7 +14,7 @@ class PetRepository implements PetRepositoryInterface
 {
     public function getByUserIdAndUuid(int $userId, string $uuid): Pet
     {
-        return Pet::where('user_id', $userId)->findOrFail($id);;
+        return Pet::where('user_id', $userId)->firstWhere('uuid', $uuid);
     }
 
     public function getListByUserId(int $userId): Collection

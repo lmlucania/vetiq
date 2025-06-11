@@ -6,7 +6,6 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Favorite\AttachFavoriteService;
 use App\Application\Service\User\Favorite\DetachFavoriteService;
-use App\Application\Service\User\Favorite\ListFavoriteHospitalsService;
 use App\Application\Service\User\Favorite\MyFavoriteHospitalsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexFavoriteRequest;

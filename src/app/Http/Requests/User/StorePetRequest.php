@@ -6,6 +6,7 @@ namespace App\Http\Requests\User;
 
 use App\Domains\Pet\Enum\Gender;
 use App\Http\Requests\Base\ApiRequest;
+use Carbon\Carbon;
 use Illuminate\Validation\Rules\Enum;
 
 class StorePetRequest extends ApiRequest
@@ -29,24 +30,26 @@ class StorePetRequest extends ApiRequest
         ];
     }
 
-    public function getName(): string
+    public function getName()
     {
         return $this->validated('name');
     }
 
-    public function getGender(): int
+    public function getGender(): Gender
     {
-        return $this->validated('gender');
+        return Gender::from($this->validated('gender'));
     }
 
-    public function getBirthday(): ?string
+    public function getBirthday(): ?Carbon
     {
-        return $this->validated('birthday');
+        $value = $this->validated('birthday');
+        return $value ? Carbon::parse($value) : null;
     }
 
-    public function getStartedCareAt(): ?string
+    public function getStartedCareAt(): ?Carbon
     {
-        return $this->validated('started_care_at');
+        $value = $this->validated('started_care_at');
+        return $value ? Carbon::parse($value) : null;
     }
 
     public function getRemark(): ?string
