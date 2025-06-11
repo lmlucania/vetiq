@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\BusinessHourService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\StoreBusinessHourRequest;
+use App\Http\Requests\Hospital\BusinessHour\StoreBusinessHourRequest;
 use App\Transformers\BusinessHourTransformer;
 use Illuminate\Http\JsonResponse;
 

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Hospital;
+namespace App\Http\Requests\Hospital\Menu;
 
 use App\Http\Requests\Base\ApiRequest;
 
-class StoreMenuRequest extends ApiRequest
+class UpdateMenuRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\User;
 
 use App\Exceptions\UnauthorizedException;
-use App\Http\Requests\User\LoginRequest;
+use App\Http\Requests\User\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

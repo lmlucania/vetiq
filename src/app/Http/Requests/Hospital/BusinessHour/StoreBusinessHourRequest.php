@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Hospital;
+namespace App\Http\Requests\Hospital\BusinessHour;
 
 use App\Application\Dto\Request\BusinessHourDto;
 use App\Domains\Schedule\Enum\DayOfWeek;

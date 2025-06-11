@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Hospital;
+namespace App\Http\Requests\Hospital\Vet;
 
 use App\Http\Requests\Base\ApiRequest;
 
-class IndexMenuRequest extends ApiRequest
+class IndexVetRequest extends ApiRequest
 {
     /**
      * Determine if the user is authorized to make this request.

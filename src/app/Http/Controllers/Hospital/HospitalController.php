@@ -7,7 +7,7 @@ namespace App\Http\Controllers\Hospital;
 use App\Application\Service\Hospital\HospitalInfo\GetHospitalDetailService;
 use App\Application\Service\Hospital\HospitalInfo\UpdateHospitalInfoService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\UpdateHospitalRequest;
+use App\Http\Requests\Hospital\HospitalInfo\UpdateHospitalRequest;
 use App\Transformers\HospitalTransformer;
 
 class HospitalController extends Controller

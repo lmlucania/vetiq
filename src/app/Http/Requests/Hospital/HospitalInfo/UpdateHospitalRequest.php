@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Hospital;
+namespace App\Http\Requests\Hospital\HospitalInfo;
 
 use App\Domains\Location\Enum\Prefecture;
 use App\Http\Requests\Base\ApiRequest;

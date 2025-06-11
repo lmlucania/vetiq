@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Hospital;
 
 use App\Exceptions\UnauthorizedException;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\LoginRequest;
+use App\Http\Requests\Hospital\Auth\LoginRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
