@@ -8,7 +8,7 @@ use App\Models\Menu;
 
 interface MenuRepositoryInterface
 {
-    public function getByIdAndHospital(int $hospitalId, int $id): Menu;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Menu;
 
     public function create(int $hospitalId, string $name, string $detail, int $requiredTime, bool $isPublished):Menu;
 

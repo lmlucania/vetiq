@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
-use App\Application\Service\FavoriteService;
+use App\Application\Service\User\Favorite\AttachFavoriteService;
+use App\Application\Service\User\Favorite\DetachFavoriteService;
+use App\Application\Service\User\Favorite\ListFavoriteHospitalsService;
+use App\Application\Service\User\Favorite\MyFavoriteHospitalsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\IndexFavoriteRequest;
 use App\Transformers\FavoriteTransformer;
@@ -13,7 +16,9 @@ use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 class FavoriteController extends Controller
 {
     public function __construct(
-        private FavoriteService $favoriteService,
+        private MyFavoriteHospitalsService $myFavoriteHospitalsService,
+        private AttachFavoriteService $attachFavoriteService,
+        private DetachFavoriteService $detachFavoriteService,
     ) {
     }
 
@@ -24,7 +29,7 @@ class FavoriteController extends Controller
      */
     public function index(IndexFavoriteRequest $request)
     {
-        $paginator = $this->favoriteService->myFavoriteHospitals(
+        $paginator = $this->myFavoriteHospitalsService->execute(
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
@@ -43,7 +48,7 @@ class FavoriteController extends Controller
      */
     public function attach(string $uuid)
     {
-        $success = $this->favoriteService->attach($uuid);
+        $success = $this->attachFavoriteService->execute($uuid);
 
         if ($success) {
             return response()->success();
@@ -58,7 +63,7 @@ class FavoriteController extends Controller
      */
     public function detach(string $uuid)
     {
-        $this->favoriteService->detach($uuid);
+        $this->detachFavoriteService->execute($uuid);
 
         // お気に入りしていない病院を解除した場合でも200を返す
         return response()->success();

@@ -9,7 +9,7 @@ use App\Models\Menu;
 
 class MenuRepository implements MenuRepositoryInterface
 {
-    public function getByIdAndHospital(int $hospitalId, int $id): Menu
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Menu
     {
         return Menu::where('hospital_id', $hospitalId)->findOrFail($id);
     }

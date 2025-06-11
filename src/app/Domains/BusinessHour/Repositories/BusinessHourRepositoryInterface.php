@@ -10,7 +10,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 interface BusinessHourRepositoryInterface
 {
-    public function getByIdAndHospital(int $hospitalId, int $id): BusinessHour;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): BusinessHour;
 
     public function getListByHospitalId(int $hospitalId): Collection;
 

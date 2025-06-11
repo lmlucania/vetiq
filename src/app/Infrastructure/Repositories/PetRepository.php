@@ -13,14 +13,9 @@ use Illuminate\Support\Collection;
 
 class PetRepository implements PetRepositoryInterface
 {
-    public function getByUuid(string $uuid): Pet
+    public function getByUserIdAndUuid(int $userId, string $uuid): Pet
     {
-        $model = Pet::firstWhere('uuid', $uuid);
-        if ($model == null) {
-            throw new NotFoundException();
-        }
-
-        return $model;
+        return Pet::where('user_id', $userId)->findOrFail($id);;
     }
 
     public function getListByUserId(int $userId): Collection

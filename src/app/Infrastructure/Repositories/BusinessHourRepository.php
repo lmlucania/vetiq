@@ -11,7 +11,7 @@ use Illuminate\Database\Eloquent\Collection;
 
 class BusinessHourRepository implements BusinessHourRepositoryInterface
 {
-    public function getByIdAndHospital(int $hospitalId, int $id): BusinessHour
+    public function getByHospitalIdAndId(int $hospitalId, int $id): BusinessHour
     {
         return BusinessHour::where('hospital_id', $hospitalId)->findOrFail($id);
     }
