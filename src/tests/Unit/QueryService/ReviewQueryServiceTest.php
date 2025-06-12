@@ -32,7 +32,7 @@ class ReviewQueryServiceTest extends TestCase
         // 準備（Arrange）
         foreach (range(1, 5) as $i) {
             Review::factory()->create([
-                'id' => $i,
+                'id'          => $i,
                 'hospital_id' => $this->hospital->id,
             ]);
         }
@@ -118,19 +118,19 @@ class ReviewQueryServiceTest extends TestCase
         // 準備（Arrange）
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'title' => 'あテスト',
+            'title'       => 'あテスト',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'title' => 'テストあ',
+            'title'       => 'テストあ',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'title' => 'あテストあ',
+            'title'       => 'あテストあ',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'title' => 'あいうえお',
+            'title'       => 'あいうえお',
         ]);
         Review::factory()->create(['title' => 'テスト']); // 他院のレビューを作成
 
@@ -160,19 +160,19 @@ class ReviewQueryServiceTest extends TestCase
         // 準備（Arrange）
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'body' => 'あテスト',
+            'body'        => 'あテスト',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'body' => 'テストあ',
+            'body'        => 'テストあ',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'body' => 'あテストあ',
+            'body'        => 'あテストあ',
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'body' => 'あいうえお',
+            'body'        => 'あいうえお',
         ]);
         Review::factory()->create(['body' => 'テスト']); // 他院のレビューを作成
 
@@ -202,19 +202,19 @@ class ReviewQueryServiceTest extends TestCase
         // 準備（Arrange）
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Zero->value,
+            'rating'      => Rating::Zero->value,
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Zero->value,
+            'rating'      => Rating::Zero->value,
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::One->value,
+            'rating'      => Rating::One->value,
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Two->value,
+            'rating'      => Rating::Two->value,
         ]);
         Review::factory()->create(['rating' => Rating::Zero->value,]); // 他院のレビューを作成
 
@@ -245,19 +245,19 @@ class ReviewQueryServiceTest extends TestCase
         // 準備（Arrange）
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Zero->value, // 絞り込み条件に一致
+            'rating'      => Rating::Zero->value, // 絞り込み条件に一致
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::One->value, // 絞り込み条件に一致
+            'rating'      => Rating::One->value, // 絞り込み条件に一致
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Two->value, // 絞り込み条件に不一致
+            'rating'      => Rating::Two->value, // 絞り込み条件に不一致
         ]);
         Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::Three->value, // 絞り込み条件に不一致
+            'rating'      => Rating::Three->value, // 絞り込み条件に不一致
         ]);
         Review::factory()->create(['rating' => Rating::Zero->value,]); // 他院のレビューを作成
 
@@ -286,15 +286,15 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'id' => 3, // 並び替えの対象
+            'id'          => 3, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 2, // 並び替えの対象
+            'id'          => 2, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 1, // 並び替えの対象
+            'id'          => 1, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -324,15 +324,15 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'id' => 3, // 並び替えの対象
+            'id'          => 3, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 2, // 並び替えの対象
+            'id'          => 2, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 1, // 並び替えの対象
+            'id'          => 1, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -362,15 +362,15 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'rating' => Rating::Zero, // 並び替えの対象
+            'rating'      => Rating::Zero, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'rating' => Rating::One, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'rating' => Rating::Two, // 並び替えの対象
+            'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -400,15 +400,15 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'rating' => Rating::Zero, // 並び替えの対象
+            'rating'      => Rating::Zero, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'rating' => Rating::One, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'rating' => Rating::Two, // 並び替えの対象
+            'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -438,23 +438,23 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'id' => 1, // 並び替えの対象
-            'rating' => Rating::Zero, // 並び替えの対象
+            'id'          => 1, // 並び替えの対象
+            'rating'      => Rating::Zero, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 2, // 並び替えの対象
-            'rating' => Rating::One, // 並び替えの対象
+            'id'          => 2, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 3, // 並び替えの対象
-            'rating' => Rating::One, // 並び替えの対象
+            'id'          => 3, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 4, // 並び替えの対象
-            'rating' => Rating::Two, // 並び替えの対象
+            'id'          => 4, // 並び替えの対象
+            'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成
@@ -484,23 +484,23 @@ class ReviewQueryServiceTest extends TestCase
     {
         // 準備（Arrange）
         Review::factory()->create([
-            'id' => 1, // 並び替えの対象
-            'rating' => Rating::Zero, // 並び替えの対象
+            'id'          => 1, // 並び替えの対象
+            'rating'      => Rating::Zero, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 2, // 並び替えの対象
-            'rating' => Rating::One, // 並び替えの対象
+            'id'          => 2, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 3, // 並び替えの対象
-            'rating' => Rating::One, // 並び替えの対象
+            'id'          => 3, // 並び替えの対象
+            'rating'      => Rating::One, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create([
-            'id' => 4, // 並び替えの対象
-            'rating' => Rating::Two, // 並び替えの対象
+            'id'          => 4, // 並び替えの対象
+            'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
         Review::factory()->create(); // 他院のレビューを作成

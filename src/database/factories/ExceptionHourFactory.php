@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\ExceptionHour>
