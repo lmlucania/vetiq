@@ -12,7 +12,7 @@ class ExceptionHourTransformer extends TransformerAbstract
     public function transform(ExceptionHour $exceptionHour)
     {
         return [
-            'id'        => $exceptionHour->uuid,
+            'id'          => $exceptionHour->id,
             'date'        => $exceptionHour->date,
             'time_period' => $exceptionHour->time_period->value,
             'start_time'  => $exceptionHour->start_time?->format('H:i'),
