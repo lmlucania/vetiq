@@ -33,7 +33,7 @@ class ReviewControllerTest extends TestCase
     /**
      * レビュー一覧 新着順でレビューが取得できること
      */
-    public function testIndexSuccess()
+    public function testIndexDefaultSortSuccess()
     {
         // 準備（Arrange）
         $this->actingAs($this->staff, $this->guard);
