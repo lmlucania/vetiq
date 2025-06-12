@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
+use App\Application\Service\Hospital\ExceptionHour\DeleteOwnExceptionHourService;
 use App\Application\Service\Hospital\ExceptionHour\GetOwnExceptionHoursYearlyService;
 use App\Application\Service\Hospital\ExceptionHour\SyncOwnExceptionHoursByDateService;
 use App\Http\Controllers\Controller;
@@ -17,6 +18,7 @@ class ExceptionHourController extends Controller
     public function __construct(
         private GetOwnExceptionHoursYearlyService $getOwnExceptionHoursYearlyService,
         private SyncOwnExceptionHoursByDateService $syncOwnExceptionHoursByDateService,
+        private DeleteOwnExceptionHourService $deleteOwnExceptionHourService,
     ) {
     }
 
@@ -38,7 +40,6 @@ class ExceptionHourController extends Controller
      */
     public function store(StoreExceptionHourRequest $request)
     {
-        // fixme 動作確認OK DBのunique indexをhospital_id, time_period, dateにする
         $success = $this->syncOwnExceptionHoursByDateService->execute($request->getDto());
 
         if ($success) {
@@ -48,26 +49,17 @@ class ExceptionHourController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @lrd:start
+     * 例外受付時間の削除
+     * @lrd:end
      */
-    public function show(string $id)
+    public function destroy(int $id)
     {
-        //
-    }
+        $success = $this->deleteOwnExceptionHourService->execute($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

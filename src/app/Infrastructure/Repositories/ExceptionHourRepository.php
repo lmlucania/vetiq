@@ -10,6 +10,11 @@ use Illuminate\Support\Collection;
 
 class ExceptionHourRepository implements ExceptionHourRepositoryInterface
 {
+    public function getByHospitalIdAndId(int $hospitalId, int $id): ExceptionHour
+    {
+        return ExceptionHour::where('hospital_id', $hospitalId)->findOrFail($id);
+    }
+
     public function getListByHospitalIdAndYearly(int $hospitalId, int $year): Collection
     {
         return ExceptionHour::where('hospital_id', $hospitalId)
