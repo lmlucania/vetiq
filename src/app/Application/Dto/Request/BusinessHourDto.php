@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Dto\Request;
 
-use App\Domains\Schedule\Enum\DayOfWeek;
-
 class BusinessHourDto
 {
     private function __construct(

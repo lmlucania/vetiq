@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\ExceptionHour\IndexExceptionHourRequest;
 use App\Http\Requests\Hospital\ExceptionHour\StoreExceptionHourRequest;
 use App\Transformers\ExceptionHourTransformer;
-use Illuminate\Http\Request;
 
 class ExceptionHourController extends Controller
 {

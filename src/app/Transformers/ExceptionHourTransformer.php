@@ -17,7 +17,7 @@ class ExceptionHourTransformer extends TransformerAbstract
             'time_period' => $exceptionHour->time_period->value,
             'start_time'  => $exceptionHour->start_time?->format('H:i'),
             'end_time'    => $exceptionHour->end_time?->format('H:i'),
-            'is_closed'    => $exceptionHour->is_closed,
+            'is_closed'   => $exceptionHour->is_closed,
             'reason'      => $exceptionHour->reason,
         ];
     }

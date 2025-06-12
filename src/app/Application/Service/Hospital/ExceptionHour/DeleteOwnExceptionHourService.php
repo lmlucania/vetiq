@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\ExceptionHour;
 
 use App\Application\Service\Auth\AuthActorService;
@@ -17,7 +19,7 @@ class DeleteOwnExceptionHourService
     {
         $exceptionHour = $this->exceptionHourRepository->getByHospitalIdAndId(
             hospitalId: $this->authActorService->getHospitalId(),
-            id: $id
+            id: $id,
         );
 
         return $this->exceptionHourRepository->delete($exceptionHour->id);

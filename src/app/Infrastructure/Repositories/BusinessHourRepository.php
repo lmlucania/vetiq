@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
-use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Models\BusinessHour;
 use Illuminate\Database\Eloquent\Collection;
 
