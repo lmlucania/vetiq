@@ -31,8 +31,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
                 $join->on('reviews.hospital_id', '=', 'hospitals.id')
                     ->where('hospitals.uuid', '=', $hospitalUuid);
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
-            ->orderBy('reviews.id', 'desc');
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
         return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
     }
@@ -51,8 +50,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
-            ->orderBy('reviews.id', 'desc');
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
         return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
     }
@@ -70,8 +68,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body')
-            ->orderBy('reviews.id', 'desc');
+            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
         return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
     }
