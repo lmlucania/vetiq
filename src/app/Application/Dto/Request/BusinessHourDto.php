@@ -8,7 +8,7 @@ use App\Domains\Schedule\Enum\DayOfWeek;
 
 class BusinessHourDto
 {
-    public function __construct(
+    private function __construct(
         private DayOfWeek $dayOfWeek,
         private array $periods
     ) {
