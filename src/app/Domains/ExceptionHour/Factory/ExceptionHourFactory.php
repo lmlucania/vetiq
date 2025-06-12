@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Domains\ExceptionHour\Factory;
 
 use App\Application\Dto\Request\ExceptionHourDto;
+use App\Application\Dto\Request\ExceptionHourPeriodDto;
 use App\Domains\ExceptionHour\Entity\ExceptionHour;
 use App\Domains\ExceptionHour\ValueObjects\Date;
 use App\Domains\ExceptionHour\ValueObjects\EndTime;
@@ -26,7 +27,7 @@ class ExceptionHourFactory
     private function dtoToEntities(ExceptionHourDto $dto, int $hospitalId): array
     {
         return array_map(
-            fn ($periodDto) => ExceptionHour::newWithoutId(
+            fn (ExceptionHourPeriodDto $periodDto) => ExceptionHour::newWithoutId(
                 hospitalId: new HospitalId($hospitalId),
                 date: new Date($dto->getDate()),
                 timePeriod: TimePeriod::tryFrom($periodDto->getTimePeriod()),

@@ -9,12 +9,12 @@ use App\Domains\Schedule\Enum\DayOfWeek;
 class BusinessHourDto
 {
     private function __construct(
-        private DayOfWeek $dayOfWeek,
+        private int $dayOfWeek,
         private array $periods
     ) {
     }
 
-    public function getDayOfWeek(): DayOfWeek
+    public function getDayOfWeek(): int
     {
         return $this->dayOfWeek;
     }
@@ -30,7 +30,7 @@ class BusinessHourDto
     public static function fromPrimitive(int $dayOfWeek, array $periods): self
     {
         return new self(
-            dayOfWeek: DayOfWeek::from($dayOfWeek),
+            dayOfWeek: $dayOfWeek,
             periods: array_map(fn ($period) => BusinessHourPeriodDto::fromPrimitive(
                 timePeriod: $period['time_period'],
                 startTime: $period['start_time'],

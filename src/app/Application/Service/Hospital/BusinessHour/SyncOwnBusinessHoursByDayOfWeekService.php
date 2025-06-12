@@ -23,16 +23,16 @@ class SyncOwnBusinessHoursByDayOfWeekService
     {
         $hospitalId = $this->authActorService->getHospitalId();
         // トランザクション範囲を最初限にするため、トランザクションの外で実行する
-        $rows = $this->buildInsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
+        $upsertRows = $this->buildUpsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
 
         try {
-            DB::transaction(function () use ($hospitalId, $businessHourDto, $rows) {
+            DB::transaction(function () use ($hospitalId, $businessHourDto, $upsertRows) {
                 $this->businessHourRepository->deleteByDayOfWeekInHospital(
                     hospitalId: $hospitalId,
                     dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-                $this->businessHourRepository->createMany($rows);
+                $this->businessHourRepository->createMany($upsertRows);
             });
 
             return true;
@@ -43,15 +43,14 @@ class SyncOwnBusinessHoursByDayOfWeekService
     }
 
     /**
-     * insert用の配列を作成する
+     * upsert用の配列を作成する
      * @param int $hospitalId
      * @param BusinessHourDto $dto
      * @return array
      */
-    private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
+    private function buildUpsertRows(int $hospitalId, BusinessHourDto $dto): array
     {
-        $dayOfWeek = $dto->getDayOfWeek()->value;
-        $now       = now();
+        $dayOfWeek = $dto->getDayOfWeek();
         $rows      = [];
 
         foreach ($dto->getPeriods() as $periodDto) {
@@ -61,8 +60,6 @@ class SyncOwnBusinessHoursByDayOfWeekService
                 'time_period' => $periodDto->getTimePeriod()->value,
                 'start_time'  => $periodDto->getStartTime(),
                 'end_time'    => $periodDto->getEndTime(),
-                'created_at'  => $now,
-                'updated_at'  => $now,
             ];
         }
 

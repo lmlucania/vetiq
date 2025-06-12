@@ -16,7 +16,7 @@ interface BusinessHourRepositoryInterface
 
     public function delete(int $id): bool;
 
-    public function deleteByDayOfWeekInHospital(int $hospitalId, DayOfWeek $dayOfWeek): int;
+    public function deleteByDayOfWeekInHospital(int $hospitalId, int $dayOfWeek): int;
 
-    public function createMany(array $rows): bool;
+    public function createMany(array $rows): int;
 }
