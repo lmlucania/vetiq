@@ -7,6 +7,7 @@ use App\Http\Controllers\Hospital\BusinessHourController;
 use App\Http\Controllers\Hospital\ExceptionHourController;
 use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Hospital\MenuController;
+use App\Http\Controllers\Hospital\ReviewController;
 use App\Http\Controllers\Hospital\VetController;
 use Illuminate\Support\Facades\Route;
 
@@ -31,4 +32,5 @@ Route::middleware('auth:staff-members')->group(static function () {
     Route::controller(ExceptionHourController::class)->prefix('exception-hours')->name('exception-hours.')->group(static function () {
         Route::get('{year}', 'index')->name('index');
     });
+    Route::resource('reviews', ReviewController::class)->only(['index']);
 });

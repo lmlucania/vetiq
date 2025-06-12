@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\BusinessHour;
 
 use App\Application\Service\Auth\AuthActorService;
@@ -17,7 +19,7 @@ class DeleteOwnBusinessHourService
     {
         $businessHour = $this->businessHourRepository->getByHospitalIdAndId(
             hospitalId: $this->authActorService->getHospitalId(),
-            id: $id
+            id: $id,
         );
 
         return $this->businessHourRepository->delete($businessHour->id);

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\BusinessHour;
 
 use App\Application\Dto\Request\BusinessHourDto;
@@ -68,5 +70,4 @@ class SyncOwnBusinessHoursByDayOfWeekService
 
         return $rows;
     }
-
 }
