@@ -5,12 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\Hospital\ExceptionHour\GetOwnExceptionHoursYearlyService;
-use App\Application\UseCase\Hospital\ExceptionHour\DestroyExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\IndexExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\StoreExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\UpdateExceptionHourUseCase;
+use App\Application\Service\Hospital\ExceptionHour\SyncOwnExceptionHoursByDateService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\ExceptionHour\IndexExceptionHourRequest;
+use App\Http\Requests\Hospital\ExceptionHour\StoreExceptionHourRequest;
 use App\Transformers\ExceptionHourTransformer;
 use Illuminate\Http\Request;
 
@@ -18,6 +16,7 @@ class ExceptionHourController extends Controller
 {
     public function __construct(
         private GetOwnExceptionHoursYearlyService $getOwnExceptionHoursYearlyService,
+        private SyncOwnExceptionHoursByDateService $syncOwnExceptionHoursByDateService,
     ) {
     }
 
@@ -33,11 +32,19 @@ class ExceptionHourController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @lrd:start
+     * 指定した日付の例外受付時間の作成/更新
+     * @lrd:end
      */
-    public function store(Request $request)
+    public function store(StoreExceptionHourRequest $request)
     {
-        //
+        // fixme 動作確認OK DBのunique indexをhospital_id, time_period, dateにする
+        $success = $this->syncOwnExceptionHoursByDateService->execute($request->getDto());
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**

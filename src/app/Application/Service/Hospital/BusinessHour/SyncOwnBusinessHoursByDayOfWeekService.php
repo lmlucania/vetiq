@@ -22,20 +22,17 @@ class SyncOwnBusinessHoursByDayOfWeekService
     public function execute(BusinessHourDto $businessHourDto): bool
     {
         $hospitalId = $this->authActorService->getHospitalId();
+        // トランザクション範囲を最初限にするため、トランザクションの外で実行する
+        $rows = $this->buildInsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
 
         try {
-            DB::transaction(function () use ($hospitalId, $businessHourDto) {
+            DB::transaction(function () use ($hospitalId, $businessHourDto, $rows) {
                 $this->businessHourRepository->deleteByDayOfWeekInHospital(
                     hospitalId: $hospitalId,
                     dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-                $this->businessHourRepository->createMany(
-                    $this->buildInsertRows(
-                        hospitalId: $hospitalId,
-                        dto: $businessHourDto,
-                    ),
-                );
+                $this->businessHourRepository->createMany($rows);
             });
 
             return true;
@@ -53,16 +50,17 @@ class SyncOwnBusinessHoursByDayOfWeekService
      */
     private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
     {
-        $now  = now();
-        $rows = [];
+        $dayOfWeek = $dto->getDayOfWeek()->value;
+        $now       = now();
+        $rows      = [];
 
-        foreach ($dto->getPeriods() as $period) {
+        foreach ($dto->getPeriods() as $periodDto) {
             $rows[] = [
                 'hospital_id' => $hospitalId,
-                'day_of_week' => $dto->getDayOfWeek()->value,
-                'time_period' => $period->getTimePeriod()->value,
-                'start_time'  => $period->getStartTime(),
-                'end_time'    => $period->getEndTime(),
+                'day_of_week' => $dayOfWeek,
+                'time_period' => $periodDto->getTimePeriod()->value,
+                'start_time'  => $periodDto->getStartTime(),
+                'end_time'    => $periodDto->getEndTime(),
                 'created_at'  => $now,
                 'updated_at'  => $now,
             ];
