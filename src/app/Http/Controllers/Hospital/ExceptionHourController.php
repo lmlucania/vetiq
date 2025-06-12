@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
+use App\Application\Service\Hospital\ExceptionHour\GetOwnExceptionHoursYearlyService;
 use App\Application\UseCase\Hospital\ExceptionHour\DestroyExceptionHourUseCase;
 use App\Application\UseCase\Hospital\ExceptionHour\IndexExceptionHourUseCase;
 use App\Application\UseCase\Hospital\ExceptionHour\StoreExceptionHourUseCase;
 use App\Application\UseCase\Hospital\ExceptionHour\UpdateExceptionHourUseCase;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\IndexExceptionHourRequest;
+use App\Http\Requests\Hospital\ExceptionHour\IndexExceptionHourRequest;
 use App\Transformers\ExceptionHourTransformer;
 use Illuminate\Http\Request;
 
 class ExceptionHourController extends Controller
 {
     public function __construct(
-        private IndexExceptionHourUseCase $indexExceptionHourUseCase,
-        private StoreExceptionHourUseCase $storeExceptionHourUseCase,
-        private UpdateExceptionHourUseCase $updateExceptionHourUseCase,
-        private DestroyExceptionHourUseCase $destroyExceptionHourUseCase,
+        private GetOwnExceptionHoursYearlyService $getOwnExceptionHoursYearlyService,
     ) {
     }
 
@@ -30,8 +28,8 @@ class ExceptionHourController extends Controller
      */
     public function index(IndexExceptionHourRequest $indexExceptionHourRequest, int $year)
     {
-        $dto = $this->indexExceptionHourUseCase->execute($year);
-        return fractal($dto->getCollection(), new ExceptionHourTransformer());
+        $exceptionHours = $this->getOwnExceptionHoursYearlyService->execute($year);
+        return fractal($exceptionHours, new ExceptionHourTransformer());
     }
 
     /**

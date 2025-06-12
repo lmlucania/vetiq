@@ -4,23 +4,19 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\ExceptionHour\Entity\ExceptionHour;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
-use App\Domains\ExceptionHour\ValueObjects\DeletableExceptionHourId;
-use App\Domains\ExceptionHour\ValueObjects\ExceptionHourUuid;
-use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Exceptions\NotFoundException;
 use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\ExceptionHourModel;
+use App\Models\ExceptionHour;
 use Illuminate\Support\Collection;
 
 class ExceptionHourRepository implements ExceptionHourRepositoryInterface
 {
     use GenerationId;
 
-    public function getByUuid(ExceptionHourUuid $uuid): ExceptionHourModel
+    public function getByUuid(ExceptionHourUuid $uuid): ExceptionHour
     {
-        $model = ExceptionHourModel::firstWhere('uuid', $uuid->getValue());
+        $model = ExceptionHour::firstWhere('uuid', $uuid->getValue());
         if ($model == null) {
             throw new NotFoundException();
         }
@@ -28,9 +24,9 @@ class ExceptionHourRepository implements ExceptionHourRepositoryInterface
         return $model;
     }
 
-    public function getListByHospitalIdAndYearly(HospitalId $hospitalId, int $year): Collection
+    public function getListByHospitalIdAndYearly(int $hospitalId, int $year): Collection
     {
-        return ExceptionHourModel::where('hospital_id', $hospitalId->getValue())
+        return ExceptionHour::where('hospital_id', $hospitalId)
             ->whereYear('date', $year)
             ->orderBy('date')
             ->get();

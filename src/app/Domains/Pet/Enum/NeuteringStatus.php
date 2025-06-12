@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace App\Domains\Pet\Enum;
 
-enum Gender: int
+enum NeuteringStatus: int
 {
-    case Male    = 1;
-    case Female  = 2;
+    case Intact  = 1;
+    case Done    = 2;
     case Unknown = 9;
 
     public function label(): string
     {
         return match ($this) {
-            self::Male    => 'オス',
-            self::Female  => 'メス',
+            self::Intact  => '未実施',
+            self::Done    => '実施済み',
             self::Unknown => '不明',
         };
     }
