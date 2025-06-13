@@ -27,7 +27,7 @@ Route::middleware('auth:staff-members')->group(static function () {
         Route::post('{menu}/unpublish', 'unpublish')->name('unpublish');
     });
     Route::resource('vets', VetController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
-    Route::resource('business_hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
+    Route::resource('business-hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
     Route::resource('exception-hours', ExceptionHourController::class)->only(['store', 'destroy']);
     Route::controller(ExceptionHourController::class)->prefix('exception-hours')->name('exception-hours.')->group(static function () {
         Route::get('{year}', 'index')->name('index');

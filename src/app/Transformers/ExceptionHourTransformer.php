@@ -13,7 +13,7 @@ class ExceptionHourTransformer extends TransformerAbstract
     {
         return [
             'id'          => $exceptionHour->id,
-            'date'        => $exceptionHour->date,
+            'date'        => $exceptionHour->date->format('Y-m-d'),
             'time_period' => $exceptionHour->time_period->value,
             'start_time'  => $exceptionHour->start_time?->format('H:i'),
             'end_time'    => $exceptionHour->end_time?->format('H:i'),
