@@ -30,7 +30,7 @@ Route::middleware('auth:staff-members')->group(static function () {
     Route::resource('business-hours', BusinessHourController::class)->only(['index', 'store', 'destroy']);
     Route::resource('exception-hours', ExceptionHourController::class)->only(['store', 'destroy']);
     Route::controller(ExceptionHourController::class)->prefix('exception-hours')->name('exception-hours.')->group(static function () {
-        Route::get('{year}', 'index')->name('index');
+        Route::get('{year?}', 'index')->name('index');
     });
     Route::resource('reviews', ReviewController::class)->only(['index']);
 });
