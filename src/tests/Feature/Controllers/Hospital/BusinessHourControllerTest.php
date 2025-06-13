@@ -238,6 +238,56 @@ class BusinessHourControllerTest extends TestCase
     }
 
     /**
+     * 指定した曜日の受付時間の作成/更新 hospital_id、day_of_week、time_periodで重複して登録されないこと
+     */
+    public function testStoreNotDuplicateSuccess()
+    {
+        // 準備（Arrange）
+        $this->actingAs($this->staff, $this->guard);
+        BusinessHour::factory()->create([
+            'hospital_id' => $this->hospital->id,
+            'day_of_week' => DayOfWeek::FRIDAY,
+            'time_period' => TimePeriod::AM,
+            'start_time'  => '10:00',
+            'end_time'    => '13:00',
+        ]);
+        $postData = [
+            'day_of_week' => DayOfWeek::FRIDAY->value,
+            'periods'     => [
+                [
+                    'time_period' => TimePeriod::AM->value,
+                    'start_time'  => '09:00',
+                    'end_time'    => '12:30',
+                ],
+                [
+                    'time_period' => TimePeriod::PM->value,
+                    'start_time'  => '13:00',
+                    'end_time'    => '19:30',
+                ],
+            ],
+        ];
+
+        // 実行（Act）
+        $response = $this->post(route('hospital.business_hours.store'), $postData);
+
+        // 検証（Assert）
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('business_hours', 2);
+
+        $records = BusinessHour::all();
+        $this->assertEquals(DayOfWeek::FRIDAY, $records[0]->day_of_week);
+        $this->assertEquals(TimePeriod::AM, $records[0]->time_period);
+        $this->assertEquals('09:00', $records[0]->start_time->format('H:i'));
+        $this->assertEquals('12:30', $records[0]->end_time->format('H:i'));
+
+        $this->assertEquals(DayOfWeek::FRIDAY, $records[1]->day_of_week);
+        $this->assertEquals(TimePeriod::PM, $records[1]->time_period);
+        $this->assertEquals('13:00', $records[1]->start_time->format('H:i'));
+        $this->assertEquals('19:30', $records[1]->end_time->format('H:i'));
+    }
+
+    /**
      * 予約受付時間の削除 削除できていること
      */
     public function testDestroySuccess()
