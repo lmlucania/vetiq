@@ -26,9 +26,9 @@ class ExceptionHourController extends Controller
      * 例外受付時間の一覧
      * @lrd:end
      */
-    public function index(IndexExceptionHourRequest $indexExceptionHourRequest, int $year)
+    public function index(IndexExceptionHourRequest $indexExceptionHourRequest, ?int $year = null)
     {
-        $exceptionHours = $this->getOwnExceptionHoursYearlyService->execute($year);
+        $exceptionHours = $this->getOwnExceptionHoursYearlyService->execute($year ?? now()->year);
         return fractal($exceptionHours, new ExceptionHourTransformer());
     }
 
