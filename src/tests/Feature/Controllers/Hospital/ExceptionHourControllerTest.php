@@ -149,7 +149,7 @@ class ExceptionHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.exception-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
