@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\BusinessHour\Repositories;
 
-use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Models\BusinessHour;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -16,7 +15,7 @@ interface BusinessHourRepositoryInterface
 
     public function delete(int $id): bool;
 
-    public function deleteByDayOfWeekInHospital(int $hospitalId, DayOfWeek $dayOfWeek): int;
+    public function deleteByDayOfWeekInHospital(int $hospitalId, int $dayOfWeek): int;
 
-    public function createMany(array $rows): bool;
+    public function createMany(array $rows): int;
 }

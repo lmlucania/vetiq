@@ -4,50 +4,44 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\ExceptionHour\Entity\ExceptionHour;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
-use App\Domains\ExceptionHour\ValueObjects\DeletableExceptionHourId;
-use App\Domains\ExceptionHour\ValueObjects\ExceptionHourUuid;
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Exceptions\NotFoundException;
-use App\Infrastructure\Repositories\Traits\GenerationId;
-use App\Models\ExceptionHourModel;
+use App\Models\ExceptionHour;
 use Illuminate\Support\Collection;
 
 class ExceptionHourRepository implements ExceptionHourRepositoryInterface
 {
-    use GenerationId;
-
-    public function getByUuid(ExceptionHourUuid $uuid): ExceptionHourModel
+    public function getByHospitalIdAndId(int $hospitalId, int $id): ExceptionHour
     {
-        $model = ExceptionHourModel::firstWhere('uuid', $uuid->getValue());
-        if ($model == null) {
-            throw new NotFoundException();
-        }
-
-        return $model;
+        return ExceptionHour::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function getListByHospitalIdAndYearly(HospitalId $hospitalId, int $year): Collection
+    public function getListByHospitalIdAndYearly(int $hospitalId, int $year): Collection
     {
-        return ExceptionHourModel::where('hospital_id', $hospitalId->getValue())
+        return ExceptionHour::where('hospital_id', $hospitalId)
             ->whereYear('date', $year)
             ->orderBy('date')
             ->get();
     }
 
-    public function create(ExceptionHour $ExceptionHourEntity): bool
+    public function delete(int $id): bool
     {
-        // TODO: Implement create() method.
+        $model = ExceptionHour::findOrFail($id);
+
+        return $model->delete();
     }
 
-    public function update(ExceptionHour $ExceptionHourEntity): bool
+    public function deleteByDateInHospital(int $hospitalId, string $date): int
     {
-        // TODO: Implement update() method.
+        return ExceptionHour::where('hospital_id', $hospitalId)
+            ->whereDate('date', $date)
+            ->delete();
     }
 
-    public function delete(DeletableExceptionHourId $id): bool
+    public function createMany(array $rows): int
     {
-        // TODO: Implement delete() method.
+        return ExceptionHour::upsert(
+            $rows,
+            ['hospital_id', 'date', 'time_period'],
+        );
     }
 }

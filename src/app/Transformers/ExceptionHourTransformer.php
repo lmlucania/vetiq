@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Application\Dto\Response\ExceptionHourDto;
+use App\Models\ExceptionHour;
 use League\Fractal\TransformerAbstract;
 
 class ExceptionHourTransformer extends TransformerAbstract
 {
-    public function transform(ExceptionHourDto $dto)
+    public function transform(ExceptionHour $exceptionHour)
     {
         return [
-            'uuid'        => $dto->getExceptionHourUuid()->getValue(),
-            'date'        => $dto->getDate()->getValue(),
-            'time_period' => $dto->getTimePeriod(),
-            'start_time'  => $dto->getStartTime()?->getValue()->format('H:i'),
-            'end_time'    => $dto->getEndTime()?->getValue()->format('H:i'),
-            'is_close'    => $dto->getIsClosed()->getValue(),
-            'reason'      => $dto->getReason()?->getValue(),
+            'id'          => $exceptionHour->id,
+            'date'        => $exceptionHour->date->format('Y-m-d'),
+            'time_period' => $exceptionHour->time_period->value,
+            'start_time'  => $exceptionHour->start_time?->format('H:i'),
+            'end_time'    => $exceptionHour->end_time?->format('H:i'),
+            'is_closed'   => $exceptionHour->is_closed,
+            'reason'      => $exceptionHour->reason,
         ];
     }
 }

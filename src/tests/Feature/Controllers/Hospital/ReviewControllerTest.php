@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace Feature\Controllers\Hospital;
 
-use App\Domains\Location\Enum\Prefecture;
 use App\Models\Hospital;
 use App\Models\Review;
 use App\Models\StaffMember;
-use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase;
-use Illuminate\Support\Facades\Hash;
 
 class ReviewControllerTest extends TestCase
 {

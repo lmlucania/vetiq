@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
-use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Models\BusinessHour;
 use Illuminate\Database\Eloquent\Collection;
 
@@ -31,15 +30,18 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
         return $model->delete();
     }
 
-    public function deleteByDayOfWeekInHospital(int $hospitalId, DayOfWeek $dayOfWeek): int
+    public function deleteByDayOfWeekInHospital(int $hospitalId, int $dayOfWeek): int
     {
         return BusinessHour::where('hospital_id', $hospitalId)
-            ->where('day_of_week', $dayOfWeek->value)
+            ->where('day_of_week', $dayOfWeek)
             ->delete();
     }
 
-    public function createMany(array $rows): bool
+    public function createMany(array $rows): int
     {
-        return BusinessHour::insert($rows);
+        return BusinessHour::upsert(
+            $rows,
+            ['hospital_id', 'day_of_week', 'time_period'],
+        );
     }
 }

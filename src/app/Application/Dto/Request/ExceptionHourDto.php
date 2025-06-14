@@ -4,35 +4,37 @@ declare(strict_types=1);
 
 namespace App\Application\Dto\Request;
 
-class BusinessHourDto
+class ExceptionHourDto
 {
     private function __construct(
-        private int $dayOfWeek,
+        private string $date,
         private array $periods
     ) {
     }
 
-    public function getDayOfWeek(): int
+    public function getDate(): string
     {
-        return $this->dayOfWeek;
+        return $this->date;
     }
 
     /**
-     * @return BusinessHourPeriodDto[]
+     * @return ExceptionHourPeriodDto[]
      */
     public function getPeriods(): array
     {
         return $this->periods;
     }
 
-    public static function fromPrimitive(int $dayOfWeek, array $periods): self
+    public static function fromPrimitive(string $date, array $periods): self
     {
         return new self(
-            dayOfWeek: $dayOfWeek,
-            periods: array_map(fn ($period) => BusinessHourPeriodDto::fromPrimitive(
+            date: $date,
+            periods: array_map(fn ($period) => ExceptionHourPeriodDto::fromPrimitive(
                 timePeriod: $period['time_period'],
                 startTime: $period['start_time'],
                 endTime: $period['end_time'],
+                isClosed: $period['is_closed'],
+                reason: $period['reason'],
             ), $periods),
         );
     }

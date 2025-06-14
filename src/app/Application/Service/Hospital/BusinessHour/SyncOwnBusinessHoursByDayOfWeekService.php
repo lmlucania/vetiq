@@ -22,20 +22,17 @@ class SyncOwnBusinessHoursByDayOfWeekService
     public function execute(BusinessHourDto $businessHourDto): bool
     {
         $hospitalId = $this->authActorService->getHospitalId();
+        // トランザクション範囲を最初限にするため、トランザクションの外で実行する
+        $upsertRows = $this->buildUpsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
 
         try {
-            DB::transaction(function () use ($hospitalId, $businessHourDto) {
+            DB::transaction(function () use ($hospitalId, $businessHourDto, $upsertRows) {
                 $this->businessHourRepository->deleteByDayOfWeekInHospital(
                     hospitalId: $hospitalId,
                     dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-                $this->businessHourRepository->createMany(
-                    $this->buildInsertRows(
-                        hospitalId: $hospitalId,
-                        dto: $businessHourDto,
-                    ),
-                );
+                $this->businessHourRepository->createMany($upsertRows);
             });
 
             return true;
@@ -46,25 +43,23 @@ class SyncOwnBusinessHoursByDayOfWeekService
     }
 
     /**
-     * insert用の配列を作成する
+     * upsert用の配列を作成する
      * @param int $hospitalId
      * @param BusinessHourDto $dto
      * @return array
      */
-    private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
+    private function buildUpsertRows(int $hospitalId, BusinessHourDto $dto): array
     {
-        $now  = now();
-        $rows = [];
+        $dayOfWeek = $dto->getDayOfWeek();
+        $rows      = [];
 
-        foreach ($dto->getPeriods() as $period) {
+        foreach ($dto->getPeriods() as $periodDto) {
             $rows[] = [
                 'hospital_id' => $hospitalId,
-                'day_of_week' => $dto->getDayOfWeek()->value,
-                'time_period' => $period->getTimePeriod()->value,
-                'start_time'  => $period->getStartTime(),
-                'end_time'    => $period->getEndTime(),
-                'created_at'  => $now,
-                'updated_at'  => $now,
+                'day_of_week' => $dayOfWeek,
+                'time_period' => $periodDto->getTimePeriod()->value,
+                'start_time'  => $periodDto->getStartTime(),
+                'end_time'    => $periodDto->getEndTime(),
             ];
         }
 

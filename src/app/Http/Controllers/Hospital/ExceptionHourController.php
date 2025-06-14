@@ -4,22 +4,20 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
-use App\Application\UseCase\Hospital\ExceptionHour\DestroyExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\IndexExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\StoreExceptionHourUseCase;
-use App\Application\UseCase\Hospital\ExceptionHour\UpdateExceptionHourUseCase;
+use App\Application\Service\Hospital\ExceptionHour\DeleteOwnExceptionHourService;
+use App\Application\Service\Hospital\ExceptionHour\GetOwnExceptionHoursYearlyService;
+use App\Application\Service\Hospital\ExceptionHour\SyncOwnExceptionHoursByDateService;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Hospital\IndexExceptionHourRequest;
+use App\Http\Requests\Hospital\ExceptionHour\IndexExceptionHourRequest;
+use App\Http\Requests\Hospital\ExceptionHour\StoreExceptionHourRequest;
 use App\Transformers\ExceptionHourTransformer;
-use Illuminate\Http\Request;
 
 class ExceptionHourController extends Controller
 {
     public function __construct(
-        private IndexExceptionHourUseCase $indexExceptionHourUseCase,
-        private StoreExceptionHourUseCase $storeExceptionHourUseCase,
-        private UpdateExceptionHourUseCase $updateExceptionHourUseCase,
-        private DestroyExceptionHourUseCase $destroyExceptionHourUseCase,
+        private GetOwnExceptionHoursYearlyService $getOwnExceptionHoursYearlyService,
+        private SyncOwnExceptionHoursByDateService $syncOwnExceptionHoursByDateService,
+        private DeleteOwnExceptionHourService $deleteOwnExceptionHourService,
     ) {
     }
 
@@ -28,41 +26,39 @@ class ExceptionHourController extends Controller
      * 例外受付時間の一覧
      * @lrd:end
      */
-    public function index(IndexExceptionHourRequest $indexExceptionHourRequest, int $year)
+    public function index(IndexExceptionHourRequest $indexExceptionHourRequest, ?int $year = null)
     {
-        $dto = $this->indexExceptionHourUseCase->execute($year);
-        return fractal($dto->getCollection(), new ExceptionHourTransformer());
+        $exceptionHours = $this->getOwnExceptionHoursYearlyService->execute($year ?? now()->year);
+        return fractal($exceptionHours, new ExceptionHourTransformer());
     }
 
     /**
-     * Store a newly created resource in storage.
+     * @lrd:start
+     * 指定した日付の例外受付時間の作成/更新
+     * @lrd:end
      */
-    public function store(Request $request)
+    public function store(StoreExceptionHourRequest $request)
     {
-        //
+        $success = $this->syncOwnExceptionHoursByDateService->execute($request->getDto());
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**
-     * Display the specified resource.
+     * @lrd:start
+     * 例外受付時間の削除
+     * @lrd:end
      */
-    public function show(string $id)
+    public function destroy(int $id)
     {
-        //
-    }
+        $success = $this->deleteOwnExceptionHourService->execute($id);
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

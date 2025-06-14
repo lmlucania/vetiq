@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('exception_hours', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('hospital_id')->constrained()->onDelete('cascade')->comment('病院ID');
             $table->date('date')->comment('受付時間を変更する日付');
             $table->tinyInteger('time_period')->comment('午前/午後');

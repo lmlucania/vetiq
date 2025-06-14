@@ -33,12 +33,12 @@ class StoreBusinessHourRequest extends ApiRequest
 
     private function getDayOfWeek(): int
     {
-        return $this->validated()['day_of_week'];
+        return $this->validated('day_of_week');
     }
 
     private function getPeriods(): array
     {
-        return $this->validated()['periods'];
+        return $this->validated('periods');
     }
 
     public function getDto(): BusinessHourDto

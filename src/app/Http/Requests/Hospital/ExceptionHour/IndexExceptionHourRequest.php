@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Http\Requests\Hospital;
+namespace App\Http\Requests\Hospital\ExceptionHour;
 
 use App\Http\Requests\Base\ApiRequest;
 
@@ -19,7 +19,7 @@ class IndexExceptionHourRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'year' => 'required|integer|digits:4|min:2000|max:2100',
+            'year' => 'nullable|integer|digits:4|min:2000|max:2100',
         ];
     }
 

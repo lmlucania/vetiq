@@ -4,24 +4,18 @@ declare(strict_types=1);
 
 namespace App\Domains\ExceptionHour\Repositories;
 
-use App\Domains\ExceptionHour\Entity\ExceptionHour;
-use App\Domains\ExceptionHour\ValueObjects\DeletableExceptionHourId;
-use App\Domains\ExceptionHour\ValueObjects\ExceptionHourUuid;
-use App\Domains\Hospital\ValueObjects\HospitalId;
-use App\Models\ExceptionHourModel;
+use App\Models\ExceptionHour;
 use Illuminate\Support\Collection;
 
 interface ExceptionHourRepositoryInterface
 {
-    public function generateId(string $modelClass): int;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): ExceptionHour;
 
-    public function getByUuid(ExceptionHourUuid $uuid): ExceptionHourModel;
+    public function getListByHospitalIdAndYearly(int $hospitalId, int $year): Collection;
 
-    public function getListByHospitalIdAndYearly(HospitalId $hospitalId, int $year): Collection;
+    public function delete(int $id): bool;
 
-    public function create(ExceptionHour $ExceptionHourEntity): bool;
+    public function deleteByDateInHospital(int $hospitalId, string $date): int;
 
-    public function update(ExceptionHour $ExceptionHourEntity): bool;
-
-    public function delete(DeletableExceptionHourId $id): bool;
+    public function createMany(array $rows): int;
 }
