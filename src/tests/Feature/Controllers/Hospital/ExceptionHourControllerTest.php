@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Feature\Controllers\Hospital;
 
-use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\ExceptionHour;
 use App\Models\Hospital;
@@ -133,7 +132,7 @@ class ExceptionHourControllerTest extends TestCase
         // 準備（Arrange）
         $postData = [
             'date'    => '2025-01-01',
-            'periods'     => [
+            'periods' => [
                 [
                     'time_period' => TimePeriod::AM->value,
                     'start_time'  => '09:00',
