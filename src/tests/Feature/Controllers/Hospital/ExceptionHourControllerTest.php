@@ -132,17 +132,21 @@ class ExceptionHourControllerTest extends TestCase
     {
         // 準備（Arrange）
         $postData = [
-            'day_of_week' => DayOfWeek::FRIDAY->value,
+            'date'    => '2025-01-01',
             'periods'     => [
                 [
                     'time_period' => TimePeriod::AM->value,
                     'start_time'  => '09:00',
                     'end_time'    => '12:30',
+                    'is_closed'   => false,
+                    'reason'      => 'テスト1',
                 ],
                 [
                     'time_period' => TimePeriod::PM->value,
                     'start_time'  => '13:00',
                     'end_time'    => '19:30',
+                    'is_closed'   => false,
+                    'reason'      => 'テスト2',
                 ],
             ],
         ];
@@ -154,7 +158,7 @@ class ExceptionHourControllerTest extends TestCase
         // 検証（Assert）
         $response->assertStatus(200);
 
-        $this->assertDatabaseCount('business_hours', 2);
+        $this->assertDatabaseCount('exception_hours', 2);
     }
 
     /**
