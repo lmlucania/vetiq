@@ -23,12 +23,12 @@ class PetFactory extends Factory
     {
         return [
             'uuid'            => (string) Str::uuid(),
-            'user_id'         => User::factory()->create()->id,
+            'user_id'         => User::inRandomOrder()->first(),
             'gender'          => Gender::Male,
             'birthday'        => $this->faker->dateTimeBetween('-15 years', '-1 year'),
             'started_care_at' => $this->faker->dateTimeBetween('-10 years', 'now'),
             'name'            => $this->faker->firstName,
-            'remark'          => $this->faker->optional()->sentence(),
+            'remark'          => $this->faker->optional()->realText(),
         ];
     }
 }

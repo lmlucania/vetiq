@@ -22,7 +22,7 @@ class BusinessHourFactory extends Factory
     public function definition(): array
     {
         return [
-            'hospital_id' => Hospital::factory()->create()->id,
+            'hospital_id' => Hospital::inRandomOrder()->first(),
             'day_of_week' => DayOfWeek::SUNDAY,
             'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',

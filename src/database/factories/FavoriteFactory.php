@@ -21,8 +21,8 @@ class FavoriteFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id'     => User::factory()->create()->id,
-            'hospital_id' => Hospital::factory()->create()->id,
+            'user_id'     => User::inRandomOrder()->first(),
+            'hospital_id' => Hospital::inRandomOrder()->first(),
         ];
     }
 }
