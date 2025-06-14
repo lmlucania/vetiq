@@ -66,7 +66,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.business_hours.index'));
+        $response = $this->get(route('hospital.business-hours.index'));
 
         // 検証（Assert）
         $response
@@ -107,7 +107,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->get(route('hospital.business_hours.index'));
+        $response = $this->get(route('hospital.business-hours.index'));
 
         // 検証（Assert）
         $response
@@ -139,7 +139,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -178,7 +178,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -223,7 +223,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -268,7 +268,7 @@ class BusinessHourControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->post(route('hospital.business_hours.store'), $postData);
+        $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -303,7 +303,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->id]));
+        $response = $this->delete(route('hospital.business-hours.destroy', ['business_hour' => $model->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -327,7 +327,7 @@ class BusinessHourControllerTest extends TestCase
         $this->actingAs($this->staff, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('hospital.business_hours.destroy', ['business_hour' => $model->id]));
+        $response = $this->delete(route('hospital.business-hours.destroy', ['business_hour' => $model->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
