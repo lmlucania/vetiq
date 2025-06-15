@@ -25,9 +25,7 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $model = BusinessHour::findOrFail($id);
-
-        return $model->delete();
+        return BusinessHour::findOrFail($id)->delete();
     }
 
     public function deleteByDayOfWeekInHospital(int $hospitalId, int $dayOfWeek): int
