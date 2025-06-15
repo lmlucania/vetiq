@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
-use App\Models\Menu;
 use App\Models\Notification;
 use Carbon\Carbon;
 
@@ -16,7 +15,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         return Notification::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function create(string $uuid, int $hospitalId, string $title, string $detail, bool $isPublished, ?Carbon $publishedAt): Notification
+    public function create(string $uuid, int $hospitalId, string $title, string $detail, bool $isPublished, Carbon $publishedAt): Notification
     {
         return Notification::create([
             'uuid'         => $uuid,
@@ -28,7 +27,7 @@ class NotificationRepository implements NotificationRepositoryInterface
         ]);
     }
 
-    public function update(int $id, string $title, string $detail, bool $isPublished, ?Carbon $publishedAt): bool
+    public function update(int $id, string $title, string $detail, bool $isPublished, Carbon $publishedAt): bool
     {
         $notification = Notification::findOrFail($id);
 

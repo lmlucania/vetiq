@@ -26,7 +26,7 @@ class NotificationFactory extends Factory
             'title'        => $this->faker->realText(10),
             'detail'       => $this->faker->realText(),
             'is_published' => $this->faker->boolean(),
-            'published_at' => $this->faker->optional()->date(),
+            'published_at' => $this->faker->date(),
         ];
     }
 }
