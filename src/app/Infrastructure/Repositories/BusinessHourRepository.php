@@ -35,7 +35,7 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
             ->delete();
     }
 
-    public function createMany(array $rows): int
+    public function upsertMany(array $rows): int
     {
         return BusinessHour::upsert(
             $rows,
