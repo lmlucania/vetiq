@@ -17,12 +17,12 @@ class Notification extends Model
         'title',
         'detail',
         'is_published',
-        'date',
+        'published_at',
     ];
 
     protected $casts = [
         'is_published' => 'boolean',
-        'date'         => 'date',
+        'published_at' => 'date',
     ];
 
     public function hospital()
