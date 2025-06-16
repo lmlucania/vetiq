@@ -11,7 +11,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\Notification\StoreNotificationRequest;
 use App\Http\Requests\Hospital\Notification\UpdateNotificationRequest;
 use App\Models\Notification;
-use Illuminate\Http\Request;
 
 class NotificationController extends Controller
 {

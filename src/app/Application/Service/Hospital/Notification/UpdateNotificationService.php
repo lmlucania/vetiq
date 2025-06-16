@@ -6,9 +6,7 @@ namespace App\Application\Service\Hospital\Notification;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
-use App\Models\Notification;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class UpdateNotificationService
 {
