@@ -12,11 +12,12 @@ class NotificationTransformer extends TransformerAbstract
     public function transform(Notification $model)
     {
         return [
+            'id' => $model->id,
             'uuid'         => $model->uuid,
             'title'        => $model->title,
             'detail'       => $model->detail,
             'is_published' => $model->is_published,
-            'published_at' => $model->published_at->format('H:i'),
+            'published_at' => $model->published_at->format('Y-m-d H:i'),
         ];
     }
 }

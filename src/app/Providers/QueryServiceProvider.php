@@ -7,10 +7,12 @@ namespace App\Providers;
 use App\Application\QueryService\FavoriteQueryService;
 use App\Application\QueryService\HospitalQueryService;
 use App\Application\QueryService\MenuQueryService;
+use App\Application\QueryService\NotificationQueryService;
 use App\Application\QueryService\ReviewQueryService;
 use App\Infrastructure\QueryService\FavoriteQueryServiceInterface;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 use App\Infrastructure\QueryService\MenuQueryServiceInterface;
+use App\Infrastructure\QueryService\NotificationQueryServiceInterface;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 use Illuminate\Support\ServiceProvider;
 
@@ -25,6 +27,7 @@ class QueryServiceProvider extends ServiceProvider
         $this->app->bind(HospitalQueryServiceInterface::class, HospitalQueryService::class);
         $this->app->bind(MenuQueryServiceInterface::class, MenuQueryService::class);
         $this->app->bind(FavoriteQueryServiceInterface::class, FavoriteQueryService::class);
+        $this->app->bind(NotificationQueryServiceInterface::class, NotificationQueryService::class);
     }
 
     /**

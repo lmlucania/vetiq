@@ -6,27 +6,47 @@ namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\Hospital\Notification\CreateNotificationService;
 use App\Application\Service\Hospital\Notification\DeleteNotificationService;
+use App\Application\Service\Hospital\Notification\GetOwnNotificationDetailService;
+use App\Application\Service\Hospital\Notification\GetOwnNotificationsService;
 use App\Application\Service\Hospital\Notification\UpdateNotificationService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Hospital\Notification\IndexNotificationRequest;
 use App\Http\Requests\Hospital\Notification\StoreNotificationRequest;
 use App\Http\Requests\Hospital\Notification\UpdateNotificationRequest;
 use App\Models\Notification;
+use App\Transformers\MenuTransformer;
+use App\Transformers\NotificationTransformer;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class NotificationController extends Controller
 {
     public function __construct(
+        private GetOwnNotificationsService $getOwnNotificationsService,
         private CreateNotificationService $createNotificationService,
+        private GetOwnNotificationDetailService $getOwnNotificationDetailService,
         private UpdateNotificationService $updateNotificationService,
         private DeleteNotificationService $deleteNotificationService,
     ) {
     }
 
     /**
-     * Display a listing of the resource.
+     * @lrd:start
+     * お知らせの一覧
+     * @lrd:end
      */
-    public function index()
+    public function index(IndexNotificationRequest $request)
     {
-        // fixme サービスの作成から続きを実装する
+        $paginator = $this->getOwnNotificationsService->execute(
+            page:$request->getPage(),
+            perPage: $request->getPerPage(),
+            keyword: $request->getKeyword(),
+            sort: $request->getSort(),
+            queryParam: $request->getAllQuery(),
+        );
+
+        return fractal($paginator->getCollection(), new NotificationTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+            ->respond();
     }
 
     /**
