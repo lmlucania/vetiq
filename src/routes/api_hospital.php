@@ -19,8 +19,8 @@ Route::middleware(['guest'])->group(static function () {
 Route::middleware('auth:staff-members')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::controller(HospitalController::class)->prefix('info')->name('info.')->group(static function () {
-        Route::get('/', 'show')->name('show');
-        Route::put('/', 'update')->name('update');
+        Route::get('', 'show')->name('show');
+        Route::put('', 'update')->name('update');
     });
     Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::controller(MenuController::class)->prefix('menus')->name('menus.')->group(static function () {
