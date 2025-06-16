@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\Hospital\Notification\CreateNotificationService;
+use App\Application\Service\Hospital\Notification\DeleteNotificationService;
 use App\Application\Service\Hospital\Notification\UpdateNotificationService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\Notification\StoreNotificationRequest;
@@ -17,6 +18,7 @@ class NotificationController extends Controller
     public function __construct(
         private CreateNotificationService $createNotificationService,
         private UpdateNotificationService $updateNotificationService,
+        private DeleteNotificationService $deleteNotificationService,
     ) {
     }
 
@@ -78,10 +80,17 @@ class NotificationController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @lrd:start
+     * お知らせの削除
+     * @lrd:end
      */
-    public function destroy(Notification $notification)
+    public function destroy(int $id)
     {
-        //
+        $success = $this->deleteNotificationService->execute($id);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

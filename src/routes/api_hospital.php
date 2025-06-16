@@ -34,5 +34,5 @@ Route::middleware('auth:staff-members')->group(static function () {
         Route::get('{year?}', 'index')->name('index');
     });
     Route::resource('reviews', ReviewController::class)->only(['index']);
-    Route::resource('notifications', NotificationController::class)->only(['store', 'update']);
+    Route::resource('notifications', NotificationController::class)->only(['store', 'update', 'destroy']);
 });
