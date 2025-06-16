@@ -8,7 +8,7 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Models\Menu;
 
-class GetMenuDetailService
+class GetOwnMenuDetailService
 {
     public function __construct(
         private AuthActorService $authActorService,
