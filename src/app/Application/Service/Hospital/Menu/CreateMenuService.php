@@ -19,11 +19,9 @@ class CreateMenuService
 
     public function execute(string $name, string $detail, int $requiredTime, bool $isPublished): Menu
     {
-        $hospitalId = $this->authActorService->getHospitalId();
-
         return $this->menuRepository->create(
             uuid: (string)Str::uuid(),
-            hospitalId: $hospitalId,
+            hospitalId: $this->authActorService->getHospitalId(),
             name: $name,
             detail: $detail,
             requiredTime: $requiredTime,

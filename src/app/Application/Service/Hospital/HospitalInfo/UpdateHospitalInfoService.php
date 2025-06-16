@@ -25,10 +25,8 @@ class UpdateHospitalInfoService
         string $address2,
         bool $isPublished
     ): bool {
-        $hospitalId = $this->authActorService->getHospitalId();
-
         return $this->hospitalRepository->update(
-            id: $hospitalId,
+            id: $this->authActorService->getHospitalId(),
             name: $name,
             phone: $phone,
             postCode: $postCode,

@@ -17,9 +17,8 @@ class SwitchUnPublishMenuService
 
     public function execute(int $id)
     {
-        $hospitalId = $this->authActorService->getHospitalId();
         $menu       = $this->menuRepository->getByHospitalIdAndId(
-            hospitalId: $hospitalId,
+            hospitalId: $this->authActorService->getHospitalId(),
             id: $id,
         );
 
