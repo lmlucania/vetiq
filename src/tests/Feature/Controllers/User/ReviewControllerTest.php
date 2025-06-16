@@ -36,7 +36,9 @@ class ReviewControllerTest extends TestCase
             'hospital_id' => $this->hospital->id,
             'user_id'     => $this->user->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $response = $this->get(route('user.hospital.reviews.index', ['hospitalUuid' => $this->hospital->uuid]));

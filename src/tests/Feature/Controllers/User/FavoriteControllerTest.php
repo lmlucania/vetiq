@@ -35,7 +35,9 @@ class FavoriteControllerTest extends TestCase
             'user_id'     => $this->user->id,
             'hospital_id' => $this->hospital->id,
         ]);
-        Favorite::factory()->create(); // 他ユーザーのお気に入り
+        Favorite::factory()->create([ // 他ユーザーのお気に入り
+            'user_id' => User::factory()->create(),
+        ]);
 
         // 実行（Act）
         $response = $this->get(route('user.favorites.index'));
