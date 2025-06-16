@@ -21,7 +21,7 @@ class StaffMemberFactory extends Factory
     public function definition(): array
     {
         return [
-            'hospital_id' => Hospital::factory()->create()->id,
+            'hospital_id' => Hospital::inRandomOrder()->first(),
             'name'        => $this->faker->lastName() . $this->faker->firstName(),
             'email'       => $this->faker->unique()->safeEmail(),
             'password'    => Hash::make('password'),

@@ -32,7 +32,7 @@ class SyncOwnBusinessHoursByDayOfWeekService
                     dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-                $this->businessHourRepository->createMany($upsertRows);
+                $this->businessHourRepository->upsertMany($upsertRows);
             });
 
             return true;

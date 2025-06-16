@@ -34,7 +34,7 @@ class SyncOwnExceptionHoursByDateService
                     date: $exceptionHourDto->getDate(),
                 );
 
-                $this->exceptionHourRepository->createMany($upsertRows);
+                $this->exceptionHourRepository->upsertMany($upsertRows);
             });
 
             return true;

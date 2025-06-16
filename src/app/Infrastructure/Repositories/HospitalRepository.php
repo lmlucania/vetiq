@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
-use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Domains\Location\Enum\Prefecture;
 use App\Exceptions\NotFoundException;
 use App\Models\Hospital;
-use App\Models\VetModel;
 
 class HospitalRepository implements HospitalRepositoryInterface
 {
@@ -49,15 +47,5 @@ class HospitalRepository implements HospitalRepositoryInterface
         $hospital->is_published = $isPublished;
 
         return $hospital->save();
-    }
-
-    /**
-     * 指定された病院に所属する獣医師の数を取得する
-     * @param HospitalId $id
-     * @return int
-     */
-    public function countVet(HospitalId $id): int
-    {
-        return VetModel::where('hospital_id', $id->getValue())->count();
     }
 }

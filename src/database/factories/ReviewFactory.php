@@ -24,11 +24,11 @@ class ReviewFactory extends Factory
     {
         return [
             'uuid'        => Str::uuid(),
-            'hospital_id' => Hospital::factory()->create()->id,
-            'user_id'     => User::factory()->create()->id,
+            'hospital_id' => Hospital::inRandomOrder()->first(),
+            'user_id'     => User::inRandomOrder()->first(),
             'rating'      => Rating::One,
-            'title'       => $this->faker->sentence,
-            'body'        => $this->faker->paragraph,
+            'title'       => $this->faker->realText(10),
+            'body'        => $this->faker->realText(),
         ];
     }
 }

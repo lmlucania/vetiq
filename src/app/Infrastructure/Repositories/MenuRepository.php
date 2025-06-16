@@ -50,8 +50,6 @@ class MenuRepository implements MenuRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $menu = Menu::findOrFail($id);
-
-        return $menu->delete();
+        return Menu::findOrFail($id)->delete();
     }
 }

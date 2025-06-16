@@ -6,7 +6,7 @@ namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\Hospital\Menu\CreateMenuService;
 use App\Application\Service\Hospital\Menu\DeleteMenuService;
-use App\Application\Service\Hospital\Menu\GetMenuDetailService;
+use App\Application\Service\Hospital\Menu\GetOwnMenuDetailService;
 use App\Application\Service\Hospital\Menu\GetOwnMenusService;
 use App\Application\Service\Hospital\Menu\SwitchPublishMenuService;
 use App\Application\Service\Hospital\Menu\SwitchUnPublishMenuService;
@@ -24,7 +24,7 @@ class MenuController extends Controller
     public function __construct(
         private GetOwnMenusService $getOwnMenusService,
         private CreateMenuService $createMenuService,
-        private GetMenuDetailService $getMenuDetailService,
+        private GetOwnMenuDetailService $getOwnMenuDetailService,
         private UpdateMenuService $updateMenuService,
         private DeleteMenuService $deleteMenuService,
         private SwitchPublishMenuService $switchPublishMenuService,
@@ -79,7 +79,7 @@ class MenuController extends Controller
      */
     public function show(int $id): JsonResponse
     {
-        $menu = $this->getMenuDetailService->execute($id);
+        $menu = $this->getOwnMenuDetailService->execute($id);
         return fractal($menu, new MenuTransformer())->respond();
     }
 

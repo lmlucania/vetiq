@@ -8,6 +8,7 @@ use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
+use App\Domains\Notification\Repository\NotificationRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Domains\User\Repository\UserProfileRepositoryInterface;
@@ -17,6 +18,7 @@ use App\Infrastructure\Repositories\BusinessHourRepository;
 use App\Infrastructure\Repositories\ExceptionHourRepository;
 use App\Infrastructure\Repositories\HospitalRepository;
 use App\Infrastructure\Repositories\MenuRepository;
+use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
 use App\Infrastructure\Repositories\ReviewRepository;
 use App\Infrastructure\Repositories\UserProfileRepository;
@@ -40,6 +42,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(UserRepositoryInterface::class, UserRepository::class);
         $this->app->bind(UserProfileRepositoryInterface::class, UserProfileRepository::class);
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
+        $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
     }
 
     /**

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Domains\Hospital\Repositories;
 
-use App\Domains\Hospital\ValueObjects\HospitalId;
 use App\Domains\Location\Enum\Prefecture;
 use App\Models\Hospital;
 
@@ -24,6 +23,4 @@ interface HospitalRepositoryInterface
         string $address2,
         bool $isPublished
     ): bool;
-
-    public function countVet(HospitalId $id): int;
 }

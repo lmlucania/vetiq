@@ -17,9 +17,8 @@ class DeleteMenuService
 
     public function execute(int $id): bool
     {
-        $hospitalId = $this->authActorService->getHospitalId();
-        $menu       = $this->menuRepository->getByHospitalIdAndId(
-            hospitalId: $hospitalId,
+        $menu = $this->menuRepository->getByHospitalIdAndId(
+            hospitalId: $this->authActorService->getHospitalId(),
             id: $id,
         );
 

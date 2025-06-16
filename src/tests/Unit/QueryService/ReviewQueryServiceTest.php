@@ -8,6 +8,7 @@ use App\Domains\Review\Enum\Rating;
 use App\Infrastructure\QueryService\ReviewQueryServiceInterface;
 use App\Models\Hospital;
 use App\Models\Review;
+use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 
@@ -20,6 +21,7 @@ class ReviewQueryServiceTest extends TestCase
         parent::setUp();
 
         $this->hospital = Hospital::factory()->create();
+        User::factory()->create();
 
         $this->reviewQueryService = app(ReviewQueryServiceInterface::class);
     }
@@ -36,7 +38,9 @@ class ReviewQueryServiceTest extends TestCase
                 'hospital_id' => $this->hospital->id,
             ]);
         }
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -65,7 +69,9 @@ class ReviewQueryServiceTest extends TestCase
         Review::factory(60)->create([
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -92,7 +98,9 @@ class ReviewQueryServiceTest extends TestCase
         Review::factory(60)->create([
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -132,7 +140,10 @@ class ReviewQueryServiceTest extends TestCase
             'hospital_id' => $this->hospital->id,
             'title'       => 'あいうえお',
         ]);
-        Review::factory()->create(['title' => 'テスト']); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+            'title' => 'テスト',
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -174,7 +185,10 @@ class ReviewQueryServiceTest extends TestCase
             'hospital_id' => $this->hospital->id,
             'body'        => 'あいうえお',
         ]);
-        Review::factory()->create(['body' => 'テスト']); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+            'body' => 'テスト',
+            ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -216,7 +230,10 @@ class ReviewQueryServiceTest extends TestCase
             'hospital_id' => $this->hospital->id,
             'rating'      => Rating::Two->value,
         ]);
-        Review::factory()->create(['rating' => Rating::Zero->value,]); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+            'rating' => Rating::Zero->value,
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -259,7 +276,10 @@ class ReviewQueryServiceTest extends TestCase
             'hospital_id' => $this->hospital->id,
             'rating'      => Rating::Three->value, // 絞り込み条件に不一致
         ]);
-        Review::factory()->create(['rating' => Rating::Zero->value,]); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+            'rating' => Rating::Zero->value,
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -297,7 +317,9 @@ class ReviewQueryServiceTest extends TestCase
             'id'          => 1, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -335,7 +357,9 @@ class ReviewQueryServiceTest extends TestCase
             'id'          => 1, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -373,7 +397,9 @@ class ReviewQueryServiceTest extends TestCase
             'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -411,7 +437,9 @@ class ReviewQueryServiceTest extends TestCase
             'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -457,7 +485,9 @@ class ReviewQueryServiceTest extends TestCase
             'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(
@@ -503,7 +533,9 @@ class ReviewQueryServiceTest extends TestCase
             'rating'      => Rating::Two, // 並び替えの対象
             'hospital_id' => $this->hospital->id,
         ]);
-        Review::factory()->create(); // 他院のレビューを作成
+        Review::factory()->create([ // 他院のレビューを作成
+            'hospital_id' => Hospital::factory()->create(),
+        ]);
 
         // 実行（Act）
         $paginator = $this->reviewQueryService->listByHospitalUuid(

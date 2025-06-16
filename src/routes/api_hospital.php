@@ -7,6 +7,7 @@ use App\Http\Controllers\Hospital\BusinessHourController;
 use App\Http\Controllers\Hospital\ExceptionHourController;
 use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Hospital\MenuController;
+use App\Http\Controllers\Hospital\NotificationController;
 use App\Http\Controllers\Hospital\ReviewController;
 use App\Http\Controllers\Hospital\VetController;
 use Illuminate\Support\Facades\Route;
@@ -18,8 +19,8 @@ Route::middleware(['guest'])->group(static function () {
 Route::middleware('auth:staff-members')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::controller(HospitalController::class)->prefix('info')->name('info.')->group(static function () {
-        Route::get('/', 'show')->name('show');
-        Route::put('/', 'update')->name('update');
+        Route::get('', 'show')->name('show');
+        Route::put('', 'update')->name('update');
     });
     Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::controller(MenuController::class)->prefix('menus')->name('menus.')->group(static function () {
@@ -33,4 +34,5 @@ Route::middleware('auth:staff-members')->group(static function () {
         Route::get('{year?}', 'index')->name('index');
     });
     Route::resource('reviews', ReviewController::class)->only(['index']);
+    Route::resource('notifications', NotificationController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
 });

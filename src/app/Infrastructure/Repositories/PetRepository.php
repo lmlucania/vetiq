@@ -67,8 +67,6 @@ class PetRepository implements PetRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $model = Pet::findOrFail($id);
-
-        return $model->delete();
+        return Pet::findOrFail($id)->delete();
     }
 }

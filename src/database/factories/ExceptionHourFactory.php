@@ -21,7 +21,7 @@ class ExceptionHourFactory extends Factory
     public function definition(): array
     {
         return [
-            'hospital_id' => Hospital::factory()->create()->id,
+            'hospital_id' => Hospital::inRandomOrder()->first()->id,
             'date'        => '2025/02/01',
             'time_period' => TimePeriod::AM,
             'start_time'  => null,

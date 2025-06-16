@@ -23,10 +23,8 @@ class GetOwnMenusService
         array $sort,
         array $queryParam
     ): LengthAwarePaginator {
-        $hospitalId = $this->authActorService->getHospitalId();
-
         return $this->menuQueryService->listByCriteria(
-            hospitalId: $hospitalId,
+            hospitalId: $this->authActorService->getHospitalId(),
             page:$page,
             perPage: $perPage,
             keyword: $keyword,

@@ -25,9 +25,7 @@ class ExceptionHourRepository implements ExceptionHourRepositoryInterface
 
     public function delete(int $id): bool
     {
-        $model = ExceptionHour::findOrFail($id);
-
-        return $model->delete();
+        return ExceptionHour::findOrFail($id)->delete();
     }
 
     public function deleteByDateInHospital(int $hospitalId, string $date): int
@@ -37,7 +35,7 @@ class ExceptionHourRepository implements ExceptionHourRepositoryInterface
             ->delete();
     }
 
-    public function createMany(array $rows): int
+    public function upsertMany(array $rows): int
     {
         return ExceptionHour::upsert(
             $rows,

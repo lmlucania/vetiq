@@ -22,7 +22,7 @@ class VetFactory extends Factory
     {
         return [
             'uuid'               => Str::uuid(),
-            'hospital_id'        => Hospital::factory()->create()->id,
+            'hospital_id'        => Hospital::inRandomOrder()->first(),
             'last_name'          => $this->faker->lastName(),
             'first_name'         => $this->faker->firstName(),
             'accept_appointment' => true,
