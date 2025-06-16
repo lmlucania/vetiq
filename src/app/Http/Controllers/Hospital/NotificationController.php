@@ -50,11 +50,14 @@ class NotificationController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @lrd:start
+     * お知らせの詳細
+     * @lrd:end
      */
-    public function show(Notification $notification)
+    public function show(int $id)
     {
-        //
+        $notification = $this->getOwnNotificationDetailService->execute($id);
+        return fractal($notification, new NotificationTransformer())->respond();
     }
 
     /**
