@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
-use App\Infrastructure\QueryService\MenuQueryServiceInterface;
 use App\Infrastructure\QueryService\NotificationQueryServiceInterface;
-use App\Models\Menu;
 use App\Models\Notification;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 

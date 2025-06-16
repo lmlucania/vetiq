@@ -13,8 +13,6 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\Notification\IndexNotificationRequest;
 use App\Http\Requests\Hospital\Notification\StoreNotificationRequest;
 use App\Http\Requests\Hospital\Notification\UpdateNotificationRequest;
-use App\Models\Notification;
-use App\Transformers\MenuTransformer;
 use App\Transformers\NotificationTransformer;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 

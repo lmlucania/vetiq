@@ -12,7 +12,7 @@ class NotificationTransformer extends TransformerAbstract
     public function transform(Notification $model)
     {
         return [
-            'id' => $model->id,
+            'id'           => $model->id,
             'uuid'         => $model->uuid,
             'title'        => $model->title,
             'detail'       => $model->detail,

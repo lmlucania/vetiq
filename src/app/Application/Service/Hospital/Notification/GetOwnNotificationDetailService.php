@@ -1,11 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\Notification;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
 use App\Models\Notification;
-use Carbon\Carbon;
 
 class GetOwnNotificationDetailService
 {
@@ -18,7 +19,6 @@ class GetOwnNotificationDetailService
     public function execute(
         int $id,
     ) : Notification {
-
         return $this->notificationRepository->getByHospitalIdAndId(
             hospitalId: $this->authActorService->getHospitalId(),
             id: $id,

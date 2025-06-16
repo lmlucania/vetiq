@@ -1,15 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\Notification;
 
 use App\Application\QueryService\NotificationQueryService;
 use App\Application\Service\Auth\AuthActorService;
-use App\Domains\Notification\Repository\NotificationRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class GetOwnNotificationsService
 {
-
     public function __construct(
         private AuthActorService $authActorService,
         private NotificationQueryService $notificationQueryService,
