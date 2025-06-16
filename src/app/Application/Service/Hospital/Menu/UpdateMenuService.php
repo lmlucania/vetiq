@@ -17,7 +17,7 @@ class UpdateMenuService
 
     public function execute(int $id, string $name, string $detail, int $requiredTime, bool $isPublished): bool
     {
-        $menu       = $this->menuRepository->getByHospitalIdAndId(
+        $menu = $this->menuRepository->getByHospitalIdAndId(
             hospitalId: $this->authActorService->getHospitalId(),
             id: $id,
         );

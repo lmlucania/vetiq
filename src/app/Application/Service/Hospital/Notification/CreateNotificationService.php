@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\Notification;
 
 use App\Application\Service\Auth\AuthActorService;
@@ -10,19 +12,18 @@ use Illuminate\Support\Str;
 
 class CreateNotificationService
 {
-
     public function __construct(
         private AuthActorService $authActorService,
         private NotificationRepositoryInterface $notificationRepository,
-    )
-    {
+    ) {
     }
 
-    public function execute(  string $title,
-                              string $detail,
-                              bool $isPublished,
-                              Carbon $publishedAt) : Notification
-    {
+    public function execute(
+        string $title,
+        string $detail,
+        bool $isPublished,
+        Carbon $publishedAt
+    ) : Notification {
         return $this->notificationRepository->create(
             uuid: (string)Str::uuid(),
             hospitalId: $this->authActorService->getHospitalId(),

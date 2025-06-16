@@ -14,8 +14,7 @@ class NotificationController extends Controller
 {
     public function __construct(
         private CreateNotificationService $createNotificationService,
-    )
-    {
+    ) {
     }
 
     /**
