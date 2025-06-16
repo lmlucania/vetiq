@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('title')->comment('タイトル');
             $table->text('detail')->comment('内容');
             $table->boolean('is_published')->comment('公開フラグ');
-            $table->date('published_at')->comment('公開日付');
+            $table->dateTime('published_at')->comment('公開日付');
             $table->timestamps();
         });
     }
