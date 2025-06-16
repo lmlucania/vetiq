@@ -42,7 +42,7 @@ class NotificationController extends Controller
             queryParam: $request->getAllQuery(),
         );
 
-        return fractal($paginator->getCollection(), new NotificationTransformer())
+        return fractal($paginator->getCollection(), new NotificationTransformer(includeId: true))
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
@@ -75,7 +75,7 @@ class NotificationController extends Controller
     public function show(int $id)
     {
         $notification = $this->getOwnNotificationDetailService->execute($id);
-        return fractal($notification, new NotificationTransformer())->respond();
+        return fractal($notification, new NotificationTransformer(includeId: true))->respond();
     }
 
     /**
