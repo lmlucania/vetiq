@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Http\Controllers\Hospital;
 
 use App\Application\Service\Hospital\Notification\CreateNotificationService;
+use App\Application\Service\Hospital\Notification\UpdateNotificationService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\Notification\StoreNotificationRequest;
+use App\Http\Requests\Hospital\Notification\UpdateNotificationRequest;
 use App\Models\Notification;
 use Illuminate\Http\Request;
 
@@ -14,6 +16,7 @@ class NotificationController extends Controller
 {
     public function __construct(
         private CreateNotificationService $createNotificationService,
+        private UpdateNotificationService $updateNotificationService,
     ) {
     }
 
@@ -54,19 +57,24 @@ class NotificationController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * @lrd:start
+     * お知らせの更新
+     * @lrd:end
      */
-    public function edit(Notification $notification)
+    public function update(UpdateNotificationRequest $request, int $id)
     {
-        //
-    }
+        $success = $this->updateNotificationService->execute(
+            id: $id,
+            title: $request->getTitle(),
+            detail: $request->getDetail(),
+            isPublished: $request->getIsPublished(),
+            publishedAt: $request->getPublishedAt(),
+        );
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Notification $notification)
-    {
-        //
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 
     /**
