@@ -17,7 +17,7 @@ class AppointmentStatusHistory extends Model
         'status',
         'modifier_type',
         'modifier_id',
-        'hospital_memo'
+        'hospital_memo',
     ];
 
     protected function casts(): array

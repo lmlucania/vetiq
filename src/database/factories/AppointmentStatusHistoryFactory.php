@@ -1,10 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use App\Domains\Appointment\Enum\AppointmentStatus;
-use App\Models\Appointment;
-use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -20,7 +20,7 @@ class AppointmentStatusHistoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'status' => AppointmentStatus::Reserved,
+            'status'        => AppointmentStatus::Reserved,
             'hospital_memo' => $this->faker->realText(),
         ];
     }

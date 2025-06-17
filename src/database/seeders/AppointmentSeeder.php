@@ -20,8 +20,8 @@ class AppointmentSeeder extends Seeder
         foreach ($pets as $pet) {
             AppointmentStatusHistory::factory()->create([
                 'appointment_id' => Appointment::factory()->create(['pet_id' => $pet]),
-                'modifier_type' => get_class($pet->user),
-                'modifier_id' => $pet->user->id,
+                'modifier_type'  => get_class($pet->user),
+                'modifier_id'    => $pet->user->id,
             ]);
         }
     }
