@@ -2,6 +2,7 @@
 
 declare(strict_types=1);
 
+use App\Http\Controllers\User\AppointmentController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\HospitalController;
@@ -35,4 +36,10 @@ Route::middleware('auth:users')->group(static function () {
     });
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
     Route::resource('hospitals', HospitalController::class)->only(['index']);
+    Route::controller(AppointmentController::class)->prefix('hospital')->name('hospital.appointments.')->group(static function () {
+        //        Route::get('{hospitalUuid}/reviews', 'index')->name('index');
+        //        Route::get('{hospitalUuid}/reviews/{uuid}', 'show')->name('show');
+        Route::post('{hospitalId}/appointments', 'store')->name('store');
+        //        Route::put('{hospitalUuid}/reviews/{uuid}', 'update')->name('update');
+    });
 });

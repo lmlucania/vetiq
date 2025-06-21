@@ -11,6 +11,14 @@ class Appointment extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        'pet_id',
+        'hospital_id',
+        'menu_id',
+        'vet_id',
+        'appointment_at',
+    ];
+
     public function statusHistories()
     {
         return $this->belongsToMany(AppointmentStatusHistory::class);

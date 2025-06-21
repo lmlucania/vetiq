@@ -30,7 +30,7 @@ class StorePetRequest extends ApiRequest
         ];
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->validated('name');
     }

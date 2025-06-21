@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Providers;
 
 use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
-use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
@@ -17,7 +16,6 @@ use App\Domains\User\Repository\UserProfileRepositoryInterface;
 use App\Domains\User\Repository\UserRepositoryInterface;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
 use App\Infrastructure\Repositories\AppointmentRepository;
-use App\Infrastructure\Repositories\AppointmentStatusHistoryRepository;
 use App\Infrastructure\Repositories\BusinessHourRepository;
 use App\Infrastructure\Repositories\ExceptionHourRepository;
 use App\Infrastructure\Repositories\HospitalRepository;
@@ -48,7 +46,6 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(ReviewRepositoryInterface::class, ReviewRepository::class);
         $this->app->bind(NotificationRepositoryInterface::class, NotificationRepository::class);
         $this->app->bind(AppointmentRepositoryInterface::class, AppointmentRepository::class);
-        $this->app->bind(AppointmentStatusHistoryRepositoryInterface::class, AppointmentStatusHistoryRepository::class);
     }
 
     /**

@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace App\Domains\Appointment\Repositories;
 
-use App\Models\Appointment;
+use App\Domains\Appointment\Enum\AppointmentStatus;
+use App\Models\AppointmentStatusHistory;
 use Carbon\Carbon;
+use Illuminate\Foundation\Auth\User;
 
 interface AppointmentRepositoryInterface
 {
@@ -14,6 +16,16 @@ interface AppointmentRepositoryInterface
         int $hospitalId,
         int $menuId,
         ?int $vetId,
-        Carbon $appointmentAt
-    ): Appointment;
+        Carbon $appointmentAt,
+        AppointmentStatus $status,
+        User $modifier,
+        ?string $hospitalMemo
+    ): bool;
+
+    public function createStatusHistory(
+        int $appointmentId,
+        AppointmentStatus $status,
+        User $modifier,
+        ?string $hospitalMemo
+    ): AppointmentStatusHistory;
 }
