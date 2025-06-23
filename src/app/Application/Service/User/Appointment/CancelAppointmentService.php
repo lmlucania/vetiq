@@ -38,7 +38,7 @@ class CancelAppointmentService
             modifier: $this->authActorService->getUser(),
             hospitalMemo: null,
         );
-        return $this->appointmentStatusHistoryRepository->createStatusHistory(
+        return $this->appointmentStatusHistoryRepository->create(
             appointmentEntity: $canceledEntity,
             modifier: $this->authActorService->getUser(),
         );

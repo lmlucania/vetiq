@@ -40,12 +40,11 @@ class AppointmentController extends Controller
      * 予約を作成
      * @lrd:end
      */
-    public function store(StoreAppointmentRequest $request, int $hospitalId)
+    public function store(StoreAppointmentRequest $request)
     {
-        // fixme 動作確認からする
         $success = $this->createAppointmentService->execute(
             petId: $request->getPetId(),
-            hospitalId: $hospitalId,
+            hospitalId: $request->getHospitalId(),
             menuId: $request->getMenuId(),
             vetId: $request->getVetId(),
             appointmentAt: $request->getAppointmentAt(),

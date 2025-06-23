@@ -12,7 +12,7 @@ interface AppointmentStatusHistoryRepositoryInterface
 {
     public function getLatestByAppointmentId(int $appointmentId): AppointmentStatusHistory;
 
-    public function createStatusHistory(
+    public function create(
         Appointment $appointmentEntity,
         User $modifier,
     ): AppointmentStatusHistory;

@@ -19,7 +19,7 @@ class AppointmentStatusHistoryRepository implements AppointmentStatusHistoryRepo
             ->firstOrFail();
     }
 
-    public function createStatusHistory(
+    public function create(
         Appointment $appointmentEntity,
         User $modifier,
     ): AppointmentStatusHistory {

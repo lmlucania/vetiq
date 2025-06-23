@@ -18,8 +18,8 @@ use Illuminate\Foundation\Auth\User;
 
 class Appointment
 {
-    public function __construct(
-        private readonly AppointmentId $id,
+    private function __construct(
+        private readonly ?AppointmentId $id,
         private readonly PetId $petId,
         private readonly HospitalId $hospitalId,
         private readonly MenuId $menuId,
@@ -30,8 +30,76 @@ class Appointment
     ) {
     }
 
-    public function getAppointmentId(): AppointmentId
+    public static function fromDatabase(
+        AppointmentId $id,
+        PetId $petId,
+        HospitalId $hospitalId,
+        MenuId $menuId,
+        ?VetId $vetId,
+        AppointmentAt $appointmentAt,
+        AppointmentStatus $status,
+        ?HospitalMemo $hospitalMemo,
+    ): self {
+        return new self(
+            id: $id,
+            petId: $petId,
+            hospitalId: $hospitalId,
+            menuId: $menuId,
+            vetId: $vetId,
+            appointmentAt: $appointmentAt,
+            status: $status,
+            hospitalMemo: $hospitalMemo,
+        );
+    }
+
+    public static function newWithoutId(
+        PetId $petId,
+        HospitalId $hospitalId,
+        MenuId $menuId,
+        ?VetId $vetId,
+        AppointmentAt $appointmentAt,
+        AppointmentStatus $status,
+        ?HospitalMemo $hospitalMemo,
+    ): self {
+        if ($appointmentAt->isPast()) {
+            throw new DomainException('過去の日時での予約はできません。未来の日時を指定してください。');
+        }
+
+        return new self(
+            id: null,
+            petId: $petId,
+            hospitalId: $hospitalId,
+            menuId: $menuId,
+            vetId: $vetId,
+            appointmentAt: $appointmentAt,
+            status: $status,
+            hospitalMemo: $hospitalMemo,
+        );
+    }
+
+    public function withId(AppointmentId $id): self
     {
+        if (! is_null($this->id)) {
+            throw new DomainException('すでにIDが設定された予約にはIDを再設定できません。');
+        }
+
+        return new self(
+            id: $id,
+            petId: $this->petId,
+            hospitalId: $this->hospitalId,
+            menuId: $this->menuId,
+            vetId: $this->vetId,
+            appointmentAt: $this->appointmentAt,
+            status: $this->status,
+            hospitalMemo: $this->hospitalMemo,
+        );
+    }
+
+    public function getAppointmentId(): ?AppointmentId
+    {
+        if (is_null($this->id)) {
+            throw new DomainException('保存前の予約にはIDはありません。');
+        }
         return $this->id;
     }
 

@@ -36,10 +36,8 @@ Route::middleware('auth:users')->group(static function () {
     });
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
     Route::resource('hospitals', HospitalController::class)->only(['index']);
-    Route::controller(AppointmentController::class)->prefix('hospital')->name('hospital.appointments.')->group(static function () {
-        //        Route::get('{hospitalUuid}/reviews', 'index')->name('index');
-        //        Route::get('{hospitalUuid}/reviews/{uuid}', 'show')->name('show');
-        Route::post('{hospital-id}/appointments', 'store')->name('store');
-        Route::post('appointments/{id}/cancel', 'cancel')->name('cancel');
+    Route::controller(AppointmentController::class)->prefix('hospital')->name('appointments.')->group(static function () {
+        Route::post('', 'store')->name('store');
+        Route::patch('appointments/{id}/cancel', 'cancel')->name('cancel');
     });
 });
