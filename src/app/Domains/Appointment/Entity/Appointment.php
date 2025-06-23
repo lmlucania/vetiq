@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\Appointment\Entity;
 
 use App\Domains\Appointment\Enum\AppointmentStatus;
@@ -25,9 +27,10 @@ class Appointment
         private readonly AppointmentAt $appointmentAt,
         private readonly AppointmentStatus $status,
         private readonly ?HospitalMemo $hospitalMemo,
-    ) {}
+    ) {
+    }
 
-    public function getId(): AppointmentId
+    public function getAppointmentId(): AppointmentId
     {
         return $this->id;
     }

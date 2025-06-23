@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Service\User\Appointment\CancelAppointmentService;
 use App\Application\Service\User\Appointment\CreateAppointmentService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Appointment\StoreAppointmentRequest;
@@ -14,6 +15,7 @@ class AppointmentController extends Controller
 {
     public function __construct(
         private CreateAppointmentService $createAppointmentService,
+        private CancelAppointmentService $cancelAppointmentService,
     ) {
     }
 
@@ -64,14 +66,6 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Appointment $appointment)
-    {
-        //
-    }
-
-    /**
      * Update the specified resource in storage.
      */
     public function update(Request $request, Appointment $appointment)
@@ -80,10 +74,19 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
+     * @lrd:start
+     * 予約をキャンセル
+     * @lrd:end
      */
-    public function destroy(Appointment $appointment)
+    public function cancel(int $id)
     {
-        //
+        $success = $this->cancelAppointmentService->execute(
+            appointmentId: $id,
+        );
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

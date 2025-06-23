@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\Appointment\ValueObjects;
 
 class AppointmentId

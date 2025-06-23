@@ -19,6 +19,13 @@ class Appointment extends Model
         'appointment_at',
     ];
 
+    protected function casts(): array
+    {
+        return [
+            'appointment_at' => 'datetime:Y-m-d H:i',
+        ];
+    }
+
     public function statusHistories()
     {
         return $this->belongsToMany(AppointmentStatusHistory::class);

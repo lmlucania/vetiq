@@ -16,6 +16,16 @@ use Throwable;
 
 class AppointmentRepository implements AppointmentRepositoryInterface
 {
+    public function getByUserIdAndId(int $userId, int $id): Appointment
+    {
+        return Appointment::query()
+            ->join('pets', 'appointments.pet_id', '=', 'pets.id')
+            ->where('appointments.id', $id)
+            ->where('pets.user_id', $userId)
+            ->select('appointments.*') // 必須：Appointment モデルにマッピングさせるため
+            ->firstOrFail();
+    }
+
     public function create(
         int $petId,
         int $hospitalId,

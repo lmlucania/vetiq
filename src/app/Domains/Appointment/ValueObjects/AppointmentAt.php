@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\Appointment\ValueObjects;
 
 use App\Exceptions\InvalidArgumentException;
@@ -9,12 +11,12 @@ class AppointmentAt
 {
     private CarbonImmutable $appointmentAt;
 
-    public function __construct(string $time)
+    public function __construct(string $date)
     {
-        $parsed = CarbonImmutable::createFromFormat('H:i', $time);
+        $parsed = CarbonImmutable::createFromFormat('Y-m-d H:i', $date);
 
-        if (! $parsed || $parsed->format('Y-m-d H:i') !== $time) {
-            throw new InvalidArgumentException("予約時刻の形式が不正です: {$time}");
+        if (! $parsed || $parsed->format('Y-m-d H:i') !== $date) {
+            throw new InvalidArgumentException("予約時刻の形式が不正です: {$date}");
         }
 
         $this->appointmentAt = $parsed;
@@ -29,5 +31,4 @@ class AppointmentAt
     {
         return $this->appointmentAt->lt(now());
     }
-
 }
