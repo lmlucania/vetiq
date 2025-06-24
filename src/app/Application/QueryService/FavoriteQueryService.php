@@ -16,7 +16,7 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
     private array $sortable    = ['id', 'name'];
     private array $defaultSort = ['-id'];
 
-    public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Favorite::query()
             ->where('user_id', $userId)

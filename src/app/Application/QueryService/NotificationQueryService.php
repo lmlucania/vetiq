@@ -16,7 +16,7 @@ class NotificationQueryService implements NotificationQueryServiceInterface
     private array $sortable    = ['published_at', 'is_published'];
     private array $defaultSort = ['-published_at'];
 
-    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Notification::query()->where('hospital_id', $hospitalId);
 

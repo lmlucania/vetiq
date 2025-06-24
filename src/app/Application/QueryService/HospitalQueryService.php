@@ -17,7 +17,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
     private array $sortable    = ['name', 'prefecture'];
     private array $defaultSort = ['prefecture', 'address1', 'address2'];
 
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Hospital::query();
 
