@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface VetQueryServiceInterface
 {
-    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort,array $queryParam):LengthAwarePaginator;
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, array $queryParam):LengthAwarePaginator;
 
     public function querySort(Builder $query, array $sortable, array $sortParams): Builder;
 }

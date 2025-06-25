@@ -6,33 +6,40 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Appointment\CancelAppointmentService;
 use App\Application\Service\User\Appointment\CreateAppointmentService;
+use App\Application\Service\User\Appointment\GetMyAppointmentsService;
 use App\Http\Controllers\Controller;
+use App\Http\Requests\User\Appointment\IndexAppointmentRequest;
 use App\Http\Requests\User\Appointment\StoreAppointmentRequest;
 use App\Models\Appointment;
+use App\Transformers\AppointmentTransformer;
 use Illuminate\Http\Request;
+use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class AppointmentController extends Controller
 {
     public function __construct(
+        private GetMyAppointmentsService $getMyAppointmentsService,
         private CreateAppointmentService $createAppointmentService,
         private CancelAppointmentService $cancelAppointmentService,
     ) {
     }
 
     /**
-     * Display a listing of the resource.
+     * @lrd:start
+     * 予約の一覧
+     * @lrd:end
      */
-    public function index()
+    public function index(IndexAppointmentRequest $request)
     {
-        //
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
+        $paginator = $this->getMyAppointmentsService->execute(
+            page:$request->getPage(),
+            perPage: $request->getPerPage(),
+            sort: $request->getSort(),
+            queryParam: $request->getAllQuery(),
+        );
+        return fractal($paginator->getCollection(), new AppointmentTransformer())
+            ->paginateWith(new IlluminatePaginatorAdapter($paginator))
+            ->respond();
     }
 
     /**

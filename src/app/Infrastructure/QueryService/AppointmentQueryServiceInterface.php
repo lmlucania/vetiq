@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface AppointmentQueryServiceInterface
 {
-    public function listByUserId(int $userId, int $page, int $perPage, string $keyword, array $sort, $queryParam):LengthAwarePaginator;
+    public function listByUserId(int $userId, int $page, int $perPage, array $sort, array $queryParam):LengthAwarePaginator;
 
     public function querySort(Builder $query, array $sortable, array $sortParams): Builder;
 }
