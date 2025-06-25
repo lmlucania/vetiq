@@ -19,4 +19,20 @@ class MenuTransformer extends TransformerAbstract
             'is_published'  => $model->is_published,
         ];
     }
+
+    public static function fromJoin(
+        int $menuId,
+        string $name,
+        string $detail,
+        int $requiredTime,
+        int $isPublished,
+    ): array {
+        return [
+            'id'            => $menuId,
+            'name'          => $name,
+            'detail'        => $detail,
+            'required_time' => $requiredTime,
+            'is_published'  => (bool)$isPublished,
+        ];
+    }
 }
