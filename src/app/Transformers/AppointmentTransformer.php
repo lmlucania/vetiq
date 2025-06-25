@@ -13,7 +13,7 @@ class AppointmentTransformer extends TransformerAbstract
     {
         return [
             'id'             => $appointment->appt,
-            'appointment_at' => $appointment->appt_appointment_at->format('Y-m-d H:i'),
+            'appointment_at' => date('Y-m-d H:i', strtotime($appointment->appt_appointment_at)),
             'status'         => $appointment->status,
             'created_at'     => $appointment->appt_created_at,
             'updated_at'     => $appointment->status_created_at,
