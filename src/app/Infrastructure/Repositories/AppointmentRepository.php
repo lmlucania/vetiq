@@ -25,7 +25,7 @@ class AppointmentRepository implements AppointmentRepositoryInterface
     public function getWithStatusHistoriesByUserIdAndId(int $userId, int $id): Appointment
     {
         return Appointment::with([
-            'pet' => fn ($sub) => $sub->where('user_id', $userId),
+            'pet'             => fn ($sub) => $sub->where('user_id', $userId),
             'statusHistories' => fn ($sub) => $sub->orderBy('appointment_status_histories.created_at', 'desc'),
             'hospital',
             'menu',
