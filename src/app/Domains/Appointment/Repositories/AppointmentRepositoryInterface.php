@@ -11,7 +11,7 @@ interface AppointmentRepositoryInterface
 {
     public function getByUserIdAndId(int $userId, int $id): Appointment;
 
-    public function create(
-        AppointmentEntity $entity,
-    ): AppointmentEntity;
+    public function getWithStatusHistoriesByUserIdAndId(int $userId, int $id): Appointment;
+
+    public function create(AppointmentEntity $entity): AppointmentEntity;
 }

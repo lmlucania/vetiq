@@ -19,6 +19,14 @@ class AppointmentStatusHistoryRepository implements AppointmentStatusHistoryRepo
             ->firstOrFail();
     }
 
+    public function getListByAppointmentId(int $appointmentId)
+    {
+        return AppointmentStatusHistory::query()
+            ->where('appointment_id', $appointmentId)
+            ->orderByDesc('created_at')
+            ->get();
+    }
+
     public function create(
         Appointment $appointmentEntity,
         User $modifier,

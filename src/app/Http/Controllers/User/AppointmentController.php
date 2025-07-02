@@ -6,12 +6,15 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\Appointment\CancelAppointmentService;
 use App\Application\Service\User\Appointment\CreateAppointmentService;
+use App\Application\Service\User\Appointment\GetAppointmentDetailService;
 use App\Application\Service\User\Appointment\GetMyAppointmentsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Appointment\IndexAppointmentRequest;
 use App\Http\Requests\User\Appointment\StoreAppointmentRequest;
 use App\Models\Appointment;
+use App\Transformers\AppointmentStatusHistoryTransformer;
 use App\Transformers\AppointmentTransformer;
+use App\Transformers\AppointmentWithStatusHistoryTransformer;
 use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
@@ -20,6 +23,7 @@ class AppointmentController extends Controller
     public function __construct(
         private GetMyAppointmentsService $getMyAppointmentsService,
         private CreateAppointmentService $createAppointmentService,
+        private GetAppointmentDetailService $getAppointmentDetailService,
         private CancelAppointmentService $cancelAppointmentService,
     ) {
     }
@@ -64,11 +68,16 @@ class AppointmentController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * @lrd:start
+     * 予約の詳細
+     * @lrd:end
      */
-    public function show(Appointment $appointment)
+    public function show(int $id)
     {
-        //
+        $appointment = $this->getAppointmentDetailService->execute($id);
+        return fractal($appointment, new AppointmentWithStatusHistoryTransformer())
+            ->parseIncludes(['pet', 'menu', 'hospital', 'vet'])
+            ->respond();
     }
 
     /**

@@ -28,6 +28,26 @@ class Appointment extends Model
 
     public function statusHistories()
     {
-        return $this->belongsToMany(AppointmentStatusHistory::class);
+        return $this->hasMany(AppointmentStatusHistory::class);
+    }
+
+    public function hospital()
+    {
+        return $this->belongsTo(Hospital::class);
+    }
+
+    public function pet()
+    {
+        return $this->belongsTo(Pet::class);
+    }
+
+    public function menu()
+    {
+        return $this->belongsTo(Menu::class);
+    }
+
+    public function vet()
+    {
+        return $this->belongsTo(Vet::class);
     }
 }
