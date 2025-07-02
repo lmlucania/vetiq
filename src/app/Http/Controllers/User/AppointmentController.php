@@ -11,11 +11,8 @@ use App\Application\Service\User\Appointment\GetMyAppointmentsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\Appointment\IndexAppointmentRequest;
 use App\Http\Requests\User\Appointment\StoreAppointmentRequest;
-use App\Models\Appointment;
-use App\Transformers\AppointmentStatusHistoryTransformer;
 use App\Transformers\AppointmentTransformer;
 use App\Transformers\AppointmentWithStatusHistoryTransformer;
-use Illuminate\Http\Request;
 use League\Fractal\Pagination\IlluminatePaginatorAdapter;
 
 class AppointmentController extends Controller
@@ -78,14 +75,6 @@ class AppointmentController extends Controller
         return fractal($appointment, new AppointmentWithStatusHistoryTransformer())
             ->parseIncludes(['pet', 'menu', 'hospital', 'vet'])
             ->respond();
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Appointment $appointment)
-    {
-        //
     }
 
     /**
