@@ -11,9 +11,16 @@ use Illuminate\Foundation\Auth\User;
 
 class AppointmentStatusHistoryRepository implements AppointmentStatusHistoryRepositoryInterface
 {
-    public function getLatestByAppointmentId(int $appointmentId): AppointmentStatusHistory
+    public function getLatestByAppointmentId(int $userId, int $appointmentId): AppointmentStatusHistory
     {
         return AppointmentStatusHistory::query()
+            ->with([
+                'appointment',
+                'appointment.pet' => fn ($sub) => $sub->where('user_id', $userId),
+                'appointment.hospital',
+                'appointment.menu',
+                'appointment.vet',
+            ])
             ->where('appointment_id', $appointmentId)
             ->orderByDesc('created_at')
             ->firstOrFail();

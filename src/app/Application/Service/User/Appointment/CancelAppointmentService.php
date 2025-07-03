@@ -22,15 +22,13 @@ class CancelAppointmentService
 
     public function execute(int $appointmentId): AppointmentStatusHistory
     {
-        $appointment = $this->appointmentRepository->getByUserIdAndId(
+        $latestStatus = $this->appointmentStatusHistoryRepository->getLatestByAppointmentId(
             userId: $this->authActorService->getUserId(),
-            id: $appointmentId,
+            appointmentId: $appointmentId,
         );
 
-        $latestStatus = $this->appointmentStatusHistoryRepository->getLatestByAppointmentId($appointment->id);
-
         $appointmentEntity = $this->appointmentFactory->modelToEntity(
-            appointment: $appointment,
+            appointment: $latestStatus->appointment,
             statusHistory: $latestStatus,
         );
 
