@@ -154,7 +154,7 @@ class Appointment
         }
 
         if ($this->status !== AppointmentStatus::Reserved) {
-            throw new DomainException('予約が新規の状態でないため、変更できません。');
+            throw new DomainException('予約が新規の状態ではないため、変更できません。');
         }
 
         if ($this->appointmentAt->isPast()) {
