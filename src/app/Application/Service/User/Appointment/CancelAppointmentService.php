@@ -6,7 +6,6 @@ namespace App\Application\Service\User\Appointment;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Appointment\Factory\AppointmentFactory;
-use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Models\AppointmentStatusHistory;
 
@@ -14,7 +13,6 @@ class CancelAppointmentService
 {
     public function __construct(
         private AuthActorService $authActorService,
-        private AppointmentRepositoryInterface $appointmentRepository,
         private AppointmentStatusHistoryRepositoryInterface $appointmentStatusHistoryRepository,
         private AppointmentFactory $appointmentFactory,
     ) {
