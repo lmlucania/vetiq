@@ -155,4 +155,38 @@ class AppointmentControllerTest extends TestCase
             ->assertJsonPath('data.status_histories.data.0.status', AppointmentStatus::Reserved->value)
             ->assertJsonPath('data.status_histories.data.1.status', AppointmentStatus::Cancelled->value);
     }
+
+    /**
+     * 予約のキャンセル
+     */
+    public function testCancelSuccess()
+    {
+        // Arrange（準備）
+        $this->actingAs($this->user, $this->guard);
+        $appointment = Appointment::factory()->create([
+            'pet_id'      => $this->pet,
+            'hospital_id' => $this->hospital,
+            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
+            'appointment_at' => '2030-01-01 09:00',
+        ]);
+        AppointmentStatusHistory::factory()->create([
+            'id' => 1,
+            'appointment_id' => $appointment->id,
+            'status'         => AppointmentStatus::Reserved,
+            'modifier_type' => '',
+            'modifier_id' => 1
+        ]);
+
+        // Act（実行）
+        $response = $this->patch(route('user.appointments.cancel', ['id' => $appointment->id]));
+
+        // 検証（Assert）
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('appointment_status_histories', 2);
+
+        $statusHistory = AppointmentStatusHistory::latest()->first();
+        $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
+    }
 }
