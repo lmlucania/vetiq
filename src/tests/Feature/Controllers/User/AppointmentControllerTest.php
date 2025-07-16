@@ -186,7 +186,7 @@ class AppointmentControllerTest extends TestCase
 
         $this->assertDatabaseCount('appointment_status_histories', 2);
 
-        $statusHistory = AppointmentStatusHistory::latest()->first();
+        $statusHistory = AppointmentStatusHistory::latest('id')->first();
         $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
     }
 
@@ -227,7 +227,7 @@ class AppointmentControllerTest extends TestCase
         $this->assertDatabaseCount('appointment_status_histories', 1);
 
         $statusHistory = AppointmentStatusHistory::first();
-        $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
+        $this->assertEquals(AppointmentStatus::Reserved, $statusHistory->status);
     }
 
     /**
