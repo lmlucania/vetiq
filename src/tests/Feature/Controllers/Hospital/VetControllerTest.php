@@ -418,7 +418,6 @@ class VetControllerTest extends TestCase
                 'error'   => 'Unprocessable Entity',
                 'message' => '獣医が1人しかいないため削除できません。',
             ]);
-        ;
 
         $this->assertDatabaseCount('vets', 1);
     }

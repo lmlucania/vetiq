@@ -189,4 +189,84 @@ class AppointmentControllerTest extends TestCase
         $statusHistory = AppointmentStatusHistory::latest()->first();
         $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
     }
+
+    /**
+     * 予約のキャンセル 予約時間を過ぎてキャンセルをした場合にエラーになること
+     */
+    public function testCancelIsPastFailure()
+    {
+        // Arrange（準備）
+        $this->actingAs($this->user, $this->guard);
+        $appointment = Appointment::factory()->create([
+            'pet_id'      => $this->pet,
+            'hospital_id' => $this->hospital,
+            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
+            'appointment_at' => '2000-01-01 09:00', // テスト対象
+        ]);
+        AppointmentStatusHistory::factory()->create([
+            'id' => 1,
+            'appointment_id' => $appointment->id,
+            'status'         => AppointmentStatus::Reserved,
+            'modifier_type' => '',
+            'modifier_id' => 1
+        ]);
+
+        // Act（実行）
+        $response = $this->patch(route('user.appointments.cancel', ['id' => $appointment->id]));
+
+        // 検証（Assert）
+        $response
+            ->assertStatus(422)
+            ->assertJsonCount(2)
+            ->assertJsonFragment([
+                'error'   => 'Unprocessable Entity',
+                'message' => '予約時間が過ぎているため、キャンセルできません。',
+            ]);
+
+        $this->assertDatabaseCount('appointment_status_histories', 1);
+
+        $statusHistory = AppointmentStatusHistory::first();
+        $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
+    }
+
+    /**
+     * 予約のキャンセル ステータスが予約済み以外の場合にキャンセルをするとエラーになる
+     */
+    public function testCancelIsNotReservedFailure()
+    {
+        // Arrange（準備）
+        $this->actingAs($this->user, $this->guard);
+        $appointment = Appointment::factory()->create([
+            'pet_id'      => $this->pet,
+            'hospital_id' => $this->hospital,
+            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
+            'appointment_at' => '2030-01-01 09:00',
+        ]);
+        AppointmentStatusHistory::factory()->create([
+            'id' => 1,
+            'appointment_id' => $appointment->id,
+            'status'         => AppointmentStatus::Cancelled,  // テスト対象
+            'modifier_type' => '',
+            'modifier_id' => 1
+        ]);
+
+        // Act（実行）
+        $response = $this->patch(route('user.appointments.cancel', ['id' => $appointment->id]));
+
+        // 検証（Assert）
+        $response
+            ->assertStatus(422)
+            ->assertJsonCount(2)
+            ->assertJsonFragment([
+                'error'   => 'Unprocessable Entity',
+                'message' => '予約が新規の状態ではないため、変更できません。',
+            ]);
+
+        $this->assertDatabaseCount('appointment_status_histories', 1);
+
+        $statusHistory = AppointmentStatusHistory::first();
+        $this->assertEquals(AppointmentStatus::Cancelled, $statusHistory->status);
+    }
 }
