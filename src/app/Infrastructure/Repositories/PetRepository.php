@@ -12,6 +12,13 @@ use Illuminate\Support\Collection;
 
 class PetRepository implements PetRepositoryInterface
 {
+    public function getByUserIdAndId(int $userId, int $id): Pet
+    {
+        return Pet::where('id', $id)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+    }
+
     public function getByUserIdAndUuid(int $userId, string $uuid): Pet
     {
         return Pet::where('user_id', $userId)

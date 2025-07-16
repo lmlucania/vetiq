@@ -20,4 +20,18 @@ class VetTransformer extends TransformerAbstract
             'remark'             => $vet->remark,
         ];
     }
+
+    public static function fromJoin(
+        int $id,
+        string $lastName,
+        string $firstName,
+        int $acceptAppointment,
+    ): array {
+        return [
+            'id'                 => $id,
+            'last_name'          => $lastName,
+            'first_name'         => $firstName,
+            'accept_appointment' => (bool)$acceptAppointment,
+        ];
+    }
 }

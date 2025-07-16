@@ -22,4 +22,24 @@ class HospitalTransformer extends TransformerAbstract
             'is_published' => $hospital->is_published,
         ];
     }
+
+    public static function fromJoin(
+        int $hospitalId,
+        string $name,
+        ?string $phone,
+        ?string $postCode,
+        ?int $prefecture,
+        ?string $address1,
+        ?string $address2
+    ): array {
+        return [
+            'id'         => $hospitalId,
+            'name'       => $name,
+            'phone'      => $phone,
+            'post_code'  => $postCode,
+            'prefecture' => $prefecture,
+            'address1'   => $address1,
+            'address2'   => $address2,
+        ];
+    }
 }

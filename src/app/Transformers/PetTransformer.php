@@ -20,4 +20,22 @@ class PetTransformer extends TransformerAbstract
             'remark'          => $pet->remark,
         ];
     }
+
+    public static function fromJoin(
+        int $id,
+        string $name,
+        int $gender,
+        ?string $birthday,
+        ?string $startedCareAt,
+        ?string $remark,
+    ): array {
+        return [
+            'id'              => $id,
+            'name'            => $name,
+            'gender'          => $gender,
+            'birthday'        => $birthday ? date('Y-m-d', strtotime($birthday)) : null,
+            'started_care_at' => $startedCareAt ? date('Y-m-d', strtotime($startedCareAt)) : null,
+            'remark'          => $remark,
+        ];
+    }
 }

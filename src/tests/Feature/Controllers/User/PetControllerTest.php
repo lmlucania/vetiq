@@ -108,21 +108,28 @@ class PetControllerTest extends TestCase
     {
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
+        $pet = Pet::factory()->create([
+            'name'            => 'テスト名前',
+            'gender'          => Gender::Male,
+            'birthday'        => '2000-01-01',
+            'started_care_at' => '2001-01-01',
+            'remark'          => 'テスト備考',
+        ]);
 
         // 実行（Act）
-        $response = $this->get(route('user.pets.show', ['pet' => $this->pet->uuid]));
+        $response = $this->get(route('user.pets.show', ['pet' => $pet->uuid]));
 
         // 検証（Assert）
-        $response->assertStatus(200);
-
-        $this->assertDatabaseCount('pets', 1);
-
-        $record = Pet::first();
-        $this->assertEquals($this->pet->name, $record->name);
-        $this->assertEquals($this->pet->gender, $record->gender);
-        $this->assertEquals($this->pet->birthday, $record->birthday);
-        $this->assertEquals($this->pet->started_care_at, $record->started_care_at);
-        $this->assertEquals($this->pet->remark, $record->remark);
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(6, 'data')
+            ->assertJsonFragment([
+                'name'            => 'テスト名前',
+                'gender'          => Gender::Male,
+                'birthday'        => '2000-01-01',
+                'started_care_at' => '2001-01-01',
+                'remark'          => 'テスト備考',
+            ]);
     }
 
     /**

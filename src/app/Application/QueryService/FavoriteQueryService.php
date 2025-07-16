@@ -16,13 +16,12 @@ class FavoriteQueryService implements FavoriteQueryServiceInterface
     private array $sortable    = ['id', 'name'];
     private array $defaultSort = ['-id'];
 
-    public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $userId, int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Favorite::query()
             ->where('user_id', $userId)
             ->join('hospitals', 'favorites.hospital_id', '=', 'hospitals.id')
-            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name')
-            ->orderBy('favorites.id', 'desc');
+            ->select('favorites.id', 'favorites.hospital_id', 'hospitals.name');
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 

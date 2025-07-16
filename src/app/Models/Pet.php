@@ -28,4 +28,9 @@ class Pet extends Model
         'birthday'        => 'date',
         'started_care_at' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }

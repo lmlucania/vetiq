@@ -142,7 +142,7 @@ class ReviewQueryServiceTest extends TestCase
         ]);
         Review::factory()->create([ // 他院のレビューを作成
             'hospital_id' => Hospital::factory()->create(),
-            'title' => 'テスト',
+            'title'       => 'テスト',
         ]);
 
         // 実行（Act）
@@ -187,7 +187,7 @@ class ReviewQueryServiceTest extends TestCase
         ]);
         Review::factory()->create([ // 他院のレビューを作成
             'hospital_id' => Hospital::factory()->create(),
-            'body' => 'テスト',
+            'body'        => 'テスト',
             ]);
 
         // 実行（Act）
@@ -232,7 +232,7 @@ class ReviewQueryServiceTest extends TestCase
         ]);
         Review::factory()->create([ // 他院のレビューを作成
             'hospital_id' => Hospital::factory()->create(),
-            'rating' => Rating::Zero->value,
+            'rating'      => Rating::Zero->value,
         ]);
 
         // 実行（Act）
@@ -278,7 +278,7 @@ class ReviewQueryServiceTest extends TestCase
         ]);
         Review::factory()->create([ // 他院のレビューを作成
             'hospital_id' => Hospital::factory()->create(),
-            'rating' => Rating::Zero->value,
+            'rating'      => Rating::Zero->value,
         ]);
 
         // 実行（Act）

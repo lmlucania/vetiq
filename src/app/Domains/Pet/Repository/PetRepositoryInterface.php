@@ -11,6 +11,8 @@ use Illuminate\Support\Collection;
 
 interface PetRepositoryInterface
 {
+    public function getByUserIdAndId(int $userId, int $id);
+
     public function getByUserIdAndUuid(int $userId, string $uuid): Pet;
 
     public function getListByUserId(int $userId): Collection;

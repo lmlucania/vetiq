@@ -16,7 +16,7 @@ class VetQueryService implements VetQueryServiceInterface
     private array $sortable    = ['id', 'last_name', 'first_name', 'accept_appointment', 'remark', 'created_at', 'updated_at'];
     private array $defaultSort = ['id'];
 
-    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Vet::query()->where('hospital_id', $hospitalId);
 

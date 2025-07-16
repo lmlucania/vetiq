@@ -101,6 +101,9 @@ class ReviewControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
             'hospital_id' => $this->hospital->id,
+            'rating'      => Rating::One->value,
+            'title'       => 'テストタイトル',
+            'body'        => 'テスト本文',
         ]);
 
         // 実行（Act）
@@ -110,16 +113,14 @@ class ReviewControllerTest extends TestCase
         ));
 
         // 検証（Assert）
-        $response->assertStatus(200);
-
-        $this->assertDatabaseCount('reviews', 1);
-
-        $record = Review::first();
-        $this->assertEquals($review->hospital_id, $record->hospital_id);
-        $this->assertEquals($review->user_id, $record->user_id);
-        $this->assertEquals($review->rating, $record->rating);
-        $this->assertEquals($review->title, $record->title);
-        $this->assertEquals($review->body, $record->body);
+        $response
+            ->assertStatus(200)
+            ->assertJsonCount(5, 'data')
+            ->assertJsonFragment([
+                'rating' => Rating::One->value,
+                'title'  => 'テストタイトル',
+                'body'   => 'テスト本文',
+            ]);
     }
 
     /**

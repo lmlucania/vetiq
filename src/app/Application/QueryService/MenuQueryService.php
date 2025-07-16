@@ -16,7 +16,7 @@ class MenuQueryService implements MenuQueryServiceInterface
     private array $sortable    = ['id', 'name', 'detail', 'required_time', 'is_published', 'created_at', 'updated_at'];
     private array $defaultSort = ['id'];
 
-    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $hospitalId, int $page, int $perPage, string $keyword, array $sort, array $queryParam): LengthAwarePaginator
     {
         $query = Menu::query()->where('hospital_id', $hospitalId);
 

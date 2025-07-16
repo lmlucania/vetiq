@@ -24,7 +24,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
         string $keyword,
         array $rating,
         array $sort,
-        $queryParam
+        array $queryParam
     ):LengthAwarePaginator {
         $query = Review::query()
             ->join('hospitals', function ($join) use ($hospitalUuid) {
@@ -43,7 +43,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
         string $keyword,
         array $rating,
         array $sort,
-        $queryParam
+        array $queryParam
     ):LengthAwarePaginator {
         $query = Review::query()
             ->where('hospital_id', $hospitalId)
