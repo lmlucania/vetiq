@@ -101,9 +101,9 @@ class ReviewControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         $review = Review::factory()->create([
             'hospital_id' => $this->hospital->id,
-            'rating' => Rating::One->value,
-            'title'  => 'テストタイトル',
-            'body'   => 'テスト本文',
+            'rating'      => Rating::One->value,
+            'title'       => 'テストタイトル',
+            'body'        => 'テスト本文',
         ]);
 
         // 実行（Act）

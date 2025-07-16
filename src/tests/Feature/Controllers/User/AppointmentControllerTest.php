@@ -44,13 +44,13 @@ class AppointmentControllerTest extends TestCase
             'pet_id'      => $this->pet,
             'hospital_id' => $this->hospital,
             'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
-            'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
+            'vet_id'      => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
         ]);
         $statusHistory = AppointmentStatusHistory::factory()->create([
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Reserved,
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
         $otherHospital = Hospital::factory()->create();
         Appointment::factory()->create([ // 他ユーザーの予約
@@ -67,7 +67,7 @@ class AppointmentControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'id' => $appointment->id,
+                'id'     => $appointment->id,
                 'status' => $statusHistory->status,
             ]);
     }
@@ -81,8 +81,8 @@ class AppointmentControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
 
         $hospital = Hospital::factory()->create();
-        $menu = Menu::factory()->create(['hospital_id' => $hospital->id]);
-        $vet = Vet::factory()->create(['hospital_id' => $hospital->id]);
+        $menu     = Menu::factory()->create(['hospital_id' => $hospital->id]);
+        $vet      = Vet::factory()->create(['hospital_id' => $hospital->id]);
         $postData = [
             'pet_id'         => $this->pet->id,
             'hospital_id'    => $hospital->id,
@@ -119,25 +119,25 @@ class AppointmentControllerTest extends TestCase
         // Arrange（準備）
         $this->actingAs($this->user, $this->guard);
         $appointment = Appointment::factory()->create([
-            'pet_id'      => $this->pet,
-            'hospital_id' => $this->hospital,
-            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'pet_id'         => $this->pet,
+            'hospital_id'    => $this->hospital,
+            'menu_id'        => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
             'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
             'appointment_at' => '2025-01-01 09:00',
         ]);
         AppointmentStatusHistory::factory()->create([
-            'id' => 1,
+            'id'             => 1,
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Reserved,
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
         AppointmentStatusHistory::factory()->create([
-            'id' => 2,
+            'id'             => 2,
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Cancelled,
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
 
         // Act（実行）
@@ -148,8 +148,8 @@ class AppointmentControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(9, 'data')
             ->assertJsonFragment([
-                'id'          => $appointment->id,
-                'appointment_at'          => '2025-01-01 09:00',
+                'id'             => $appointment->id,
+                'appointment_at' => '2025-01-01 09:00',
             ])
             // 新着順でステータスが取得されていることを確認する
             ->assertJsonPath('data.status_histories.data.0.status', AppointmentStatus::Reserved->value)
@@ -164,18 +164,18 @@ class AppointmentControllerTest extends TestCase
         // Arrange（準備）
         $this->actingAs($this->user, $this->guard);
         $appointment = Appointment::factory()->create([
-            'pet_id'      => $this->pet,
-            'hospital_id' => $this->hospital,
-            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'pet_id'         => $this->pet,
+            'hospital_id'    => $this->hospital,
+            'menu_id'        => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
             'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
             'appointment_at' => '2030-01-01 09:00',
         ]);
         AppointmentStatusHistory::factory()->create([
-            'id' => 1,
+            'id'             => 1,
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Reserved,
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
 
         // Act（実行）
@@ -198,18 +198,18 @@ class AppointmentControllerTest extends TestCase
         // Arrange（準備）
         $this->actingAs($this->user, $this->guard);
         $appointment = Appointment::factory()->create([
-            'pet_id'      => $this->pet,
-            'hospital_id' => $this->hospital,
-            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'pet_id'         => $this->pet,
+            'hospital_id'    => $this->hospital,
+            'menu_id'        => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
             'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
             'appointment_at' => '2000-01-01 09:00', // テスト対象
         ]);
         AppointmentStatusHistory::factory()->create([
-            'id' => 1,
+            'id'             => 1,
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Reserved,
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
 
         // Act（実行）
@@ -238,18 +238,18 @@ class AppointmentControllerTest extends TestCase
         // Arrange（準備）
         $this->actingAs($this->user, $this->guard);
         $appointment = Appointment::factory()->create([
-            'pet_id'      => $this->pet,
-            'hospital_id' => $this->hospital,
-            'menu_id'     => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
+            'pet_id'         => $this->pet,
+            'hospital_id'    => $this->hospital,
+            'menu_id'        => Menu::factory()->create(['hospital_id' => $this->hospital->id]),
             'vet_id'         => Vet::factory()->create(['hospital_id' => $this->hospital->id]),
             'appointment_at' => '2030-01-01 09:00',
         ]);
         AppointmentStatusHistory::factory()->create([
-            'id' => 1,
+            'id'             => 1,
             'appointment_id' => $appointment->id,
             'status'         => AppointmentStatus::Cancelled,  // テスト対象
-            'modifier_type' => '',
-            'modifier_id' => 1
+            'modifier_type'  => '',
+            'modifier_id'    => 1,
         ]);
 
         // Act（実行）
