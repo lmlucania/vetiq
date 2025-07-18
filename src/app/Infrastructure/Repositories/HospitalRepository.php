@@ -16,16 +16,6 @@ class HospitalRepository implements HospitalRepositoryInterface
         return Hospital::findOrFail($id);
     }
 
-    public function getByUuid(string $uuid): Hospital
-    {
-        $hospital = Hospital::firstWhere('uuid', $uuid);
-        if ($hospital == null) {
-            throw new NotFoundException();
-        }
-
-        return $hospital;
-    }
-
     public function update(
         int $id,
         string $name,

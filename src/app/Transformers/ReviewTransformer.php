@@ -4,20 +4,26 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
+use App\Models\Appointment;
 use App\Models\Review;
 use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
 {
+    protected array $availableIncludes = ['hospital'];
+
     public function transform(Review $review)
     {
-        // fixme 病院のidを除く
         return [
-            'uuid'     => $review->uuid,
+            'id'     => $review->id,
             'rating'   => $review->rating->value,
             'title'    => $review->title,
             'body'     => $review->body,
-            'hospital' => $review->hospital,
         ];
+    }
+
+    public function includeHospital(Review $review)
+    {
+        return $this->item($review->hospital, new HospitalTransformer());
     }
 }

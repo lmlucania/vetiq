@@ -20,14 +20,13 @@ class CreateReviewService
     }
 
     public function execute(
-        string $hospitalUuid,
+        int $hospitalId,
         Rating $rating,
         string $title,
         ?string $body,
     ) {
         return $this->reviewRepository->create(
-            uuid: (string)Str::uuid(),
-            hospitalId: $this->hospitalRepository->getByUuid($hospitalUuid)->id,
+            hospitalId: $this->hospitalRepository->getById($hospitalId)->id,
             userId: $this->authActorService->getUserId(),
             rating: $rating,
             title: $title,

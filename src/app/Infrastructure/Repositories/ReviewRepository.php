@@ -11,10 +11,10 @@ use App\Models\Review;
 
 class ReviewRepository implements ReviewRepositoryInterface
 {
-    public function getByHospitalUuidAndUuid(string $hospitalUuid, string $uuid): Review
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Review
     {
-        $model = Review::where('uuid', $uuid)
-            ->whereHas('hospital', fn ($query) => $query->where('uuid', $hospitalUuid))
+        $model = Review::where('id', $id)
+            ->where('hospital_id', $hospitalId)
             ->first();
 
         if ($model == null) {
@@ -25,7 +25,6 @@ class ReviewRepository implements ReviewRepositoryInterface
     }
 
     public function create(
-        string $uuid,
         int $hospitalId,
         int $userId,
         Rating $rating,
@@ -33,7 +32,6 @@ class ReviewRepository implements ReviewRepositoryInterface
         ?string $body
     ): Review {
         return Review::create([
-            'uuid'        => $uuid,
             'hospital_id' => $hospitalId,
             'user_id'     => $userId,
             'rating'      => $rating->value,

@@ -33,10 +33,10 @@ class ReviewController extends Controller
      * 指定する病院のレビュー一覧
      * @lrd:end
      */
-    public function index(IndexReviewRequest $request, string $hospitalUuid)
+    public function index(IndexReviewRequest $request, int $hospitalId)
     {
         $paginator = $this->getHospitalReviewsService->execute(
-            hospitalUuid: $hospitalUuid,
+            hospitalId: $hospitalId,
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
@@ -46,6 +46,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
+            ->parseIncludes(['hospital'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
@@ -55,10 +56,10 @@ class ReviewController extends Controller
      * レビューを登録
      * @lrd:end
      */
-    public function store(StoreReviewRequest $request, string $hospitalUuid)
+    public function store(StoreReviewRequest $request, int $hospitalId)
     {
         $success = $this->createReviewService->execute(
-            hospitalUuid: $hospitalUuid,
+            hospitalId: $hospitalId,
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
@@ -75,11 +76,13 @@ class ReviewController extends Controller
      * レビューの詳細
      * @lrd:end
      */
-    public function show(string $hospitalUuid, string $uuid)
+    public function show(int $hospitalId, int $id)
     {
-        $review = $this->getReviewDetailService->execute($hospitalUuid, $uuid);
+        $review = $this->getReviewDetailService->execute($hospitalId, $id);
 
-        return fractal($review, new ReviewTransformer())->respond();
+        return fractal($review, new ReviewTransformer())
+            ->parseIncludes(['hospital'])
+            ->respond();
     }
 
     /**
@@ -87,11 +90,11 @@ class ReviewController extends Controller
      * レビューの更新
      * @lrd:end
      */
-    public function update(UpdateReviewRequest $request, string $hospitalUuid, string $uuid)
+    public function update(UpdateReviewRequest $request, int $hospitalId, int $id)
     {
         $success = $this->updateReviewService->execute(
-            hospitalUuid: $hospitalUuid,
-            uuid: $uuid,
+            hospitalId: $hospitalId,
+            id: $id,
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
@@ -120,6 +123,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
+            ->parseIncludes(['hospital'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

@@ -18,15 +18,15 @@ class UpdateReviewService
     }
 
     public function execute(
-        string $hospitalUuid,
-        string $uuid,
+        int $hospitalId,
+        int $id,
         Rating $rating,
         string $title,
         ?string $body,
     ): bool {
-        $review = $this->reviewRepository->getByHospitalUuidAndUuid(
-            hospitalUuid: $hospitalUuid,
-            uuid: $uuid,
+        $review = $this->reviewRepository->getByHospitalIdAndId(
+            hospitalId: $hospitalId,
+            id: $id,
         );
 
         if ($review->user_id != $this->authActorService->getUserId()) {

@@ -9,10 +9,9 @@ use App\Models\Review;
 
 interface ReviewRepositoryInterface
 {
-    public function getByHospitalUuidAndUuid(string $hospitalUuid, string $uuid): Review;
+    public function getByHospitalIdAndId(int $hospitalId, int $id): Review;
 
     public function create(
-        string $uuid,
         int $hospitalId,
         int $userId,
         Rating $rating,
