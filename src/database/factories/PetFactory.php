@@ -22,7 +22,6 @@ class PetFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'            => (string) Str::uuid(),
             'user_id'         => User::inRandomOrder()->first(),
             'gender'          => Gender::Male,
             'birthday'        => $this->faker->dateTimeBetween('-15 years', '-1 year'),

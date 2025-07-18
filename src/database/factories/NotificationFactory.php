@@ -21,7 +21,6 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'         => (string) Str::uuid(),
             'hospital_id'  => Hospital::inRandomOrder()->first(),
             'title'        => $this->faker->realText(10),
             'detail'       => $this->faker->realText(),

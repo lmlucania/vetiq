@@ -21,7 +21,6 @@ class VetFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'               => Str::uuid(),
             'hospital_id'        => Hospital::inRandomOrder()->first(),
             'last_name'          => $this->faker->lastName(),
             'first_name'         => $this->faker->firstName(),

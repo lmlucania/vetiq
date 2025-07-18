@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Model>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Hospital>
  */
 class HospitalFactory extends Factory
 {
@@ -22,7 +22,6 @@ class HospitalFactory extends Factory
     {
         $address = $this->faker->address();  // 例）1234567 東京都新宿区西新宿2-8-1
         return [
-            'uuid'         => Str::uuid(),
             'name'         => $this->faker->firstName() . '病院',
             'phone'        => '0' . $this->faker->numberBetween(100000000, 9999999999),
             'post_code'    => $this->faker->postcode(),

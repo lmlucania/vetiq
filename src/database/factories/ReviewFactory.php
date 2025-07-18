@@ -23,7 +23,6 @@ class ReviewFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'        => Str::uuid(),
             'hospital_id' => Hospital::inRandomOrder()->first(),
             'user_id'     => User::inRandomOrder()->first(),
             'rating'      => Rating::One,

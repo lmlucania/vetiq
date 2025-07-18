@@ -31,7 +31,6 @@ class MenuFactory extends Factory
         ];
         $menu = $this->faker->randomElement($menus);
         return [
-            'uuid'          => Str::uuid(),
             'hospital_id'   => Hospital::inRandomOrder()->first(),
             'name'          => $menu['name'],
             'detail'        => $menu['detail'],
