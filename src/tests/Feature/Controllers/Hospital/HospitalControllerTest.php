@@ -22,7 +22,6 @@ class HospitalControllerTest extends TestCase
         parent::setUp();
 
         $this->hospital = Hospital::factory()->create([
-            'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
             'name'         => '裕美子病院',
             'post_code'    => '1234567',
             'prefecture'   => Prefecture::Okinawa->value,
@@ -56,7 +55,6 @@ class HospitalControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(8, 'data')
             ->assertJsonFragment([
-                'uuid'         => 'b90612f5-3446-47d7-b66a-12ff54963050',
                 'name'         => '裕美子病院',
                 'post_code'    => '1234567',
                 'prefecture'   => Prefecture::Okinawa->value,

@@ -11,8 +11,6 @@ interface HospitalRepositoryInterface
 {
     public function getById(int $id): Hospital;
 
-    public function getByUuid(string $uuid): Hospital;
-
     public function update(
         int $id,
         string $name,
