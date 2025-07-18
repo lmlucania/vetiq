@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('vets', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('hospital_id')->constrained('hospitals')->onDelete('cascade')->comment('病院ID');
             $table->string('last_name')->comment('名前（姓）');
             $table->string('first_name')->comment('名前（名）');

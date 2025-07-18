@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('hospitals', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->comment('公開用ID');
             $table->string('name')->comment('病院名');
             $table->string('phone')->comment('電話番号');
             $table->string('post_code', 7)->comment('郵便番号');
