@@ -15,7 +15,6 @@ class MenuRepository implements MenuRepositoryInterface
     }
 
     public function create(
-        string $uuid,
         int $hospitalId,
         string $name,
         string $detail,
@@ -23,7 +22,6 @@ class MenuRepository implements MenuRepositoryInterface
         bool $isPublished
     ): Menu {
         return Menu::create([
-            'uuid'          => $uuid,
             'hospital_id'   => $hospitalId,
             'name'          => $name,
             'detail'        => $detail,

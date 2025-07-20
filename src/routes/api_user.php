@@ -25,7 +25,6 @@ Route::middleware('auth:users')->group(static function () {
     });
     Route::resource('favorites', FavoriteController::class)->only(['index']);
     Route::controller(FavoriteController::class)->prefix('hospital/{hospital}/favorites')->name('hospital.favorites.')->group(static function () {
-        // fixme 中身を直す ルーティングが期待通りではない
         Route::post('', 'attach')->name('attach');
         Route::delete('', 'detach')->name('detach');
     });
