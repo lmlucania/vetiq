@@ -27,7 +27,6 @@ class MenuControllerTest extends TestCase
 
         $this->menu = Menu::factory()->create([
             'id'            => 1,
-            'uuid'          => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'hospital_id'   => $this->hospital->id,
             'name'          => '健康診断',
             'detail'        => '年に一度の健康診断で、体調をチェックします。',
@@ -36,7 +35,7 @@ class MenuControllerTest extends TestCase
         ]);
 
         Menu::factory()->create([
-            'uuid'          => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
+            'id'            => 2,
             'hospital_id'   => $this->hospital->id,
             'name'          => '一般診察',
             'detail'        => '基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。',
@@ -45,7 +44,7 @@ class MenuControllerTest extends TestCase
         ]);
 
         Menu::factory()->create([
-            'uuid'          => '3667d80e-9f20-46f4-854b-8efa648c71c0',
+            'id'            => 3,
             'hospital_id'   => $this->hospital->id,
             'name'          => 'ワクチン接種',
             'detail'        => '各種ワクチンを接種し、病気を予防します。',
@@ -77,21 +76,21 @@ class MenuControllerTest extends TestCase
             ->assertJsonFragment([
                 'data' => [
                     [
-                        'uuid'          => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
+                        'id' => 1,
                         'name'          => '健康診断',
                         'detail'        => '年に一度の健康診断で、体調をチェックします。',
                         'required_time' => 30,
                         'is_published'  => true,
                         ],
                     [
-                        'uuid'          => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
+                        'id' => 2,
                         'name'          => '一般診察',
                         'detail'        => '基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。',
                         'required_time' => 60,
                         'is_published'  => true,
                         ],
                     [
-                        'uuid'          => '3667d80e-9f20-46f4-854b-8efa648c71c0',
+                        'id' => 3,
                         'name'          => 'ワクチン接種',
                         'detail'        => '各種ワクチンを接種し、病気を予防します。',
                         'required_time' => 90,
@@ -368,7 +367,7 @@ class MenuControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(5, 'data')
             ->assertJsonFragment([
-                'uuid'          => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
+                'id'          => $this->menu->id,
                 'name'          => '健康診断',
                 'detail'        => '年に一度の健康診断で、体調をチェックします。',
                 'required_time' => 30,
