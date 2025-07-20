@@ -52,7 +52,7 @@ class FavoriteControllerTest extends TestCase
                         'id'       => $favorite->id,
                         'hospital' => [
                             'data' => [
-                                'uuid'         => $this->hospital->uuid,
+                                'id'           => $this->hospital->id,
                                 'name'         => $this->hospital->name,
                                 'phone'        => $this->hospital->phone,
                                 'post_code'    => $this->hospital->post_code,
@@ -76,7 +76,7 @@ class FavoriteControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
 
         // 実行（Act）
-        $response = $this->post(route('user.favorites.attach', ['uuid' => $this->hospital->uuid]));
+        $response = $this->post(route('user.hospital.favorites.attach', ['hospital' => $this->hospital->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -101,7 +101,7 @@ class FavoriteControllerTest extends TestCase
         ]);
 
         // 実行（Act）
-        $response = $this->post(route('user.favorites.attach', ['uuid' => $this->hospital->uuid]));
+        $response = $this->post(route('user.hospital.favorites.attach', ['hospital' => $this->hospital->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -126,7 +126,7 @@ class FavoriteControllerTest extends TestCase
         ]);
 
         // 実行（Act）
-        $response = $this->delete(route('user.favorites.detach', ['uuid' => $this->hospital->uuid]));
+        $response = $this->delete(route('user.hospital.favorites.detach', ['hospital' => $this->hospital->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -143,9 +143,7 @@ class FavoriteControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(
-            route('user.favorites.detach', ['uuid' => $this->hospital->uuid]), // お気に入り登録していない病院を指定
-        );
+        $response = $this->delete(route('user.hospital.favorites.detach', ['hospital' => $this->hospital->id])); // お気に入り登録していない病院を指定
 
         // 検証（Assert）
         $response->assertStatus(200);
