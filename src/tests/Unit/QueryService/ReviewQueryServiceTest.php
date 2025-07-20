@@ -43,8 +43,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -74,8 +74,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             2,  // ページ番号（テスト対象）
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -103,8 +103,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             10, // 1ページあたりの表示数（テスト対象）
             '', // 検索キーワード
@@ -146,8 +146,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             'テスト', // 検索キーワード（テスト対象）
@@ -191,8 +191,8 @@ class ReviewQueryServiceTest extends TestCase
             ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             'テスト', // 検索キーワード（テスト対象）
@@ -236,8 +236,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -282,8 +282,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -322,8 +322,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -362,8 +362,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -402,8 +402,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -442,8 +442,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -490,8 +490,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -538,8 +538,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
