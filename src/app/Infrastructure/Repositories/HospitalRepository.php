@@ -6,7 +6,6 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Location\Enum\Prefecture;
-use App\Exceptions\NotFoundException;
 use App\Models\Hospital;
 
 class HospitalRepository implements HospitalRepositoryInterface

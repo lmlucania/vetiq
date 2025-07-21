@@ -12,7 +12,7 @@ class MenuTransformer extends TransformerAbstract
     public function transform(Menu $model)
     {
         return [
-            'id'          => $model->id,
+            'id'            => $model->id,
             'name'          => $model->name,
             'detail'        => $model->detail,
             'required_time' => $model->required_time,

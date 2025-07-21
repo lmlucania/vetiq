@@ -7,7 +7,6 @@ namespace App\Application\Service\Hospital\Menu;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Models\Menu;
-use Illuminate\Support\Str;
 
 class CreateMenuService
 {

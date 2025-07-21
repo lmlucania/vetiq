@@ -76,21 +76,21 @@ class MenuControllerTest extends TestCase
             ->assertJsonFragment([
                 'data' => [
                     [
-                        'id' => 1,
+                        'id'            => 1,
                         'name'          => '健康診断',
                         'detail'        => '年に一度の健康診断で、体調をチェックします。',
                         'required_time' => 30,
                         'is_published'  => true,
                         ],
                     [
-                        'id' => 2,
+                        'id'            => 2,
                         'name'          => '一般診察',
                         'detail'        => '基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。',
                         'required_time' => 60,
                         'is_published'  => true,
                         ],
                     [
-                        'id' => 3,
+                        'id'            => 3,
                         'name'          => 'ワクチン接種',
                         'detail'        => '各種ワクチンを接種し、病気を予防します。',
                         'required_time' => 90,
@@ -367,7 +367,7 @@ class MenuControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(5, 'data')
             ->assertJsonFragment([
-                'id'          => $this->menu->id,
+                'id'            => $this->menu->id,
                 'name'          => '健康診断',
                 'detail'        => '年に一度の健康診断で、体調をチェックします。',
                 'required_time' => 30,

@@ -10,7 +10,7 @@ interface MenuRepositoryInterface
 {
     public function getByHospitalIdAndId(int $hospitalId, int $id): Menu;
 
-    public function create(string $uuid, int $hospitalId, string $name, string $detail, int $requiredTime, bool $isPublished):Menu;
+    public function create(int $hospitalId, string $name, string $detail, int $requiredTime, bool $isPublished):Menu;
 
     public function update(int $id, string $name, string $detail, int $requiredTime, bool $isPublished):bool;
 
