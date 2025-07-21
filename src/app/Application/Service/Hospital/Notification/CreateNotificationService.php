@@ -25,7 +25,6 @@ class CreateNotificationService
         Carbon $publishedAt
     ) : Notification {
         return $this->notificationRepository->create(
-            uuid: (string)Str::uuid(),
             hospitalId: $this->authActorService->getHospitalId(),
             title: $title,
             detail: $detail,

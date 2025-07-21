@@ -15,10 +15,9 @@ class NotificationRepository implements NotificationRepositoryInterface
         return Notification::where('hospital_id', $hospitalId)->findOrFail($id);
     }
 
-    public function create(string $uuid, int $hospitalId, string $title, string $detail, bool $isPublished, Carbon $publishedAt): Notification
+    public function create(int $hospitalId, string $title, string $detail, bool $isPublished, Carbon $publishedAt): Notification
     {
         return Notification::create([
-            'uuid'         => $uuid,
             'hospital_id'  => $hospitalId,
             'title'        => $title,
             'detail'       => $detail,
