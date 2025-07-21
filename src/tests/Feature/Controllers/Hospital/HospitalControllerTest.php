@@ -91,7 +91,6 @@ class HospitalControllerTest extends TestCase
         $response->assertStatus(200);
 
         $record = Hospital::firstWhere('id', $staff->hospital_id);
-        $this->assertEquals($hospital->uuid, $record->uuid);  // uuidは変更されないこと
         $this->assertEquals('裕美子病院', $record->name);
         $this->assertEquals('1234567', $record->post_code);
         $this->assertEquals(Prefecture::Okinawa->value, $record->prefecture);

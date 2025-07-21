@@ -14,7 +14,6 @@ class Pet extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'uuid',
         'user_id',
         'name',
         'gender',

@@ -330,7 +330,7 @@ class VetControllerTest extends TestCase
     }
 
     /**
-     * 獣医師の更新 存在しないuuidを指定した場合に404が返されること
+     * 獣医師の更新 存在しないidを指定した場合に404が返されること
      */
     public function testUpdateNotExistFailure()
     {
@@ -415,7 +415,7 @@ class VetControllerTest extends TestCase
     }
 
     /**
-     * 獣医師の削除 存在しないuuidを指定した場合に404が返されること
+     * 獣医師の削除 存在しないidを指定した場合に404が返されること
      */
     public function testDestroyNotExistFailure()
     {

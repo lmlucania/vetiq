@@ -274,8 +274,7 @@ class MenuControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingMenu->id]);
+            ->assertJsonCount(6, 'data');
     }
 
     /**
@@ -439,7 +438,7 @@ class MenuControllerTest extends TestCase
     }
 
     /**
-     * 診察メニューの削除 存在しないuuidを指定した場合に404が返されること
+     * 診察メニューの削除 存在しないidを指定した場合に404が返されること
      */
     public function testUpdateNotExistFailure()
     {
@@ -498,7 +497,7 @@ class MenuControllerTest extends TestCase
     }
 
     /**
-     * 診察メニューの削除 存在しないuuidを指定した場合に404が返されること
+     * 診察メニューの削除 存在しないidを指定した場合に404が返されること
      */
     public function testDestroyNotExistFailure()
     {

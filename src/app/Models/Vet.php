@@ -12,7 +12,7 @@ class Vet extends Model
 {
     use HasFactory, SoftDeletes;
 
-    protected $fillable = ['id', 'uuid', 'hospital_id', 'last_name', 'first_name', 'accept_appointment', 'remark'];
+    protected $fillable = ['id', 'hospital_id', 'last_name', 'first_name', 'accept_appointment', 'remark'];
 
     protected function casts(): array
     {

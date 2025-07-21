@@ -295,8 +295,7 @@ class NotificationControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingNotification->id]);
+            ->assertJsonCount(6, 'data');
     }
 
     /**
@@ -460,7 +459,7 @@ class NotificationControllerTest extends TestCase
     }
 
     /**
-     * お知らせの削除 存在しないuuidを指定した場合に404が返されること
+     * お知らせの削除 存在しないidを指定した場合に404が返されること
      */
     public function testUpdateNotExistFailure()
     {
@@ -512,7 +511,7 @@ class NotificationControllerTest extends TestCase
     }
 
     /**
-     * お知らせの削除 存在しないuuidを指定した場合に404が返されること
+     * お知らせの削除 存在しないidを指定した場合に404が返されること
      */
     public function testDestroyNotExistFailure()
     {

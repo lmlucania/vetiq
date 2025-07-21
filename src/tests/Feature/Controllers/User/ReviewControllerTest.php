@@ -187,9 +187,9 @@ class ReviewControllerTest extends TestCase
     }
 
     /**
-     * レビューの更新 病院のuuidが間違っている場合に404が返されること
+     * レビューの更新 病院のidが間違っている場合に404が返されること
      */
-    public function testUpdateInvalidHospitalUuidFailure()
+    public function testUpdateInvalidHospitalIdFailure()
     {
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
