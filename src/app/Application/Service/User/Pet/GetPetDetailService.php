@@ -16,9 +16,9 @@ class GetPetDetailService
     ) {
     }
 
-    public function execute(string $uuid): Pet
+    public function execute(int $id): Pet
     {
         $useId = $this->authActorService->getUserId();
-        return $this->petRepository->getByUserIdAndUuid($useId, $uuid);
+        return $this->petRepository->getByUserIdAndId($useId, $id);
     }
 }

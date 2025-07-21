@@ -9,7 +9,6 @@ use App\Domains\Pet\Enum\Gender;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Models\Pet;
 use Carbon\Carbon;
-use Illuminate\Support\Str;
 
 class CreatePetService
 {
@@ -27,7 +26,6 @@ class CreatePetService
         ?string $remark
     ): Pet {
         return $this->petRepository->create(
-            uuid: (string)Str::uuid(),
             userId: $this->authActorService->getUserId(),
             name: $name,
             gender: $gender,

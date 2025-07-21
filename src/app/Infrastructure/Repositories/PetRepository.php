@@ -19,13 +19,6 @@ class PetRepository implements PetRepositoryInterface
             ->firstOrFail();
     }
 
-    public function getByUserIdAndUuid(int $userId, string $uuid): Pet
-    {
-        return Pet::where('user_id', $userId)
-            ->where('uuid', $uuid)
-            ->firstOrFail();
-    }
-
     public function getListByUserId(int $userId): Collection
     {
         return Pet::where('user_id', $userId)
@@ -34,7 +27,6 @@ class PetRepository implements PetRepositoryInterface
     }
 
     public function create(
-        string $uuid,
         int $userId,
         string $name,
         Gender $gender,
@@ -43,7 +35,6 @@ class PetRepository implements PetRepositoryInterface
         ?string $remark,
     ): Pet {
         return Pet::create([
-            'uuid'            => $uuid,
             'user_id'         => $userId,
             'name'            => $name,
             'gender'          => $gender,

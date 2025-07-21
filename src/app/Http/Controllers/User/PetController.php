@@ -63,9 +63,9 @@ class PetController extends Controller
      * ペットの詳細
      * @lrd:end
      */
-    public function show(string $uuid)
+    public function show(int $id)
     {
-        $pet = $this->getPetDetailService->execute($uuid);
+        $pet = $this->getPetDetailService->execute($id);
 
         return fractal($pet, new PetTransformer())->respond();
     }
@@ -75,10 +75,10 @@ class PetController extends Controller
      * ペットの更新
      * @lrd:end
      */
-    public function update(UpdatePetRequest $request, string $uuid)
+    public function update(UpdatePetRequest $request, int $id)
     {
         $success = $this->updatePetService->execute(
-            uuid: $uuid,
+            id: $id,
             name: $request->getName(),
             gender: $request->getGender(),
             birthday: $request->getBirthday(),
@@ -97,11 +97,9 @@ class PetController extends Controller
      * ペットの削除
      * @lrd:end
      */
-    public function destroy(string $uuid)
+    public function destroy(int $id)
     {
-        $success = $this->deletePetService->execute(
-            uuid: $uuid,
-        );
+        $success = $this->deletePetService->execute($id);
 
         if ($success) {
             return response()->success();

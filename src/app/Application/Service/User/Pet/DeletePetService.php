@@ -15,10 +15,12 @@ class DeletePetService
     ) {
     }
 
-    public function execute(string $uuid): bool
+    public function execute(int $id): bool
     {
-        $useId = $this->authActorService->getUserId();
-        $pet   = $this->petRepository->getByUserIdAndUuid($useId, $uuid);
+        $pet = $this->petRepository->getByUserIdAndId(
+            userId: $this->authActorService->getUserId(),
+            id: $id,
+        );
 
         return $this->petRepository->delete($pet->id);
     }
