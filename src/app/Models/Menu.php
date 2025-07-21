@@ -13,7 +13,6 @@ class Menu extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'uuid',
         'hospital_id',
         'name',
         'detail',

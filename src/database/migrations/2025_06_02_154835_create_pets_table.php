@@ -13,7 +13,6 @@ return new class extends Migration
     {
         Schema::create('pets', function (Blueprint $table) {
             $table->id();
-            $table->uuid()->unique()->comment('公開用ID');
             $table->foreignId('user_id')->constrained('users')->onDelete('cascade')->comment('ユーザーID');
             $table->string('name')->comment('名前');
             $table->tinyInteger('gender')->comment('性別');

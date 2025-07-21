@@ -6,7 +6,6 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Location\Enum\Prefecture;
-use App\Exceptions\NotFoundException;
 use App\Models\Hospital;
 
 class HospitalRepository implements HospitalRepositoryInterface
@@ -14,16 +13,6 @@ class HospitalRepository implements HospitalRepositoryInterface
     public function getById(int $id): Hospital
     {
         return Hospital::findOrFail($id);
-    }
-
-    public function getByUuid(string $uuid): Hospital
-    {
-        $hospital = Hospital::firstWhere('uuid', $uuid);
-        if ($hospital == null) {
-            throw new NotFoundException();
-        }
-
-        return $hospital;
     }
 
     public function update(

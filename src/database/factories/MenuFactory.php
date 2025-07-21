@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Menu>
@@ -31,7 +30,6 @@ class MenuFactory extends Factory
         ];
         $menu = $this->faker->randomElement($menus);
         return [
-            'uuid'          => Str::uuid(),
             'hospital_id'   => Hospital::inRandomOrder()->first(),
             'name'          => $menu['name'],
             'detail'        => $menu['detail'],

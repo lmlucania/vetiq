@@ -17,25 +17,6 @@ class ReviewQueryService implements ReviewQueryServiceInterface
     private array $sortable    = ['id', 'rating'];
     private array $defaultSort = ['-id'];
 
-    public function listByHospitalUuid(
-        string $hospitalUuid,
-        int $page,
-        int $perPage,
-        string $keyword,
-        array $rating,
-        array $sort,
-        array $queryParam
-    ):LengthAwarePaginator {
-        $query = Review::query()
-            ->join('hospitals', function ($join) use ($hospitalUuid) {
-                $join->on('reviews.hospital_id', '=', 'hospitals.id')
-                    ->where('hospitals.uuid', '=', $hospitalUuid);
-            })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
-
-        return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
-    }
-
     public function listByHospitalId(
         int $hospitalId,
         int $page,
@@ -50,7 +31,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
+            ->select('reviews.id', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
         return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
     }
@@ -68,7 +49,7 @@ class ReviewQueryService implements ReviewQueryServiceInterface
             ->join('hospitals', function ($join) {
                 $join->on('reviews.hospital_id', '=', 'hospitals.id');
             })
-            ->select('reviews.id', 'reviews.uuid', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
+            ->select('reviews.id', 'reviews.hospital_id', 'reviews.rating', 'reviews.title', 'reviews.body');
 
         return $this->applySortingAndFiltering($query, $page, $perPage, $keyword, $rating, $sort);
     }

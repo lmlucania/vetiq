@@ -7,7 +7,6 @@ namespace Database\Factories;
 use App\Domains\Pet\Enum\Gender;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pet>
@@ -22,7 +21,6 @@ class PetFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'            => (string) Str::uuid(),
             'user_id'         => User::inRandomOrder()->first(),
             'gender'          => Gender::Male,
             'birthday'        => $this->faker->dateTimeBetween('-15 years', '-1 year'),

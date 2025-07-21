@@ -12,7 +12,7 @@ class PetTransformer extends TransformerAbstract
     public function transform(Pet $pet)
     {
         return [
-            'uuid'            => $pet->uuid,
+            'id'              => $pet->id,
             'name'            => $pet->name,
             'gender'          => $pet->gender,
             'birthday'        => $pet->birthday?->format('Y-m-d'),

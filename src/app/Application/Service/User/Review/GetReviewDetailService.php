@@ -14,11 +14,11 @@ class GetReviewDetailService
     ) {
     }
 
-    public function execute(string $hospitalUuid, string $uuid): Review
+    public function execute(int $hospitalId, int $id): Review
     {
-        return $this->reviewRepository->getByHospitalUuidAndUuid(
-            hospitalUuid: $hospitalUuid,
-            uuid: $uuid,
+        return $this->reviewRepository->getByHospitalIdAndId(
+            hospitalId: $hospitalId,
+            id: $id,
         );
     }
 }

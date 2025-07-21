@@ -18,7 +18,7 @@ class UpdatePetService
     }
 
     public function execute(
-        string $uuid,
+        int $id,
         string $name,
         Gender $gender,
         ?Carbon $birthday,
@@ -26,7 +26,7 @@ class UpdatePetService
         ?string $remark
     ): bool {
         $useId = $this->authActorService->getUserId();
-        $pet   = $this->petRepository->getByUserIdAndUuid($useId, $uuid);
+        $pet   = $this->petRepository->getByUserIdAndId($useId, $id);
 
         return $this->petRepository->update(
             id: $pet->id,

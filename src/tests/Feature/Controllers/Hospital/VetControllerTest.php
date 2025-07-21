@@ -29,7 +29,6 @@ class VetControllerTest extends TestCase
 
         $this->vet = Vet::factory()->create([
             'id'                 => 1,
-            'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'hospital_id'        => $this->hospital->id,
             'last_name'          => 'テスト姓1',
             'first_name'         => 'テスト名1',
@@ -39,7 +38,6 @@ class VetControllerTest extends TestCase
         ]);
         Vet::factory()->create([
             'id'                 => 2,
-            'uuid'               => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
             'hospital_id'        => $this->hospital->id,
             'last_name'          => 'テスト姓2',
             'first_name'         => 'テスト名2',
@@ -48,7 +46,6 @@ class VetControllerTest extends TestCase
         ]);
         Vet::factory()->create([
             'id'                 => 3,
-            'uuid'               => '3667d80e-9f20-46f4-854b-8efa648c71c0',
             'hospital_id'        => $this->hospital->id,
             'last_name'          => 'テスト姓3',
             'first_name'         => 'テスト名3',
@@ -86,7 +83,6 @@ class VetControllerTest extends TestCase
                 'data' => [
                     [
                         'id'                 => 1,
-                        'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                         'last_name'          => 'テスト姓1',
                         'first_name'         => 'テスト名1',
                         'accept_appointment' => true,
@@ -94,7 +90,6 @@ class VetControllerTest extends TestCase
                     ],
                     [
                         'id'                 => 2,
-                        'uuid'               => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
                         'last_name'          => 'テスト姓2',
                         'first_name'         => 'テスト名2',
                         'accept_appointment' => false,
@@ -102,7 +97,6 @@ class VetControllerTest extends TestCase
                     ],
                     [
                         'id'                 => 3,
-                        'uuid'               => '3667d80e-9f20-46f4-854b-8efa648c71c0',
                         'last_name'          => 'テスト姓3',
                         'first_name'         => 'テスト名3',
                         'accept_appointment' => true,
@@ -169,8 +163,7 @@ class VetControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingVet->id]);
+            ->assertJsonCount(6, 'data');
     }
 
     /**
@@ -263,10 +256,9 @@ class VetControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
+            ->assertJsonCount(5, 'data')
             ->assertJsonFragment([
                 'id'                 => 1,
-                'uuid'               => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                 'last_name'          => 'テスト姓1',
                 'first_name'         => 'テスト名1',
                 'accept_appointment' => true,
@@ -338,7 +330,7 @@ class VetControllerTest extends TestCase
     }
 
     /**
-     * 獣医師の更新 存在しないuuidを指定した場合に404が返されること
+     * 獣医師の更新 存在しないidを指定した場合に404が返されること
      */
     public function testUpdateNotExistFailure()
     {
@@ -423,7 +415,7 @@ class VetControllerTest extends TestCase
     }
 
     /**
-     * 獣医師の削除 存在しないuuidを指定した場合に404が返されること
+     * 獣医師の削除 存在しないidを指定した場合に404が返されること
      */
     public function testDestroyNotExistFailure()
     {

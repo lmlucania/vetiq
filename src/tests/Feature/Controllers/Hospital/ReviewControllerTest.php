@@ -52,18 +52,16 @@ class ReviewControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(2, 'data')
             ->assertJsonFragment([
-                'uuid'   => $reviews[1]->uuid,
                 'rating' => $reviews[1]->rating,
                 'title'  => $reviews[1]->title,
                 'body'   => $reviews[1]->body,
             ])
             ->assertJsonFragment([
-                'uuid'   => $reviews[0]->uuid,
                 'rating' => $reviews[0]->rating,
                 'title'  => $reviews[0]->title,
                 'body'   => $reviews[0]->body,
             ])
-            ->assertJsonPath('data.0.uuid', (string)$reviews[1]->uuid) // 新着順で取得される
-            ->assertJsonPath('data.1.uuid', (string)$reviews[0]->uuid);
+            ->assertJsonPath('data.0.id', $reviews[1]->id) // 新着順で取得される
+            ->assertJsonPath('data.1.id', $reviews[0]->id);
     }
 }

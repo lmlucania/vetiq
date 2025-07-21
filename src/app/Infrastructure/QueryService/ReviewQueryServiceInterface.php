@@ -9,16 +9,6 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface ReviewQueryServiceInterface
 {
-    public function listByHospitalUuid(
-        string $hospitalUuid,
-        int $page,
-        int $perPage,
-        string $keyword,
-        array $rating,
-        array $sort,
-        array $queryParam
-    ):LengthAwarePaginator;
-
     public function listByHospitalId(
         int $hospitalId,
         int $page,

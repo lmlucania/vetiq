@@ -12,7 +12,7 @@ class HospitalTransformer extends TransformerAbstract
     public function transform(Hospital $hospital)
     {
         return [
-            'uuid'         => $hospital->uuid,
+            'id'           => $hospital->id,
             'name'         => $hospital->name,
             'phone'        => $hospital->phone,
             'post_code'    => $hospital->post_code,

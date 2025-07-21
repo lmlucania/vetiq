@@ -8,7 +8,6 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Review\Enum\Rating;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
-use Illuminate\Support\Str;
 
 class CreateReviewService
 {
@@ -20,14 +19,13 @@ class CreateReviewService
     }
 
     public function execute(
-        string $hospitalUuid,
+        int $hospitalId,
         Rating $rating,
         string $title,
         ?string $body,
     ) {
         return $this->reviewRepository->create(
-            uuid: (string)Str::uuid(),
-            hospitalId: $this->hospitalRepository->getByUuid($hospitalUuid)->id,
+            hospitalId: $this->hospitalRepository->getById($hospitalId)->id,
             userId: $this->authActorService->getUserId(),
             rating: $rating,
             title: $title,

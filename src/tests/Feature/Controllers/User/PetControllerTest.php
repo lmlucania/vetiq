@@ -51,7 +51,7 @@ class PetControllerTest extends TestCase
             ->assertJsonFragment([
                 'data' => [
                     [
-                        'uuid'            => $this->pet->uuid,
+                        'id'              => $this->pet->id,
                         'name'            => $this->pet->name,
                         'gender'          => $this->pet->gender,
                         'birthday'        => $this->pet->birthday->format('Y-m-d'),
@@ -59,7 +59,7 @@ class PetControllerTest extends TestCase
                         'remark'          => $this->pet->remark,
                     ],
                     [
-                        'uuid'            => $pet->uuid,
+                        'id'              => $pet->id,
                         'name'            => $pet->name,
                         'gender'          => $pet->gender,
                         'birthday'        => $pet->birthday->format('Y-m-d'),
@@ -117,7 +117,7 @@ class PetControllerTest extends TestCase
         ]);
 
         // 実行（Act）
-        $response = $this->get(route('user.pets.show', ['pet' => $pet->uuid]));
+        $response = $this->get(route('user.pets.show', ['pet' => $pet->id]));
 
         // 検証（Assert）
         $response
@@ -144,7 +144,7 @@ class PetControllerTest extends TestCase
         ]);
 
         // 実行（Act）
-        $response = $this->get(route('user.pets.show', ['pet' => $otherPet->uuid]));
+        $response = $this->get(route('user.pets.show', ['pet' => $otherPet->id]));
 
         // 検証（Assert）
         $response->assertStatus(404);
@@ -166,7 +166,7 @@ class PetControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route('user.pets.update', ['pet' => $this->pet->uuid]), $postData);
+        $response = $this->put(route('user.pets.update', ['pet' => $this->pet->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -190,7 +190,7 @@ class PetControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
 
         // 実行（Act）
-        $response = $this->delete(route('user.pets.destroy', ['pet' => $this->pet->uuid]));
+        $response = $this->delete(route('user.pets.destroy', ['pet' => $this->pet->id]));
 
         // 検証（Assert）
         $response->assertStatus(200);

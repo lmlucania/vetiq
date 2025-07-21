@@ -11,7 +11,6 @@ interface VetRepositoryInterface
     public function getByHospitalIdAndId(int $hospitalId, int $id): Vet;
 
     public function create(
-        string $uuid,
         int $hospitalId,
         string $lastName,
         string $firstName,

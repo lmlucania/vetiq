@@ -15,7 +15,6 @@ class VetRepository implements VetRepositoryInterface
     }
 
     public function create(
-        string $uuid,
         int $hospitalId,
         string $lastName,
         string $firstName,
@@ -23,7 +22,6 @@ class VetRepository implements VetRepositoryInterface
         string $remark,
     ): Vet {
         return Vet::create([
-            'uuid'               => $uuid,
             'hospital_id'        => $hospitalId,
             'first_name'         => $firstName,
             'last_name'          => $lastName,

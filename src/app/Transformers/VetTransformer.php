@@ -13,7 +13,6 @@ class VetTransformer extends TransformerAbstract
     {
         return [
             'id'                 => $vet->id,
-            'uuid'               => $vet->uuid,
             'last_name'          => $vet->last_name,
             'first_name'         => $vet->first_name,
             'accept_appointment' => $vet->accept_appointment,

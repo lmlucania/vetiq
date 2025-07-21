@@ -15,11 +15,11 @@ class DetachFavoriteService
     ) {
     }
 
-    public function execute(string $uuid): int
+    public function execute(int $id): int
     {
         $user = $this->authActorService->getUser();
 
-        $hospital = $this->hospitalRepository->getByUuid($uuid);
+        $hospital = $this->hospitalRepository->getById($id);
         return $user->favoriteHospitals()->detach($hospital->id);
     }
 }

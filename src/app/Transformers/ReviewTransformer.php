@@ -9,15 +9,20 @@ use League\Fractal\TransformerAbstract;
 
 class ReviewTransformer extends TransformerAbstract
 {
+    protected array $availableIncludes = ['hospital'];
+
     public function transform(Review $review)
     {
-        // fixme 病院のidを除く
         return [
-            'uuid'     => $review->uuid,
-            'rating'   => $review->rating->value,
-            'title'    => $review->title,
-            'body'     => $review->body,
-            'hospital' => $review->hospital,
+            'id'     => $review->id,
+            'rating' => $review->rating->value,
+            'title'  => $review->title,
+            'body'   => $review->body,
         ];
+    }
+
+    public function includeHospital(Review $review)
+    {
+        return $this->item($review->hospital, new HospitalTransformer());
     }
 }

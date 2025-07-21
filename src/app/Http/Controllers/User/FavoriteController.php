@@ -46,9 +46,9 @@ class FavoriteController extends Controller
      * お気に入り登録
      * @lrd:end
      */
-    public function attach(string $uuid)
+    public function attach(int $id)
     {
-        $success = $this->attachFavoriteService->execute($uuid);
+        $success = $this->attachFavoriteService->execute($id);
 
         if ($success) {
             return response()->success();
@@ -61,9 +61,9 @@ class FavoriteController extends Controller
      * お気に入り解除
      * @lrd:end
      */
-    public function detach(string $uuid)
+    public function detach(int $id)
     {
-        $this->detachFavoriteService->execute($uuid);
+        $this->detachFavoriteService->execute($id);
 
         // お気に入りしていない病院を解除した場合でも200を返す
         return response()->success();

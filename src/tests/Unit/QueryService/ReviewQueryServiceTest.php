@@ -27,9 +27,9 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する
+     * 病院のidでレビュー一覧を取得する
      */
-    public function testListByHospitalUuidSuccess()
+    public function testListByHospitalIdSuccess()
     {
         // 準備（Arrange）
         foreach (range(1, 5) as $i) {
@@ -43,8 +43,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -60,10 +60,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する
+     * 病院のidでレビュー一覧を取得する
      * テスト対象：ページネーションのページ番号
      */
-    public function testListByHospitalUuidPaginatorPageSuccess()
+    public function testListByHospitalIdPaginatorPageSuccess()
     {
         // 準備（Arrange）
         Review::factory(60)->create([
@@ -74,8 +74,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             2,  // ページ番号（テスト対象）
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -89,10 +89,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する
+     * 病院のidでレビュー一覧を取得する
      * テスト対象：ページネーションの1ページあたりの表示数
      */
-    public function testListByHospitalUuidPaginatorPerPageSuccess()
+    public function testListByHospitalIdPaginatorPerPageSuccess()
     {
         // 準備（Arrange）
         Review::factory(60)->create([
@@ -103,8 +103,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             10, // 1ページあたりの表示数（テスト対象）
             '', // 検索キーワード
@@ -118,10 +118,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する タイトルで部分一致
+     * 病院のidでレビュー一覧を取得する タイトルで部分一致
      * テスト対象：キーワード検索
      */
-    public function testListByHospitalUuidMatchesKeywordInTitleSuccess()
+    public function testListByHospitalIdMatchesKeywordInTitleSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -146,8 +146,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             'テスト', // 検索キーワード（テスト対象）
@@ -163,10 +163,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する 本文で部分一致
+     * 病院のidでレビュー一覧を取得する 本文で部分一致
      * テスト対象：キーワード検索
      */
-    public function testListByHospitalUuidMatchesKeywordInBodySuccess()
+    public function testListByHospitalIdMatchesKeywordInBodySuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -191,8 +191,8 @@ class ReviewQueryServiceTest extends TestCase
             ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             'テスト', // 検索キーワード（テスト対象）
@@ -208,10 +208,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する 評価点数で絞り込み（一つ指定）
+     * 病院のidでレビュー一覧を取得する 評価点数で絞り込み（一つ指定）
      * テスト対象：評価点数
      */
-    public function testListByHospitalUuidMatchesRatingSingleSuccess()
+    public function testListByHospitalIdMatchesRatingSingleSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -236,8 +236,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -254,10 +254,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する 評価点数で絞り込み（複数指定）
+     * 病院のidでレビュー一覧を取得する 評価点数で絞り込み（複数指定）
      * テスト対象：評価点数
      */
-    public function testListByHospitalUuidMatchesRatingMultiSuccess()
+    public function testListByHospitalIdMatchesRatingMultiSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -282,8 +282,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -299,10 +299,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する idの昇順で並び替え
+     * 病院のidでレビュー一覧を取得する idの昇順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidSortByIdAscSuccess()
+    public function testListByHospitalIdSortByIdAscSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -322,8 +322,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -339,10 +339,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する idの降順で並び替え
+     * 病院のidでレビュー一覧を取得する idの降順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidSortByIdDescSuccess()
+    public function testListByHospitalIdSortByIdDescSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -362,8 +362,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -379,10 +379,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する ratingの昇順で並び替え
+     * 病院のidでレビュー一覧を取得する ratingの昇順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidSortByRatingAscSuccess()
+    public function testListByHospitalIdSortByRatingAscSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -402,8 +402,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -419,10 +419,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する ratingの降順で並び替え
+     * 病院のidでレビュー一覧を取得する ratingの降順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidSortByRatingDescSuccess()
+    public function testListByHospitalIdSortByRatingDescSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -442,8 +442,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -459,10 +459,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する rating昇順とid降順で並び替え
+     * 病院のidでレビュー一覧を取得する rating昇順とid降順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidMultiSortByRatingDescAndIdAscSuccess()
+    public function testListByHospitalIdMultiSortByRatingDescAndIdAscSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -490,8 +490,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード
@@ -507,10 +507,10 @@ class ReviewQueryServiceTest extends TestCase
     }
 
     /**
-     * 病院のuuidでレビュー一覧を取得する rating降順とid降順で並び替え
+     * 病院のidでレビュー一覧を取得する rating降順とid降順で並び替え
      * テスト対象：並び替え
      */
-    public function testListByHospitalUuidMultiSortByRatingDescAndIdDescSuccess()
+    public function testListByHospitalIdMultiSortByRatingDescAndIdDescSuccess()
     {
         // 準備（Arrange）
         Review::factory()->create([
@@ -538,8 +538,8 @@ class ReviewQueryServiceTest extends TestCase
         ]);
 
         // 実行（Act）
-        $paginator = $this->reviewQueryService->listByHospitalUuid(
-            (string)$this->hospital->uuid,  // 対象の病院
+        $paginator = $this->reviewQueryService->listByHospitalId(
+            $this->hospital->id,  // 対象の病院
             1,  // ページ番号
             50, // 1ページあたりの表示数
             '', // 検索キーワード

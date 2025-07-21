@@ -41,26 +41,26 @@ class ReviewControllerTest extends TestCase
         ]);
 
         // 実行（Act）
-        $response = $this->get(route('user.hospital.reviews.index', ['hospitalUuid' => $this->hospital->uuid]));
+        $response = $this->get(route('user.hospital.reviews.index', ['hospital' => $this->hospital->id]));
 
         // 検証（Assert）
         $response
             ->assertStatus(200)
             ->assertJsonCount(2, 'data')
             ->assertJsonFragment([
-                'uuid'   => $reviews[1]->uuid,
+                'id'     => $reviews[1]->id,
                 'rating' => $reviews[1]->rating,
                 'title'  => $reviews[1]->title,
                 'body'   => $reviews[1]->body,
             ])
             ->assertJsonFragment([
-                'uuid'   => $reviews[0]->uuid,
+                'id'     => $reviews[0]->id,
                 'rating' => $reviews[0]->rating,
                 'title'  => $reviews[0]->title,
                 'body'   => $reviews[0]->body,
             ])
-            ->assertJsonPath('data.0.uuid', (string)$reviews[1]->uuid) // 新着順で取得される
-            ->assertJsonPath('data.1.uuid', (string)$reviews[0]->uuid);
+            ->assertJsonPath('data.0.id', $reviews[1]->id) // 新着順で取得される
+            ->assertJsonPath('data.1.id', $reviews[0]->id);
     }
 
     /**
@@ -77,7 +77,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->post(route('user.hospital.reviews.store', ['hospitalUuid' => $this->hospital->uuid]), $postData);
+        $response = $this->post(route('user.hospital.reviews.store', ['hospital' => $this->hospital->id]), $postData);
 
         // 検証（Assert）
         $response->assertStatus(200);
@@ -109,7 +109,7 @@ class ReviewControllerTest extends TestCase
         // 実行（Act）
         $response = $this->get(route(
             'user.hospital.reviews.show',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid],
+            ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ));
 
         // 検証（Assert）
@@ -143,7 +143,7 @@ class ReviewControllerTest extends TestCase
         // 実行（Act）
         $response = $this->put(route(
             'user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+            ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
 
         // 検証（Assert）
@@ -179,7 +179,7 @@ class ReviewControllerTest extends TestCase
         // 実行（Act）
         $response = $this->put(route(
             'user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+            ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
 
         // 検証（Assert）
@@ -187,9 +187,9 @@ class ReviewControllerTest extends TestCase
     }
 
     /**
-     * レビューの更新 病院のuuidが間違っている場合に404が返されること
+     * レビューの更新 病院のidが間違っている場合に404が返されること
      */
-    public function testUpdateInvalidHospitalUuidFailure()
+    public function testUpdateInvalidHospitalIdFailure()
     {
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
@@ -206,7 +206,7 @@ class ReviewControllerTest extends TestCase
         // 実行（Act）
         $response = $this->put(route(
             'user.hospital.reviews.update',
-            ['hospitalUuid' => $this->hospital->uuid, 'uuid' => $review->uuid,],
+            ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
 
         // 検証（Assert）
@@ -236,18 +236,18 @@ class ReviewControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(2, 'data')
             ->assertJsonFragment([
-                'uuid'   => $reviews[1]->uuid,
+                'id'     => $reviews[1]->id,
                 'rating' => $reviews[1]->rating,
                 'title'  => $reviews[1]->title,
                 'body'   => $reviews[1]->body,
             ])
             ->assertJsonFragment([
-                'uuid'   => $reviews[0]->uuid,
+                'id'     => $reviews[0]->id,
                 'rating' => $reviews[0]->rating,
                 'title'  => $reviews[0]->title,
                 'body'   => $reviews[0]->body,
             ])
-            ->assertJsonPath('data.0.uuid', (string)$reviews[1]->uuid) // 新着順で取得される
-            ->assertJsonPath('data.1.uuid', (string)$reviews[0]->uuid);
+            ->assertJsonPath('data.0.id', $reviews[1]->id) // 新着順で取得される
+            ->assertJsonPath('data.1.id', $reviews[0]->id);
     }
 }

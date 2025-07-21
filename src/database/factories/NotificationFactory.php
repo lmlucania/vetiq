@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Notification>
@@ -21,7 +20,6 @@ class NotificationFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'         => (string) Str::uuid(),
             'hospital_id'  => Hospital::inRandomOrder()->first(),
             'title'        => $this->faker->realText(10),
             'detail'       => $this->faker->realText(),

@@ -6,7 +6,6 @@ namespace Database\Factories;
 
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
-use Illuminate\Support\Str;
 
 /**
  * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Vet>
@@ -21,7 +20,6 @@ class VetFactory extends Factory
     public function definition(): array
     {
         return [
-            'uuid'               => Str::uuid(),
             'hospital_id'        => Hospital::inRandomOrder()->first(),
             'last_name'          => $this->faker->lastName(),
             'first_name'         => $this->faker->firstName(),

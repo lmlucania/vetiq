@@ -27,7 +27,6 @@ class NotificationControllerTest extends TestCase
 
         $this->notification = Notification::factory()->create([
             'id'           => 1,
-            'uuid'         => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
             'hospital_id'  => $this->hospital->id,
             'title'        => '健康診断',
             'detail'       => '年に一度の健康診断で、体調をチェックします。',
@@ -37,7 +36,6 @@ class NotificationControllerTest extends TestCase
 
         Notification::factory()->create([
             'id'           => 2,
-            'uuid'         => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
             'hospital_id'  => $this->hospital->id,
             'title'        => '一般診察',
             'detail'       => '基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。',
@@ -47,7 +45,6 @@ class NotificationControllerTest extends TestCase
 
         Notification::factory()->create([
             'id'           => 3,
-            'uuid'         => '3667d80e-9f20-46f4-854b-8efa648c71c0',
             'hospital_id'  => $this->hospital->id,
             'title'        => 'ワクチン接種',
             'detail'       => '各種ワクチンを接種し、病気を予防します。',
@@ -80,7 +77,6 @@ class NotificationControllerTest extends TestCase
                 'data' => [
                     [
                         'id'           => 1,
-                        'uuid'         => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                         'title'        => '健康診断',
                         'detail'       => '年に一度の健康診断で、体調をチェックします。',
                         'is_published' => true,
@@ -88,7 +84,6 @@ class NotificationControllerTest extends TestCase
                         ],
                     [
                         'id'           => 2,
-                        'uuid'         => 'ecf0cc16-5700-403b-9551-3a739d5949ea',
                         'title'        => '一般診察',
                         'detail'       => '基本的な診察を行います。健康状態のチェックや病気の早期発見をサポートします。',
                         'is_published' => true,
@@ -96,7 +91,6 @@ class NotificationControllerTest extends TestCase
                         ],
                     [
                         'id'           => 3,
-                        'uuid'         => '3667d80e-9f20-46f4-854b-8efa648c71c0',
                         'title'        => 'ワクチン接種',
                         'detail'       => '各種ワクチンを接種し、病気を予防します。',
                         'is_published' => true,
@@ -301,8 +295,7 @@ class NotificationControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
-            ->assertJsonMissing(['uuid' => $missingNotification->id]);
+            ->assertJsonCount(6, 'data');
     }
 
     /**
@@ -392,10 +385,9 @@ class NotificationControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(6, 'data')
+            ->assertJsonCount(5, 'data')
             ->assertJsonFragment([
                 'id'           => $this->notification->id,
-                'uuid'         => '126f1b66-26d0-43b5-8160-1ce09ad3f683',
                 'title'        => '健康診断',
                 'detail'       => '年に一度の健康診断で、体調をチェックします。',
                 'is_published' => true,
@@ -467,7 +459,7 @@ class NotificationControllerTest extends TestCase
     }
 
     /**
-     * お知らせの削除 存在しないuuidを指定した場合に404が返されること
+     * お知らせの削除 存在しないidを指定した場合に404が返されること
      */
     public function testUpdateNotExistFailure()
     {
@@ -519,7 +511,7 @@ class NotificationControllerTest extends TestCase
     }
 
     /**
-     * お知らせの削除 存在しないuuidを指定した場合に404が返されること
+     * お知らせの削除 存在しないidを指定した場合に404が返されること
      */
     public function testDestroyNotExistFailure()
     {

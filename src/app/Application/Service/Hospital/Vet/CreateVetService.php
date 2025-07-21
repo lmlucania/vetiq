@@ -7,7 +7,6 @@ namespace App\Application\Service\Hospital\Vet;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
 use App\Models\Vet;
-use Illuminate\Support\Str;
 
 class CreateVetService
 {
@@ -24,7 +23,6 @@ class CreateVetService
         string $remark,
     ): Vet {
         return $this->vetRepository->create(
-            uuid: (string)Str::uuid(),
             hospitalId: $this->authActorService->getHospitalId(),
             lastName: $lastName,
             firstName: $firstName,

@@ -18,7 +18,7 @@ class GetOwnMenuDetailService
 
     public function execute(int $id): Menu
     {
-        return        $this->menuRepository->getByHospitalIdAndId(
+        return $this->menuRepository->getByHospitalIdAndId(
             hospitalId: $this->authActorService->getHospitalId(),
             id: $id,
         );

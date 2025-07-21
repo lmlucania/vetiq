@@ -12,7 +12,6 @@ class Notification extends Model
     use HasFactory;
 
     protected $fillable = [
-        'uuid',
         'hospital_id',
         'title',
         'detail',

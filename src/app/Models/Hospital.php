@@ -14,7 +14,6 @@ class Hospital extends Model
 
     protected $fillable = [
         'id',
-        'uuid',
         'name',
         'phone',
         'post_code',

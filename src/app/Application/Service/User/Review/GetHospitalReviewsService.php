@@ -13,10 +13,10 @@ class GetHospitalReviewsService
     ) {
     }
 
-    public function execute(string $hospitalUuid, int $page, int $perPage, string $keyword, array $rating, array $sort, $queryParam)
+    public function execute(int $hospitalId, int $page, int $perPage, string $keyword, array $rating, array $sort, $queryParam)
     {
-        return $this->reviewQueryService->listByHospitalUuid(
-            hospitalUuid: $hospitalUuid,
+        return $this->reviewQueryService->listByHospitalId(
+            hospitalId: $hospitalId,
             page:$page,
             perPage: $perPage,
             keyword: $keyword,

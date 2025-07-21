@@ -15,11 +15,11 @@ class AttachFavoriteService
     ) {
     }
 
-    public function execute(string $uuid): array
+    public function execute(int $id): array
     {
         $user = $this->authActorService->getUser();
 
-        $hospital = $this->hospitalRepository->getByUuid($uuid);
+        $hospital = $this->hospitalRepository->getById($id);
         // すでにお気に入り登録されていても、重複登録せずにスルーされる
         return $user->favoriteHospitals()->syncWithoutDetaching($hospital->id);
     }
