@@ -1,0 +1,34 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Http\Requests\Hospital\Tag;
+
+use App\Domains\Pet\Enum\Gender;
+use App\Http\Requests\Base\ApiRequest;
+use Carbon\Carbon;
+use Illuminate\Validation\Rules\Enum;
+
+class SyncTagRequest extends ApiRequest
+{
+    /**
+     * Determine if the user is authorized to make this request.
+     */
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function rules(): array
+    {
+        return [
+            'ids' => ['required', 'array'],
+            'ids.*' => ['required', 'integer','distinct', 'exists:tags,id'],
+        ];
+    }
+
+    public function getIds(): array
+    {
+        return $this->validated('ids');
+    }
+}
