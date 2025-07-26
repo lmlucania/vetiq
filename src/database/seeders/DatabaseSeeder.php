@@ -26,6 +26,8 @@ class DatabaseSeeder extends Seeder
             PetSeeder::class,
             ReviewSeeder::class,
             NotificationSeeder::class,
+            TagCategorySeeder::class,
+            TagSeeder::class,
         ]);
     }
 }

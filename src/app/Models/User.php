@@ -54,7 +54,6 @@ class User extends _User
             'favorites',
             'user_id',
             'hospital_id',
-        )
-            ->withTimestamps();
+        )->withTimestamps();
     }
 }
