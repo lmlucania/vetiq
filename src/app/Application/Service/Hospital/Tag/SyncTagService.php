@@ -3,12 +3,14 @@
 namespace App\Application\Service\Hospital\Tag;
 
 use App\Application\Service\Auth\AuthActorService;
+use App\Domains\Tag\Repository\TagRepositoryInterface;
 
 class SyncTagService
 {
 
     public function __construct(
         private AuthActorService $actorService,
+        private TagRepositoryInterface $tagRepository,
     )
     {
     }
@@ -17,6 +19,12 @@ class SyncTagService
     {
         $authHospital = $this->actorService->getHospital();
 
-        return $authHospital->tags()->sync($ids);
+        $existTags = [];
+        if (!empty($ids)) {
+            // 存在しないタグidを渡すとエラーになる
+            $existTags = $this->tagRepository->getManyByIds($ids);
+        }
+
+        return $authHospital->tags()->sync($existTags);
     }
 }

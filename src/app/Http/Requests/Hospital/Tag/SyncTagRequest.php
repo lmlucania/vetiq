@@ -22,8 +22,8 @@ class SyncTagRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'ids' => ['required', 'array'],
-            'ids.*' => ['required', 'integer','distinct', 'exists:tags,id'],
+            'ids' => 'present|array',
+            'ids.*' => 'integer|distinct',
         ];
     }
 
