@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,7 +19,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => '休日診療'
+            'name' => '休日診療',
         ];
     }
 }

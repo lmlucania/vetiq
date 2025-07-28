@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Database\Factories;
 
 use Illuminate\Database\Eloquent\Factories\Factory;
@@ -17,7 +19,7 @@ class TagCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => '営業時間'
+            'name' => '営業時間',
         ];
     }
 }

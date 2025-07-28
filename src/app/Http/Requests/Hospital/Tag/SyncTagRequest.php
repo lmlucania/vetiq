@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\Hospital\Tag;
 
-use App\Domains\Pet\Enum\Gender;
 use App\Http\Requests\Base\ApiRequest;
-use Carbon\Carbon;
-use Illuminate\Validation\Rules\Enum;
 
 class SyncTagRequest extends ApiRequest
 {
@@ -22,7 +19,7 @@ class SyncTagRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'ids' => 'present|array',
+            'ids'   => 'present|array',
             'ids.*' => 'integer|distinct',
         ];
     }
