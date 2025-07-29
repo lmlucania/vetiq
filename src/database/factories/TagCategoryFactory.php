@@ -20,6 +20,7 @@ class TagCategoryFactory extends Factory
     {
         return [
             'name' => '営業時間',
+            'display_order' => 1,
         ];
     }
 }

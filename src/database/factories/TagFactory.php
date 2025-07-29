@@ -20,6 +20,7 @@ class TagFactory extends Factory
     {
         return [
             'name' => '休日診療',
+            'display_order' => 1,
         ];
     }
 }

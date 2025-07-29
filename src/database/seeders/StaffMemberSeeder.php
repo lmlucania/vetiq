@@ -21,7 +21,7 @@ class StaffMemberSeeder extends Seeder
         }
         // OpenAPIからログインできるようにデータを作成
         StaffMember::factory()->create([
-            'hospital_id' => $hospital->id,
+            'hospital_id' => Hospital::first(),
             'email'       => 'staff+1@example.com',
         ]);
     }
