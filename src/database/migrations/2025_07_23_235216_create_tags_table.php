@@ -13,15 +13,19 @@ return new class extends Migration
     {
         Schema::create('tag_categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name')->unique();
+            $table->string('name')->unique()->comment('タグカテゴリー名');
+            $table->integer('display_order')->unique()->comment('表示順序');
             $table->timestamps();
         });
 
         Schema::create('tags', function (Blueprint $table) {
             $table->id();
             $table->foreignId('tag_category_id')->constrained('tag_categories')->onDelete('cascade')->comment('タグカテゴリーID');
-            $table->string('name')->unique();
+            $table->string('name')->unique()->comment('タグ名');
+            $table->integer('display_order')->comment('表示順序');
             $table->timestamps();
+
+            $table->unique(['tag_category_id', 'display_order']);
         });
 
         Schema::create('hospital_tag', function (Blueprint $table) {
