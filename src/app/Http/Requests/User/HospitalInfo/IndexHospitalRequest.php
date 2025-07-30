@@ -23,6 +23,8 @@ class IndexHospitalRequest extends ApiRequest
             'per_page' => ['nullable', 'integer', 'min:1', 'max:500'],
             'sort'     => ['nullable', 'array'],
             'sort.*'   => ['string'],
+            'tags'     => ['nullable', 'array'],
+            'tags.*'   => ['int'],
             'keyword'  => ['nullable', 'string'],
         ];
     }
@@ -40,6 +42,11 @@ class IndexHospitalRequest extends ApiRequest
     public function getSort():array
     {
         return $this->query('sort', []);
+    }
+
+    public function getTags():array
+    {
+        return $this->query('tags', []);
     }
 
     public function getKeyword(): string

@@ -28,6 +28,7 @@ class HospitalController extends Controller
             page:$request->getPage(),
             perPage: $request->getPerPage(),
             keyword: $request->getKeyword(),
+            tagIds: $request->getTags(),
             sort: $request->getSort(),
             queryParam: $request->getAllQuery(),
         );
