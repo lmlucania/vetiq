@@ -21,7 +21,7 @@ class SyncTagService
 
         $existTags = [];
         if (! empty($ids)) {
-            // 存在しないタグidを渡すとエラーになる
+            // 存在しないタグを渡すとエラーになるため、存在チェックをする
             $existTags = $this->tagRepository->getManyByIds($ids);
         }
 
