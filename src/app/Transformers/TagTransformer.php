@@ -12,10 +12,10 @@ class TagTransformer extends TransformerAbstract
     public function transform(stdClass $tag)
     {
         return [
-            'id'            => $tag->tag_id,
-            'tag_name'      => $tag->tag_name,
-            'display_order' => $tag->tag_display_order,
-            'is_selected'   => $tag->is_selected,
+            'id'                => $tag->tag_id,
+            'tag_name'          => $tag->tag_name,
+            'tag_display_order' => $tag->tag_display_order,
+            'is_selected'       => (bool)$tag->is_selected,
         ];
     }
 }

@@ -18,9 +18,9 @@ class CategoryTagTransformer extends TransformerAbstract
         // tag categoryの情報は同じなので、一番目のデータから取得する
         $first = $tags->first();
         return [
-            'category_name' => $first->category_name,
-            'display_order' => $first->category_display_order,
-            'tag'           => $this->transformCollection($tags, new TagTransformer()),
+            'category_name'          => $first->category_name,
+            'category_display_order' => $first->category_display_order,
+            'tag'                    => $this->transformCollection($tags, new TagTransformer()),
         ];
     }
 }
