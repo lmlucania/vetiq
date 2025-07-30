@@ -19,7 +19,7 @@ class TagCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => '営業時間',
+            'name'          => '営業時間',
             'display_order' => 1,
         ];
     }

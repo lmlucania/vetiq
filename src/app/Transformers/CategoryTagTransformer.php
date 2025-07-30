@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace App\Transformers;
 
-use App\Models\Review;
 use App\Models\Tag;
 use App\Transformers\Traits\FractalTransformable;
 use Illuminate\Support\Collection;
-use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\TransformerAbstract;
 
 class CategoryTagTransformer extends TransformerAbstract
@@ -22,7 +20,7 @@ class CategoryTagTransformer extends TransformerAbstract
         return [
             'category_name' => $first->category_name,
             'display_order' => $first->category_display_order,
-            'tag' => $this->transformCollection($tags, new TagTransformer()),
+            'tag'           => $this->transformCollection($tags, new TagTransformer()),
         ];
     }
 }

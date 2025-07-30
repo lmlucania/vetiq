@@ -19,7 +19,7 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name' => '休日診療',
+            'name'          => '休日診療',
             'display_order' => 1,
         ];
     }

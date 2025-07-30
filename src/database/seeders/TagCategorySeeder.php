@@ -65,15 +65,15 @@ class TagCategorySeeder extends Seeder
         $categoryOrder = 1;
         foreach (self::SAMPLE_DATA as $categoryName => $tagNames) {
             $category = TagCategory::create([
-                'name' => $categoryName,
-                'display_order'  => $categoryOrder++,
+                'name'          => $categoryName,
+                'display_order' => $categoryOrder++,
             ]);
 
             $tagOrder = 1;
             foreach ($tagNames as $tagName) {
                 Tag::factory()->create([
                     'tag_category_id' => $category,
-                    'name' => $tagName,
+                    'name'            => $tagName,
                     'display_order'   => $tagOrder++,
                 ]);
             }

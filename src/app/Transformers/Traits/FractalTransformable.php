@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Transformers\Traits;
 
 use Illuminate\Support\Collection;

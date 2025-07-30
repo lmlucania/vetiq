@@ -9,7 +9,6 @@ use App\Application\Service\Hospital\Tag\SyncTagService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Hospital\Tag\SyncTagRequest;
 use App\Transformers\CategoryTagTransformer;
-use App\Transformers\TagTransformer;
 
 class TagController extends Controller
 {

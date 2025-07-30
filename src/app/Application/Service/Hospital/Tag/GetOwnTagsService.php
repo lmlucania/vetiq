@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Application\Service\Hospital\Tag;
 
 use App\Application\QueryService\TagQueryService;
@@ -17,7 +19,7 @@ class GetOwnTagsService
     public function execute(): Collection
     {
         return $this->tagQueryService->getTagsWithSelectionByHospitalId(
-            $this->actorService->getHospitalId()
+            $this->actorService->getHospitalId(),
         );
     }
 }
