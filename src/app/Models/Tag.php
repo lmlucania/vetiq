@@ -17,6 +17,6 @@ class Tag extends Model
 
     public function hospitals()
     {
-        return $this->belongsToMany(Hospital::class);
+        return $this->belongsToMany(Hospital::class)->withTimestamps();
     }
 }

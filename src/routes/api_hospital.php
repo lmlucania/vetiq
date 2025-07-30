@@ -36,5 +36,6 @@ Route::middleware('auth:staff-members')->group(static function () {
     });
     Route::resource('reviews', ReviewController::class)->only(['index']);
     Route::resource('notifications', NotificationController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('tags', TagController::class)->only(['index']);
     Route::post('tags', [TagController::class, 'sync'])->name('tags.sync');
 });
