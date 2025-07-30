@@ -16,7 +16,7 @@ class GetHospitalsService
     ) {
     }
 
-    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $sort, $queryParam)
+    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, $queryParam)
     {
         $existTags = $this->tagRepository->getManyByIds($tagIds);
 
@@ -25,6 +25,7 @@ class GetHospitalsService
             perPage: $perPage,
             keyword: $keyword,
             tagIds: $existTags->pluck('id')->toArray(),
+            prefectureCodes: $prefectureCodes,
             sort: $sort,
             queryParam: $queryParam,
         );
