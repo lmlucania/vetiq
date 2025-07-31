@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Service\User\HospitalViewHistory\DeleteHospitalViewHistoryService;
 use App\Http\Controllers\Controller;
 use App\Models\HospitalViewHistory;
 
 class HospitalViewHistoryController extends Controller
 {
     public function __construct(
+        private DeleteHospitalViewHistoryService $deleteHospitalViewHistoryService,
     ) {
     }
 
@@ -21,11 +23,17 @@ class HospitalViewHistoryController extends Controller
         //
     }
 
+
     /**
-     * Remove the specified resource from storage.
+     * 病院の閲覧履歴を削除
      */
-    public function destroy(HospitalViewHistory $hospitalViewHistory)
+    public function destroy(int $hospitalId)
     {
-        //
+        $success = $this->deleteHospitalViewHistoryService->execute($hospitalId);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
     }
 }

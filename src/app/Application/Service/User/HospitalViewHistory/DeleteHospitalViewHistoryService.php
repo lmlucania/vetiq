@@ -8,23 +8,21 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 
-class CreateHospitalViewHistoryService
+class DeleteHospitalViewHistoryService
 {
     public function __construct(
         private AuthActorService $actorService,
-        private HospitalRepositoryInterface $hospitalRepository,
         private HospitalViewHistoryRepositoryInterface $hospitalViewHistoryRepository,
     ) {
     }
 
-    public function execute(int $hospitalId): int
+    public function execute(int $hospitalId): bool
     {
-        // 存在チェックをする
-        $existHospital = $this->hospitalRepository->getById($hospitalId);
-
-        return $this->hospitalViewHistoryRepository->upsert(
-            hospitalId: $existHospital->id,
+        $viewHistory = $this->hospitalViewHistoryRepository->getByHospitalIdAndUserId(
+            hospitalId: $hospitalId,
             userId: $this->actorService->getUserId(),
         );
+
+        return $viewHistory->delete();
     }
 }

@@ -6,6 +6,7 @@ use App\Http\Controllers\User\AppointmentController;
 use App\Http\Controllers\User\AuthController;
 use App\Http\Controllers\User\FavoriteController;
 use App\Http\Controllers\User\HospitalController;
+use App\Http\Controllers\User\HospitalViewHistoryController;
 use App\Http\Controllers\User\PetController;
 use App\Http\Controllers\User\ReviewController;
 use App\Http\Controllers\User\UserController;
@@ -34,5 +35,9 @@ Route::middleware('auth:users')->group(static function () {
     Route::resource('appointments', AppointmentController::class)->only(['index', 'store', 'show']);
     Route::controller(AppointmentController::class)->prefix('hospital')->name('appointments.')->group(static function () {
         Route::patch('appointments/{id}/cancel', 'cancel')->name('cancel');
+    });
+    Route::controller(HospitalViewHistoryController::class)->prefix('hospital/{hospital}/view-histories')->name('hospital.view-histories.')->group(static function () {
+//        Route::get('', 'index')->name('index');
+        Route::delete('', 'destroy')->name('delete');
     });
 });

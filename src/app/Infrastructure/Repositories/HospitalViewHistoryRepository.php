@@ -14,6 +14,13 @@ class HospitalViewHistoryRepository implements HospitalViewHistoryRepositoryInte
         return HospitalViewHistory::findOrFail($id);
     }
 
+    public function getByHospitalIdAndUserId(int $hospitalId, int $userId): HospitalViewHistory
+    {
+        return HospitalViewHistory::where('hospital_id', $hospitalId)
+            ->where('user_id', $userId)
+            ->firstOrFail();
+    }
+
     public function upsert(int $hospitalId, int $userId): int
     {
         return HospitalViewHistory::upsert(
