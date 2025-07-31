@@ -30,7 +30,7 @@ Route::middleware('auth:users')->group(static function () {
     });
     Route::resource('hospital.reviews', ReviewController::class)->only(['index', 'store', 'show', 'update']);
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
-    Route::resource('hospitals', HospitalController::class)->only(['index']);
+    Route::resource('hospitals', HospitalController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class)->only(['index', 'store', 'show']);
     Route::controller(AppointmentController::class)->prefix('hospital')->name('appointments.')->group(static function () {
         Route::patch('appointments/{id}/cancel', 'cancel')->name('cancel');
