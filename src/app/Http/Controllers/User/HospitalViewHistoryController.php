@@ -6,7 +6,6 @@ namespace App\Http\Controllers\User;
 
 use App\Application\Service\User\HospitalViewHistory\DeleteHospitalViewHistoryService;
 use App\Http\Controllers\Controller;
-use App\Models\HospitalViewHistory;
 
 class HospitalViewHistoryController extends Controller
 {
@@ -16,13 +15,12 @@ class HospitalViewHistoryController extends Controller
     }
 
     /**
-     * Display a listing of the resource.
+     * 病院の閲覧履歴の一覧
      */
     public function index()
     {
         //
     }
-
 
     /**
      * 病院の閲覧履歴を削除

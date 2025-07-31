@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Service\User\HospitalViewHistory;
 
 use App\Application\Service\Auth\AuthActorService;
-use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 
 class DeleteHospitalViewHistoryService

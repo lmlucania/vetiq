@@ -37,7 +37,7 @@ Route::middleware('auth:users')->group(static function () {
         Route::patch('appointments/{id}/cancel', 'cancel')->name('cancel');
     });
     Route::controller(HospitalViewHistoryController::class)->prefix('hospital/{hospital}/view-histories')->name('hospital.view-histories.')->group(static function () {
-//        Route::get('', 'index')->name('index');
+        //        Route::get('', 'index')->name('index');
         Route::delete('', 'destroy')->name('delete');
     });
 });
