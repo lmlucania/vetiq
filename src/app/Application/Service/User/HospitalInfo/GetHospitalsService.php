@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Application\Service\User\HospitalInfo;
 
-use App\Application\QueryService\TagQueryService;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 

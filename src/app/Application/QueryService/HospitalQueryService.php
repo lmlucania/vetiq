@@ -35,13 +35,13 @@ class HospitalQueryService implements HospitalQueryServiceInterface
             $query = $query->where('name', 'LIKE', "%{$trimmed}%");
         }
 
-        if (!empty($tagIds)) {
+        if (! empty($tagIds)) {
             $query = $query->whereHas('tags', function ($subQuery) use ($tagIds) {
                 $subQuery->whereIn('tags.id', $tagIds);
             });
         }
 
-        if (!empty($prefectureCodes)) {
+        if (! empty($prefectureCodes)) {
             $query = $query->whereIn('prefecture', $prefectureCodes);
         }
 

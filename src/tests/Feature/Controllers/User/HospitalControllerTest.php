@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Feature\Controllers\User;
 
 use App\Domains\Location\Enum\Prefecture;
-use App\Domains\Pet\Enum\Gender;
 use App\Models\Hospital;
-use App\Models\Pet;
 use App\Models\Tag;
 use App\Models\TagCategory;
 use App\Models\User;
@@ -26,7 +24,6 @@ class HospitalControllerTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create();
-
     }
 
     /**
@@ -38,10 +35,10 @@ class HospitalControllerTest extends TestCase
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
         Hospital::factory()->create([
-            'name' => 'test'
+            'name' => 'test',
         ]);
         Hospital::factory()->create([
-            'name' => 'xxx'
+            'name' => 'xxx',
         ]);
 
         // 実行（Act）
@@ -52,7 +49,7 @@ class HospitalControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'name'         => 'test',
+                'name' => 'test',
             ]);
     }
 
@@ -86,7 +83,7 @@ class HospitalControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'name'         => 'test',
+                'name' => 'test',
             ]);
     }
 
@@ -98,11 +95,11 @@ class HospitalControllerTest extends TestCase
         // 準備（Arrange）
         $this->actingAs($this->user, $this->guard);
         Hospital::factory()->create([
-            'name' => 'test',
+            'name'       => 'test',
             'prefecture' => Prefecture::Hokkaido->value,
         ]);
         Hospital::factory()->create([
-            'name' => 'xxx',
+            'name'       => 'xxx',
             'prefecture' => Prefecture::Akita->value,
         ]);
 
@@ -114,7 +111,7 @@ class HospitalControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'name'         => 'test',
+                'name' => 'test',
             ]);
     }
 }
