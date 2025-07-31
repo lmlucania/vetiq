@@ -19,8 +19,8 @@ class TagCategoryFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'          => '営業時間',
-            'display_order' => 1,
+            'name'          => $this->faker->unique()->realText(10),
+            'display_order' => $this->faker->unique()->randomNumber(),
         ];
     }
 }

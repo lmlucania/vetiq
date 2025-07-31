@@ -19,8 +19,8 @@ class TagFactory extends Factory
     public function definition(): array
     {
         return [
-            'name'          => '休日診療',
-            'display_order' => 1,
+            'name'          => $this->faker->unique()->realText(10),
+            'display_order' => $this->faker->unique()->randomNumber(),
         ];
     }
 }
