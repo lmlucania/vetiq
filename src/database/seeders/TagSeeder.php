@@ -4,16 +4,19 @@ declare(strict_types=1);
 
 namespace Database\Seeders;
 
-use App\Models\Hospital;
+use App\Models\Tag;
+use App\Models\TagCategory;
 use Illuminate\Database\Seeder;
 
-class HospitalSeeder extends Seeder
+class TagSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Hospital::factory()->count(10)->create();
+        Tag::factory()->create([
+            'tag_category_id' => TagCategory::first()->id,
+        ]);
     }
 }

@@ -37,7 +37,11 @@ class Hospital extends Model
             'favorites',
             'hospital_id',
             'user_id',
-        )
-            ->withTimestamps();
+        )->withTimestamps();
+    }
+
+    public function tags()
+    {
+        return $this->belongsToMany(Tag::class)->withTimestamps();
     }
 }

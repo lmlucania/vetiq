@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace App\Application\Service\Auth;
 
 use App\Exceptions\UnauthorizedException;
+use App\Models\Hospital;
 use App\Models\StaffMember;
 use App\Models\User;
 use Illuminate\Foundation\Auth\User as _User;
@@ -59,5 +60,10 @@ class AuthActorService
     public function getHospitalId(): int
     {
         return $this->getStaff()->hospital_id;
+    }
+
+    public function getHospital(): Hospital
+    {
+        return $this->authUser->hospital;
     }
 }

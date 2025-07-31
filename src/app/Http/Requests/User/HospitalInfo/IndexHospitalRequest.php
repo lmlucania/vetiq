@@ -19,11 +19,15 @@ class IndexHospitalRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'page'     => ['nullable', 'integer', 'min:1'],
-            'per_page' => ['nullable', 'integer', 'min:1', 'max:500'],
-            'sort'     => ['nullable', 'array'],
-            'sort.*'   => ['string'],
-            'keyword'  => ['nullable', 'string'],
+            'page'          => ['nullable', 'integer', 'min:1'],
+            'per_page'      => ['nullable', 'integer', 'min:1', 'max:500'],
+            'sort'          => ['nullable', 'array'],
+            'sort.*'        => ['string'],
+            'tags'          => ['nullable', 'array'],
+            'tags.*'        => ['integer'],
+            'prefectures'   => ['nullable', 'array'],
+            'prefectures.*' => ['integer'],
+            'keyword'       => ['nullable', 'string'],
         ];
     }
 
@@ -40,6 +44,16 @@ class IndexHospitalRequest extends ApiRequest
     public function getSort():array
     {
         return $this->query('sort', []);
+    }
+
+    public function getTags():array
+    {
+        return $this->query('tags', []);
+    }
+
+    public function getPrefectures():array
+    {
+        return $this->query('prefectures', []);
     }
 
     public function getKeyword(): string

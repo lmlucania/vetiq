@@ -9,6 +9,7 @@ use App\Http\Controllers\Hospital\HospitalController;
 use App\Http\Controllers\Hospital\MenuController;
 use App\Http\Controllers\Hospital\NotificationController;
 use App\Http\Controllers\Hospital\ReviewController;
+use App\Http\Controllers\Hospital\TagController;
 use App\Http\Controllers\Hospital\VetController;
 use Illuminate\Support\Facades\Route;
 
@@ -35,4 +36,6 @@ Route::middleware('auth:staff-members')->group(static function () {
     });
     Route::resource('reviews', ReviewController::class)->only(['index']);
     Route::resource('notifications', NotificationController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('tags', TagController::class)->only(['index']);
+    Route::post('tags', [TagController::class, 'sync'])->name('tags.sync');
 });
