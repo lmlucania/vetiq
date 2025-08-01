@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Service\User\HospitalViewHistory\ClearHospitalViewHistoriesService;
 use App\Application\Service\User\HospitalViewHistory\DeleteHospitalViewHistoryService;
 use App\Application\Service\User\HospitalViewHistory\GetMyHospitalViewHistoriesService;
 use App\Http\Controllers\Controller;
@@ -16,6 +17,7 @@ class HospitalViewHistoryController extends Controller
     public function __construct(
         private GetMyHospitalViewHistoriesService $getMyHospitalViewHistoriesService,
         private DeleteHospitalViewHistoryService $deleteHospitalViewHistoryService,
+        private ClearHospitalViewHistoriesService $clearHospitalViewHistoriesService,
     ) {
     }
 
@@ -43,6 +45,19 @@ class HospitalViewHistoryController extends Controller
     public function destroy(int $hospitalId)
     {
         $success = $this->deleteHospitalViewHistoryService->execute($hospitalId);
+
+        if ($success) {
+            return response()->success();
+        }
+        return response()->error();
+    }
+
+    /**
+     * 病院の閲覧履歴を全て削除
+     */
+    public function clear()
+    {
+        $success = $this->clearHospitalViewHistoriesService->execute();
 
         if ($success) {
             return response()->success();

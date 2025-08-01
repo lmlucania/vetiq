@@ -21,6 +21,11 @@ class HospitalViewHistoryRepository implements HospitalViewHistoryRepositoryInte
             ->firstOrFail();
     }
 
+    public function deleteManyByUserId(int $userId): int
+    {
+        return HospitalViewHistory::where('user_id', $userId)->delete();
+    }
+
     public function upsert(int $hospitalId, int $userId): int
     {
         return HospitalViewHistory::upsert(
