@@ -17,7 +17,7 @@ class HospitalViewHistoryTransformer extends TransformerAbstract
     public function transform(HospitalViewHistory $hospitalViewHistory)
     {
         return [
-            'updated_at' => $hospitalViewHistory->updated_at,
+            'updated_at' => $hospitalViewHistory->updated_at->format('Y-m-d H:i'),
         ];
     }
 

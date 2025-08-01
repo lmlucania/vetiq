@@ -2,6 +2,7 @@
 
 namespace Feature\Controllers\User;
 
+use App\Domains\Pet\Enum\Gender;
 use App\Models\Hospital;
 use App\Models\HospitalViewHistory;
 use App\Models\Review;
@@ -32,6 +33,7 @@ class HospitalViewHistoryControllerTest extends TestCase
         HospitalViewHistory::factory()->create([
             'hospital_id' => Hospital::factory()->create()->id,
             'user_id' => $this->user->id,
+            'updated_at' => '2025-01-01 01:02:03'
         ]);
         HospitalViewHistory::factory()->create([ // 取得されない
             'hospital_id' => Hospital::factory()->create()->id,
@@ -45,7 +47,34 @@ class HospitalViewHistoryControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(1, 'data');
+            ->assertJsonCount(1, 'data')
+            ->assertJsonFragment([
+                'updated_at' => '2025-01-01 01:02'
+            ]);
     }
 
+    /**
+     * 病院の閲覧履歴を削除 削除ができること
+     */
+    public function testDestroySuccess()
+    {
+        // 準備（Arrange）
+        $this->actingAs($this->user, $this->guard);
+        $hospital = Hospital::factory()->create();
+        HospitalViewHistory::factory()->create([
+            'hospital_id' => $hospital->id,
+            'user_id' => $this->user->id,
+        ]);
+
+
+        // 実行（Act）
+        $response = $this->delete(
+            route('user.hospital-view-histories.destroy', ['hospital_view_history' => $hospital->id])
+        );
+
+        // 検証（Assert）
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('hospital_view_histories', 0);
+    }
 }
