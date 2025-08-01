@@ -1,11 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Feature\Controllers\User;
 
-use App\Domains\Pet\Enum\Gender;
 use App\Models\Hospital;
 use App\Models\HospitalViewHistory;
-use App\Models\Review;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -32,14 +32,13 @@ class HospitalViewHistoryControllerTest extends TestCase
         $this->actingAs($this->user, $this->guard);
         HospitalViewHistory::factory()->create([
             'hospital_id' => Hospital::factory()->create()->id,
-            'user_id' => $this->user->id,
-            'updated_at' => '2025-01-01 01:02:03'
+            'user_id'     => $this->user->id,
+            'updated_at'  => '2025-01-01 01:02:03',
         ]);
         HospitalViewHistory::factory()->create([ // 取得されない
             'hospital_id' => Hospital::factory()->create()->id,
-            'user_id' => User::factory()->create()->id,
+            'user_id'     => User::factory()->create()->id,
         ]);
-
 
         // 実行（Act）
         $response = $this->get(route('user.hospital-view-histories.index'));
@@ -49,7 +48,7 @@ class HospitalViewHistoryControllerTest extends TestCase
             ->assertStatus(200)
             ->assertJsonCount(1, 'data')
             ->assertJsonFragment([
-                'updated_at' => '2025-01-01 01:02'
+                'updated_at' => '2025-01-01 01:02',
             ]);
     }
 
@@ -63,18 +62,49 @@ class HospitalViewHistoryControllerTest extends TestCase
         $hospital = Hospital::factory()->create();
         HospitalViewHistory::factory()->create([
             'hospital_id' => $hospital->id,
-            'user_id' => $this->user->id,
+            'user_id'     => $this->user->id,
         ]);
-
 
         // 実行（Act）
         $response = $this->delete(
-            route('user.hospital-view-histories.destroy', ['hospital_view_history' => $hospital->id])
+            route('user.hospital-view-histories.destroy', ['hospital_view_history' => $hospital->id]),
         );
 
         // 検証（Assert）
         $response->assertStatus(200);
 
         $this->assertDatabaseCount('hospital_view_histories', 0);
+    }
+
+    /**
+     * 病院の閲覧履歴を全て削除 全て削除ができること
+     */
+    public function testClearSuccess()
+    {
+        // 準備（Arrange）
+        $this->actingAs($this->user, $this->guard);
+        HospitalViewHistory::factory()->create([
+            'hospital_id' => Hospital::factory()->create()->id,
+            'user_id'     => $this->user->id,
+        ]);
+        HospitalViewHistory::factory()->create([
+            'hospital_id' => Hospital::factory()->create()->id,
+            'user_id'     => $this->user->id,
+        ]);
+
+        HospitalViewHistory::factory()->create([ // 削除されない
+            'id'          => 999,
+            'hospital_id' => Hospital::factory()->create()->id,
+            'user_id'     => User::factory()->create()->id,
+        ]);
+
+        // 実行（Act）
+        $response = $this->delete(route('user.hospital-view-histories.clear'));
+
+        // 検証（Assert）
+        $response->assertStatus(200);
+
+        $this->assertDatabaseCount('hospital_view_histories', 1);
+        $this->assertEquals(999, HospitalViewHistory::first()->id);
     }
 }
