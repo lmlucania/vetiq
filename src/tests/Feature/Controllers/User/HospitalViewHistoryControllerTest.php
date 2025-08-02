@@ -92,7 +92,7 @@ class HospitalViewHistoryControllerTest extends TestCase
             'user_id'     => $this->user->id,
         ]);
 
-        HospitalViewHistory::factory()->create([ // 削除されない
+        HospitalViewHistory::factory()->create([ // 他ユーザーの履歴は削除されない
             'id'          => 999,
             'hospital_id' => Hospital::factory()->create()->id,
             'user_id'     => User::factory()->create()->id,
