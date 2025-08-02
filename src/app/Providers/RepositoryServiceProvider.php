@@ -9,6 +9,7 @@ use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInter
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
@@ -22,6 +23,7 @@ use App\Infrastructure\Repositories\AppointmentStatusHistoryRepository;
 use App\Infrastructure\Repositories\BusinessHourRepository;
 use App\Infrastructure\Repositories\ExceptionHourRepository;
 use App\Infrastructure\Repositories\HospitalRepository;
+use App\Infrastructure\Repositories\HospitalViewHistoryRepository;
 use App\Infrastructure\Repositories\MenuRepository;
 use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
@@ -52,6 +54,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppointmentRepositoryInterface::class, AppointmentRepository::class);
         $this->app->bind(AppointmentStatusHistoryRepositoryInterface::class, AppointmentStatusHistoryRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
+        $this->app->bind(HospitalViewHistoryRepositoryInterface::class, HospitalViewHistoryRepository::class);
     }
 
     /**

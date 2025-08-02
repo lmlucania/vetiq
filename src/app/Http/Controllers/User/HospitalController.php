@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Service\User\HospitalInfo\GetHospitalDetailService;
 use App\Application\Service\User\HospitalInfo\GetHospitalsService;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\User\HospitalInfo\IndexHospitalRequest;
@@ -14,6 +15,7 @@ class HospitalController extends Controller
 {
     public function __construct(
         private GetHospitalsService $getHospitalsService,
+        private GetHospitalDetailService $getHospitalDetailService,
     ) {
     }
 
@@ -37,5 +39,17 @@ class HospitalController extends Controller
         return fractal($paginator->getCollection(), new HospitalTransformer())
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
+    }
+
+    /**
+     * @lrd:start
+     * 病院の詳細
+     * @lrd:end
+     */
+    public function show(int $id)
+    {
+        $hospital = $this->getHospitalDetailService->execute($id);
+
+        return fractal($hospital, new HospitalTransformer())->respond();
     }
 }
