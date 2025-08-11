@@ -113,4 +113,14 @@ enum Prefecture: int
     {
         return self::tryFrom($value) ?? throw new InvalidArgumentException("都道府県コードが不正です: $value");
     }
+
+    public static function findFromAddress(string $address): ?self
+    {
+        foreach (self::cases() as $case) {
+            if (str_starts_with($address, $case->label())) {
+                return $case;
+            }
+        }
+        return null;
+    }
 }
