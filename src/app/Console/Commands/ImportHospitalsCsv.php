@@ -36,7 +36,7 @@ class ImportHospitalsCsv extends Command
 
         if (!file_exists($path)) {
             $this->error('CSVファイルが見つかりません。');
-            return;
+            return Command::FAILURE;
         }
 
         $csv = Reader::createFromPath($path, 'r');
@@ -49,7 +49,7 @@ class ImportHospitalsCsv extends Command
         {
             $batch[] = [
                 'name' => $record[1],
-                'post_code' => is_numeric($record[2]) ? $record[2] : 0000000, // 郵便番号が数字ではない場合もある
+                'post_code' => is_numeric($record[2]) ? $record[2] : '0000000', // 郵便番号が数字ではない場合もある
                 'prefecture' => Prefecture::findFromAddress($record[3]) ?? 0,
                 'address1' => $record[3],
                 'phone' => $record[4],
@@ -72,7 +72,7 @@ class ImportHospitalsCsv extends Command
         }
 
         $this->info($csv->count() . '件のインポート完了');
-        return 0;
+        return Command::SUCCESS;
     }
 
     private function insertHospital(array $data): bool
