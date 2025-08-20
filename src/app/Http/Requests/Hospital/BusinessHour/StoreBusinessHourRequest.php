@@ -6,7 +6,6 @@ namespace App\Http\Requests\Hospital\BusinessHour;
 
 use App\Application\Dto\Request\BusinessHourDto;
 use App\Domains\Schedule\Enum\DayOfWeek;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Http\Requests\Base\ApiRequest;
 use Illuminate\Validation\Rules\Enum;
 
@@ -23,11 +22,10 @@ class StoreBusinessHourRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'day_of_week'           => ['required', 'integer', new Enum(DayOfWeek::class)],
-            'periods'               => ['required', 'array', 'max:2'],
-            'periods.*.time_period' => ['required', 'integer', new Enum(TimePeriod::class)],
-            'periods.*.start_time'  => ['required', 'date_format:H:i'],
-            'periods.*.end_time'    => ['required', 'date_format:H:i', 'after:periods.*.start_time'],
+            'day_of_week'          => ['required', 'integer', new Enum(DayOfWeek::class)],
+            'periods'              => ['required', 'array', 'max:10'],
+            'periods.*.start_time' => ['required', 'date_format:H:i'],
+            'periods.*.end_time'   => ['required', 'date_format:H:i', 'after:periods.*.start_time'],
         ];
     }
 

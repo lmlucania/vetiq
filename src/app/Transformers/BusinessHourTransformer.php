@@ -14,7 +14,6 @@ class BusinessHourTransformer extends TransformerAbstract
         return [
             'id'          => $businessHour->id,
             'day_of_week' => $businessHour->day_of_week->value,
-            'time_period' => $businessHour->time_period->value,
             'start_time'  => $businessHour->start_time->format('H:i'),
             'end_time'    => $businessHour->end_time->format('H:i'),
         ];

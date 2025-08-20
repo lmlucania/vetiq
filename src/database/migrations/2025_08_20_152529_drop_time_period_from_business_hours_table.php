@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('business_hours', function (Blueprint $table) {
-            $table->unique(['hospital_id', 'day_of_week', 'time_period'], 'hospital_day_of_week_period_unique');
+            $table->dropColumn('time_period');
         });
     }
 
@@ -22,7 +22,7 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('business_hours', function (Blueprint $table) {
-            $table->dropUnique(['hospital_day_of_week_period_unique']);
+            $table->integer('time_period')->nullable();
         });
     }
 };
