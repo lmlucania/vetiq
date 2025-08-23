@@ -30,8 +30,6 @@ class ImportHospitalsCsv extends Command
      */
     protected $description = 'CSVから動物病院をインポート';
 
-    private const BATCH_SIZE = 2000;
-
     /**
      * Execute the console command.
      */
@@ -45,22 +43,9 @@ class ImportHospitalsCsv extends Command
         }
 
         $csv = Reader::createFromPath($path, 'r');
-
         $rows = $csv->getRecords();
 
-        $batch = [];
-
         foreach ($rows as $index => $row) {
-            //            $batch[] = [
-            //                'name' => $row[1],
-            //                'post_code' => is_numeric($row[2]) ? $row[2] : '0000000', // 郵便番号が数字ではない場合もある
-            //                'prefecture' => Prefecture::findFromAddress($row[3]) ?? 0,
-            //                'address1' => $row[3],
-            //                'phone' => $row[4],
-            //                'is_published' => true,
-            //                'created_at' => now(),
-            //                'updated_at' => now(),
-            //            ];
             $hospital = Hospital::create([
                 'name'         => $row[1],
                 'post_code'    => is_numeric($row[2]) ? $row[2] : '0000000', // 郵便番号が数字ではない場合もある
@@ -93,14 +78,8 @@ class ImportHospitalsCsv extends Command
                 $weekFlags = array_slice($row, $i + 1, 7);
 
                 foreach ($weekFlags as $dayOfWeek => $flag) {
-                    $timePeriod = $this->autoTimePeriod($start);
-
                     if ($flag !== '●' && $flag !== '☆') {
                         continue;
-                    }
-
-                    if (BusinessHour::where('hospital_id', $hospital->id)->where('day_of_week', $csvToEnum[$dayOfWeek])->where('time_period', $timePeriod)->exists()) {
-                        $timePeriod = TimePeriod::NIGHT;
                     }
 
                     BusinessHour::create([
@@ -108,7 +87,6 @@ class ImportHospitalsCsv extends Command
                         'day_of_week' => $csvToEnum[$dayOfWeek],
                         'start_time'  => $start,
                         'end_time'    => $end,
-                        'time_period' => $timePeriod,
                     ]);
                 }
             }
@@ -120,21 +98,5 @@ class ImportHospitalsCsv extends Command
 
         $this->info($csv->count() . '件のインポート完了');
         return Command::SUCCESS;
-    }
-
-    private function insertHospital(array $data): bool
-    {
-        return DB::table('hospitals')->insert($data);
-    }
-
-    private function autoTimePeriod(string $start): TimePeriod
-    {
-        $hour = (int) Carbon::parse($start)->format('H');
-
-        if ($hour < 12) {
-            return TimePeriod::AM;
-        }
-
-        return TimePeriod::PM;
     }
 }
