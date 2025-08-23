@@ -24,7 +24,6 @@ class StoreExceptionHourRequest extends ApiRequest
         return [
             'date'                  => ['required', 'date_format:Y-m-d'],
             'periods'               => ['required', 'array', 'max:2'],
-            'periods.*.time_period' => ['required', 'integer', new Enum(TimePeriod::class)],
             'periods.*.start_time'  => ['nullable', 'date_format:H:i'],
             'periods.*.end_time'    => ['nullable', 'date_format:H:i', 'after:periods.*.start_time'],
             'periods.*.is_closed'   => ['required', 'bool'],
