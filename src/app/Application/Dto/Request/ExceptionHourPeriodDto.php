@@ -7,7 +7,6 @@ namespace App\Application\Dto\Request;
 class ExceptionHourPeriodDto
 {
     public function __construct(
-        private int $timePeriod,
         private ?string $startTime,
         private ?string $endTime,
         private bool $isClosed,
@@ -15,20 +14,14 @@ class ExceptionHourPeriodDto
     ) {
     }
 
-    public static function fromPrimitive(int $timePeriod, ?string $startTime, ?string $endTime, bool $isClosed, ?string $reason)
+    public static function fromPrimitive(?string $startTime, ?string $endTime, bool $isClosed, ?string $reason)
     {
         return new self(
-            timePeriod: $timePeriod,
             startTime: $startTime,
             endTime: $endTime,
             isClosed: $isClosed,
             reason: $reason,
         );
-    }
-
-    public function getTimePeriod(): int
-    {
-        return $this->timePeriod;
     }
 
     public function getStartTime(): ?string

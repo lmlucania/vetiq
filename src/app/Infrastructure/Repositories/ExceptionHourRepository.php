@@ -35,7 +35,7 @@ class ExceptionHourRepository implements ExceptionHourRepositoryInterface
             ->delete();
     }
 
-    public function upsertMany(array $rows): int
+    public function createMany(array $rows): int
     {
         return ExceptionHour::upsert(
             $rows,

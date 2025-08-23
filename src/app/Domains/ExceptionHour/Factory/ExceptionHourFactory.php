@@ -17,20 +17,12 @@ use App\Domains\Schedule\Enum\TimePeriod;
 
 class ExceptionHourFactory
 {
-    public function dtoToInsertRows(ExceptionHourDto $dto, int $hospitalId): array
-    {
-        $entities = $this->dtoToEntities($dto, $hospitalId);
-
-        return array_map(fn (ExceptionHour $entity) => $this->entityToUpsertRow($entity), $entities);
-    }
-
-    private function dtoToEntities(ExceptionHourDto $dto, int $hospitalId): array
+    public function dtoToEntities(ExceptionHourDto $dto, int $hospitalId): array
     {
         return array_map(
             fn (ExceptionHourPeriodDto $periodDto) => ExceptionHour::newWithoutId(
                 hospitalId: new HospitalId($hospitalId),
                 date: new Date($dto->getDate()),
-                timePeriod: TimePeriod::tryFrom($periodDto->getTimePeriod()),
                 startTime: $periodDto->getStartTime() ? new StartTime($periodDto->getStartTime()) : null,
                 endTime:  $periodDto->getEndTime() ? new EndTime($periodDto->getEndTime()) : null,
                 isClosed: new IsClosed($periodDto->isClosed()),
@@ -40,12 +32,16 @@ class ExceptionHourFactory
         );
     }
 
-    private function entityToUpsertRow(ExceptionHour $entity): array
+    public function entitesToInsertRows(array $entities): array
+    {
+        return array_map(fn (ExceptionHour $entity) => $this->entityToInsertRow($entity), $entities);
+    }
+
+    private function entityToInsertRow(ExceptionHour $entity): array
     {
         return [
             'hospital_id' => $entity->getHospitalId()->getValue(),
             'date'        => $entity->getDate()->getValue(),
-            'time_period' => $entity->getTimePeriod()->value,
             'start_time'  => $entity->getStartTime()?->getValue(),
             'end_time'    => $entity->getEndTime()?->getValue(),
             'is_closed'   => $entity->getIsClosed()->getValue(),
