@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\QueryService;
 
+use App\Application\Dto\Request\TimeRangeDto;
 use App\Application\QueryService\Traits\SortableQuery;
 use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
@@ -19,7 +20,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
     private array $sortable    = ['name', 'prefecture'];
     private array $defaultSort = ['prefecture', 'address1', 'address2'];
 
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, array $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, TimeRangeDto $timeRange, array $queryParam): LengthAwarePaginator
     {
         $query = Hospital::query();
 
@@ -27,7 +28,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
 
         $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $tagIds, $prefectureCodes);
 
-        if (!empty($date)) {
+        if (! empty($date)) {
             $dow = DayOfWeek::fromCarbon(Carbon::createFromFormat('Y-m-d', $date));
 
             $filteredQuery
@@ -39,6 +40,16 @@ class HospitalQueryService implements HospitalQueryServiceInterface
                     // 臨時休業になっていない
                     $subQuery->where('date', $date)
                         ->where('is_closed', true);
+                });
+        }
+
+        if (! empty($timeRange)) {
+            // 通常の営業時間
+            $filteredQuery
+                ->whereHas('businessHours', function ($subQuery) use ($timeRange) {
+                    $subQuery
+                        ->where('start_time', '<=', $timeRange->getStartTime())
+                        ->where('end_time', '>=', $timeRange->getEndTime());
                 });
         }
 

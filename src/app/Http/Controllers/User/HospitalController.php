@@ -34,6 +34,7 @@ class HospitalController extends Controller
             prefectureCodes: $request->getPrefectures(),
             sort: $request->getSort(),
             date: $request->getDate(),
+            timeRange: $request->getTimeRangeDto(),
             queryParam: $request->getAllQuery(),
         );
 

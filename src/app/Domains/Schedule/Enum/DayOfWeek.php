@@ -36,7 +36,7 @@ enum DayOfWeek: int
      */
     public static function fromCarbon(Carbon $date): self
     {
-        $dowStr =$date->format('N'); // ISO 8601 形式の曜日の数値表現（月曜が1、日曜が7）
+        $dowStr = $date->format('N'); // ISO 8601 形式の曜日の数値表現（月曜が1、日曜が7）
         return self::from((int)$dowStr);
     }
 }

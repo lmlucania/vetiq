@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service\User\HospitalInfo;
 
+use App\Application\Dto\Request\TimeRangeDto;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 
@@ -15,7 +16,7 @@ class GetHospitalsService
     ) {
     }
 
-    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, array $queryParam)
+    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, TimeRangeDto $timeRange, array $queryParam)
     {
         $existTags = $this->tagRepository->getManyByIds($tagIds);
 
@@ -27,6 +28,7 @@ class GetHospitalsService
             prefectureCodes: $prefectureCodes,
             sort: $sort,
             date: $date,
+            timeRange: $timeRange,
             queryParam: $queryParam,
         );
     }

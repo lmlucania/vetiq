@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\User\HospitalInfo;
 
+use App\Application\Dto\Request\TimeRangeDto;
 use App\Http\Requests\Base\ApiRequest;
 
 class IndexHospitalRequest extends ApiRequest
@@ -29,7 +30,9 @@ class IndexHospitalRequest extends ApiRequest
             'prefectures.*' => ['integer'],
             'keyword'       => ['nullable', 'string'],
             'is_open_today' => ['nullable', 'bool'],
-            'date' => ['nullable', 'date_format:Y-m-d'],
+            'date'          => ['nullable', 'date_format:Y-m-d'],
+            'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
+            'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
         ];
     }
 
@@ -68,8 +71,26 @@ class IndexHospitalRequest extends ApiRequest
         return $this->query('date', '');
     }
 
+    public function getTimeRangeDto(): TimeRangeDto
+    {
+        return TimeRangeDto::fromPrimitive(
+            startTime: $this->getStartTime(),
+            endTime: $this->getEndTime(),
+        );
+    }
+
     public function getAllQuery(): array
     {
         return $this->query();
+    }
+
+    private function getStartTime(): string
+    {
+        return $this->query('start_time', '');
+    }
+
+    private function getEndTime(): string
+    {
+        return $this->query('end_time', '');
     }
 }
