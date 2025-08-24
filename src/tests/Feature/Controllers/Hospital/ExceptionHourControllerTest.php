@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Feature\Controllers\Hospital;
 
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\ExceptionHour;
 use App\Models\Hospital;
 use App\Models\StaffMember;
@@ -38,7 +37,6 @@ class ExceptionHourControllerTest extends TestCase
         ExceptionHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'date'        => '2025-01-01',
-            'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',
             'end_time'    => '12:00',
             'is_closed'   => false,
@@ -47,7 +45,6 @@ class ExceptionHourControllerTest extends TestCase
         ExceptionHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'date'        => '2025-01-01',
-            'time_period' => TimePeriod::PM,
             'start_time'  => '13:00',
             'end_time'    => '16:00',
             'is_closed'   => false,
@@ -56,7 +53,6 @@ class ExceptionHourControllerTest extends TestCase
         ExceptionHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'date'        => '2025-01-02',
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
             'is_closed'   => false,
@@ -77,32 +73,29 @@ class ExceptionHourControllerTest extends TestCase
             ->assertJsonCount(3, 'data')
             ->assertJsonFragment(
                 [
-                    'date'        => '2025-01-01',
-                    'time_period' => TimePeriod::AM,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:00',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト1',
+                    'date'       => '2025-01-01',
+                    'start_time' => '09:00',
+                    'end_time'   => '12:00',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト1',
                 ],
             )
             ->assertJsonFragment(
                 [
-                    'date'        => '2025-01-01',
-                    'time_period' => TimePeriod::PM,
-                    'start_time'  => '13:00',
-                    'end_time'    => '16:00',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト2',
+                    'date'       => '2025-01-01',
+                    'start_time' => '13:00',
+                    'end_time'   => '16:00',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト2',
                 ],
             )
             ->assertJsonFragment(
                 [
-                    'date'        => '2025-01-02',
-                    'time_period' => TimePeriod::AM,
-                    'start_time'  => '10:00',
-                    'end_time'    => '13:00',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト3',
+                    'date'       => '2025-01-02',
+                    'start_time' => '10:00',
+                    'end_time'   => '13:00',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト3',
                 ],
             );
     }
@@ -134,18 +127,16 @@ class ExceptionHourControllerTest extends TestCase
             'date'    => '2025-01-01',
             'periods' => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:30',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト1',
+                    'start_time' => '09:00',
+                    'end_time'   => '12:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト1',
                 ],
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト2',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト2',
                 ],
             ],
         ];
@@ -170,7 +161,6 @@ class ExceptionHourControllerTest extends TestCase
         ExceptionHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'date'        => '2025-01-01',
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
             'is_closed'   => false,
@@ -180,18 +170,16 @@ class ExceptionHourControllerTest extends TestCase
             'date'    => '2025-01-01',
             'periods' => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:30',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト2',
+                    'start_time' => '09:00',
+                    'end_time'   => '12:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト2',
                 ],
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト3',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト3',
                 ],
             ],
         ];
@@ -206,14 +194,12 @@ class ExceptionHourControllerTest extends TestCase
 
         $records = ExceptionHour::orderBy('id', 'asc')->get();
         $this->assertEquals('2025-01-01', $records[0]->date->format('Y-m-d'));
-        $this->assertEquals(TimePeriod::AM, $records[0]->time_period);
         $this->assertEquals('09:00', $records[0]->start_time->format('H:i'));
         $this->assertEquals('12:30', $records[0]->end_time->format('H:i'));
         $this->assertFalse($records[0]->is_closed);
         $this->assertEquals('テスト2', $records[0]->reason);
 
         $this->assertEquals('2025-01-01', $records[1]->date->format('Y-m-d'));
-        $this->assertEquals(TimePeriod::PM, $records[1]->time_period);
         $this->assertEquals('13:00', $records[1]->start_time->format('H:i'));
         $this->assertEquals('19:30', $records[1]->end_time->format('H:i'));
         $this->assertFalse($records[1]->is_closed);
@@ -221,9 +207,9 @@ class ExceptionHourControllerTest extends TestCase
     }
 
     /**
-     * 指定した日付の例外受付時間の作成/更新 作成と更新されること hospital_id、date、time_periodで重複して登録されないこと
+     * 指定した日付の例外受付時間の作成/更新 同じ日に休診日と営業時間は併用するとエラーになること
      */
-    public function testStoreNotDuplicateSuccess()
+    public function testStoreEnsureClosedHoursFailure()
     {
         // 準備（Arrange）
         $this->actingAs($this->staff, $this->guard);
@@ -231,18 +217,16 @@ class ExceptionHourControllerTest extends TestCase
             'date'    => '2025-01-01',
             'periods' => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => null,
-                    'end_time'    => null,
-                    'is_closed'   => true,
-                    'reason'      => 'テスト2',
+                    'start_time' => null,
+                    'end_time'   => null,
+                    'is_closed'  => true,
+                    'reason'     => 'テスト2',
                 ],
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
-                    'is_closed'   => false,
-                    'reason'      => 'テスト3',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト3',
                 ],
             ],
         ];
@@ -251,17 +235,49 @@ class ExceptionHourControllerTest extends TestCase
         $response = $this->post(route('hospital.exception-hours.store'), $postData);
 
         // 検証（Assert）
-        $response->assertStatus(200);
+        $response->assertStatus(422)
+            ->assertJson([
+                'message' => '同じ日に休診日と営業時間は併用できません。',
+            ]);
 
-        $this->assertDatabaseCount('exception_hours', 1);
+        $this->assertDatabaseCount('exception_hours', 0);
+    }
 
-        $record = ExceptionHour::first();
-        $this->assertEquals('2025-01-01', $record->date->format('Y-m-d'));
-        $this->assertEquals(TimePeriod::AM, $record->time_period);
-        $this->assertEquals('13:00', $record->start_time->format('H:i'));
-        $this->assertEquals('19:30', $record->end_time->format('H:i'));
-        $this->assertFalse($record->is_closed);
-        $this->assertEquals('テスト3', $record->reason);
+    /**
+     * 指定した日付の例外受付時間の作成/更新 時間が重複して登録されないこと
+     */
+    public function testStoreNotOverlapFailure()
+    {
+        // 準備（Arrange）
+        $this->actingAs($this->staff, $this->guard);
+        $postData = [
+            'date'    => '2025-01-01',
+            'periods' => [
+                [
+                    'start_time' => '09:00',
+                    'end_time'   => '13:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト2',
+                ],
+                [
+                    'start_time' => '13:00', // 重複している
+                    'end_time'   => '19:30',
+                    'is_closed'  => false,
+                    'reason'     => 'テスト3',
+                ],
+            ],
+        ];
+
+        // 実行（Act）
+        $response = $this->post(route('hospital.exception-hours.store'), $postData);
+
+        // 検証（Assert）
+        $response->assertStatus(422)
+            ->assertJson([
+                'message' => '営業時間が重複しています: 09:00-13:30 と 13:00-19:30',
+            ]);
+
+        $this->assertDatabaseCount('exception_hours', 0);
     }
 
     /**
