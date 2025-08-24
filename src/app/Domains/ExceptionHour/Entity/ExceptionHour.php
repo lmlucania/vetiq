@@ -118,4 +118,9 @@ class ExceptionHour
     {
         return $this->reason;
     }
+
+    public function hasBusinessHours(): bool
+    {
+        return ! $this->isClosed->getValue();
+    }
 }
