@@ -39,7 +39,7 @@ class ExceptionHourDomainService
         if ($totalCount === $closedCount) {
             throw new DomainException('1日につき休診日は1件のみ登録可能です。');
         } else {
-            throw new DomainException('休診日と営業時間は同じ日に併用できません。');
+            throw new DomainException('同じ日に休診日と営業時間は併用できません。');
         }
     }
 
