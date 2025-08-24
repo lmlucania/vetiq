@@ -14,6 +14,10 @@ return new class extends Migration
         Schema::table('business_hours', function (Blueprint $table) {
             $table->dropColumn('time_period');
         });
+
+        Schema::table('exception_hours', function (Blueprint $table) {
+            $table->dropColumn('time_period');
+        });
     }
 
     /**
@@ -22,6 +26,10 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('business_hours', function (Blueprint $table) {
+            $table->integer('time_period')->nullable();
+        });
+
+        Schema::table('exception_hours', function (Blueprint $table) {
             $table->integer('time_period')->nullable();
         });
     }
