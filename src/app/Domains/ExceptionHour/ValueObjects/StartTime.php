@@ -26,4 +26,9 @@ class StartTime
     {
         return $this->startTime;
     }
+
+    public function toString(): string
+    {
+        return $this->startTime->format('H:i');
+    }
 }
