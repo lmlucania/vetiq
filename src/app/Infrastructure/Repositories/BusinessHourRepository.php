@@ -35,11 +35,8 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
             ->delete();
     }
 
-    public function createMany(array $rows): int
+    public function createMany(array $rows): bool
     {
-        return BusinessHour::upsert(
-            $rows,
-            ['hospital_id', 'day_of_week', 'time_period'],
-        );
+        return BusinessHour::insert($rows);
     }
 }

@@ -17,5 +17,5 @@ interface ExceptionHourRepositoryInterface
 
     public function deleteByDateInHospital(int $hospitalId, string $date): int;
 
-    public function createMany(array $rows): int;
+    public function createMany(array $rows): bool;
 }
