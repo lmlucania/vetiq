@@ -16,8 +16,17 @@ class GetHospitalsService
     ) {
     }
 
-    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, TimeRangeDto $timeRange, array $queryParam)
-    {
+    public function execute(
+        int $page,
+        int $perPage,
+        string $keyword,
+        array $tagIds,
+        array $prefectureCodes,
+        array $sort,
+        string $date,
+        TimeRangeDto $timeRange,
+        array $queryParam
+    ) {
         $existTags = $this->tagRepository->getManyByIds($tagIds);
 
         return $this->hospitalQueryService->listByCriteria(

@@ -29,7 +29,6 @@ class IndexHospitalRequest extends ApiRequest
             'prefectures'   => ['nullable', 'array'],
             'prefectures.*' => ['integer'],
             'keyword'       => ['nullable', 'string'],
-            'is_open_today' => ['nullable', 'bool'],
             'date'          => ['nullable', 'date_format:Y-m-d'],
             'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
             'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
