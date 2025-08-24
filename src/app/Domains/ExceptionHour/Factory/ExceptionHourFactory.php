@@ -13,7 +13,6 @@ use App\Domains\ExceptionHour\ValueObjects\IsClosed;
 use App\Domains\ExceptionHour\ValueObjects\Reason;
 use App\Domains\ExceptionHour\ValueObjects\StartTime;
 use App\Domains\Hospital\Repositories\ValueObject\HospitalId;
-use App\Domains\Schedule\Enum\TimePeriod;
 
 class ExceptionHourFactory
 {

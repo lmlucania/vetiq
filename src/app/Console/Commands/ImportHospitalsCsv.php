@@ -6,12 +6,9 @@ namespace App\Console\Commands;
 
 use App\Domains\Location\Enum\Prefecture;
 use App\Domains\Schedule\Enum\DayOfWeek;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\BusinessHour;
 use App\Models\Hospital;
-use Carbon\Carbon;
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\DB;
 use League\Csv\Reader;
 
 class ImportHospitalsCsv extends Command
@@ -42,7 +39,7 @@ class ImportHospitalsCsv extends Command
             return Command::FAILURE;
         }
 
-        $csv = Reader::createFromPath($path, 'r');
+        $csv  = Reader::createFromPath($path, 'r');
         $rows = $csv->getRecords();
 
         foreach ($rows as $index => $row) {

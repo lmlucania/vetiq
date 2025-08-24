@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Domains\ExceptionHour\DomainService;
 
 use App\Domains\ExceptionHour\Entity\ExceptionHour;
@@ -27,7 +29,7 @@ class ExceptionHourDomainService
      */
     private function ensureClosedHoursAreValid(array $entities): void
     {
-        $totalCount = count($entities);
+        $totalCount  = count($entities);
         $closedCount = count(array_filter($entities, fn ($entity) => $entity->getIsClosed()->getValue()));
 
         if ($totalCount <= 1 || $closedCount === 0) {
@@ -96,5 +98,4 @@ class ExceptionHourDomainService
             );
         }
     }
-
 }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 

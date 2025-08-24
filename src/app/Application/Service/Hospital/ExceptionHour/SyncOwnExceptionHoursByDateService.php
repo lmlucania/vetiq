@@ -4,14 +4,11 @@ declare(strict_types=1);
 
 namespace App\Application\Service\Hospital\ExceptionHour;
 
-use App\Application\Dto\Request\BusinessHourDto;
 use App\Application\Dto\Request\ExceptionHourDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\ExceptionHour\DomainService\ExceptionHourDomainService;
-use App\Domains\ExceptionHour\Entity\ExceptionHour;
 use App\Domains\ExceptionHour\Factory\ExceptionHourFactory;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
-use App\Exceptions\DomainException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
