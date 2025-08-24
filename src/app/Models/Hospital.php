@@ -44,4 +44,14 @@ class Hospital extends Model
     {
         return $this->belongsToMany(Tag::class)->withTimestamps();
     }
+
+    public function businessHours()
+    {
+        return $this->hasMany(BusinessHour::class);
+    }
+
+    public function exceptionHours()
+    {
+        return $this->hasMany(ExceptionHour::class);
+    }
 }

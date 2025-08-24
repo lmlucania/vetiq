@@ -33,6 +33,7 @@ class HospitalController extends Controller
             tagIds: $request->getTags(),
             prefectureCodes: $request->getPrefectures(),
             sort: $request->getSort(),
+            date: $request->getDate(),
             queryParam: $request->getAllQuery(),
         );
 

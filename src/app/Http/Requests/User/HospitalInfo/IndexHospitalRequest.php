@@ -28,6 +28,8 @@ class IndexHospitalRequest extends ApiRequest
             'prefectures'   => ['nullable', 'array'],
             'prefectures.*' => ['integer'],
             'keyword'       => ['nullable', 'string'],
+            'is_open_today' => ['nullable', 'bool'],
+            'date' => ['nullable', 'date_format:Y-m-d'],
         ];
     }
 
@@ -59,6 +61,11 @@ class IndexHospitalRequest extends ApiRequest
     public function getKeyword(): string
     {
         return $this->query('keyword', '');
+    }
+
+    public function getDate(): string
+    {
+        return $this->query('date', '');
     }
 
     public function getAllQuery(): array

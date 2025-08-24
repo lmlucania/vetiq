@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace App\Application\QueryService;
 
 use App\Application\QueryService\Traits\SortableQuery;
+use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 use App\Models\Hospital;
+use Carbon\Carbon;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Builder;
 
@@ -17,13 +19,28 @@ class HospitalQueryService implements HospitalQueryServiceInterface
     private array $sortable    = ['name', 'prefecture'];
     private array $defaultSort = ['prefecture', 'address1', 'address2'];
 
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, array $queryParam): LengthAwarePaginator
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, array $queryParam): LengthAwarePaginator
     {
         $query = Hospital::query();
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $tagIds, $prefectureCodes);
+
+        if (!empty($date)) {
+            $dow = DayOfWeek::fromCarbon(Carbon::createFromFormat('Y-m-d', $date));
+
+            $filteredQuery
+                ->whereHas('businessHours', function ($subQuery) use ($dow) {
+                    // 通常の営業日程
+                    $subQuery->where('day_of_week', $dow);
+                })
+                ->whereDoesntHave('exceptionHours', function ($subQuery) use ($date) {
+                    // 臨時休業になっていない
+                    $subQuery->where('date', $date)
+                        ->where('is_closed', true);
+                });
+        }
 
         return $filteredQuery->paginate($perPage, ['*'], 'page', $page);
     }

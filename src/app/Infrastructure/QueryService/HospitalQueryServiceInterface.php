@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Builder;
 
 interface HospitalQueryServiceInterface
 {
-    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, array $queryParam):LengthAwarePaginator;
+    public function listByCriteria(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, string $date, array $queryParam):LengthAwarePaginator;
 
     public function querySort(Builder $query, array $sortable, array $sortParams): Builder;
 }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace App\Domains\Schedule\Enum;
 
+use Carbon\Carbon;
+
 enum DayOfWeek: int
 {
     case MONDAY    = 1;
@@ -25,5 +27,16 @@ enum DayOfWeek: int
             self::SATURDAY  => '土',
             self::SUNDAY    => '日',
         };
+    }
+
+    /**
+     * 曜日をEnumで返す
+     * @param Carbon $date
+     * @return self
+     */
+    public static function fromCarbon(Carbon $date): self
+    {
+        $dowStr =$date->format('N'); // ISO 8601 形式の曜日の数値表現（月曜が1、日曜が7）
+        return self::from((int)$dowStr);
     }
 }
