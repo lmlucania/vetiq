@@ -23,7 +23,7 @@ class SyncOwnExceptionHoursByDateService
     ) {
     }
 
-    public function execute(ExceptionHourDto $exceptionHourDto)
+    public function execute(ExceptionHourDto $exceptionHourDto): bool
     {
         $hospitalId = $this->authActorService->getHospitalId();
         // トランザクション範囲を最初限にするため、トランザクションの外で実行する
