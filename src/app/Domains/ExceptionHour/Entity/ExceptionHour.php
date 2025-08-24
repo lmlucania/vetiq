@@ -11,7 +11,6 @@ use App\Domains\ExceptionHour\ValueObjects\IsClosed;
 use App\Domains\ExceptionHour\ValueObjects\Reason;
 use App\Domains\ExceptionHour\ValueObjects\StartTime;
 use App\Domains\Hospital\Repositories\ValueObject\HospitalId;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Exceptions\DomainException;
 
 class ExceptionHour
@@ -20,7 +19,6 @@ class ExceptionHour
         private ?ExceptionHourId $exceptionHourId,
         private HospitalId $hospitalId,
         private Date $date,
-        private TimePeriod $timePeriod,
         private ?StartTime $startTime,
         private ?EndTime $endTime,
         private IsClosed $isClosed,
@@ -45,7 +43,6 @@ class ExceptionHour
     public static function newWithoutId(
         HospitalId $hospitalId,
         Date $date,
-        TimePeriod $timePeriod,
         ?StartTime $startTime,
         ?EndTime $endTime,
         IsClosed $isClosed,
@@ -55,7 +52,6 @@ class ExceptionHour
             exceptionHourId: null,
             hospitalId: $hospitalId,
             date: $date,
-            timePeriod: $timePeriod,
             startTime: $startTime,
             endTime: $endTime,
             isClosed: $isClosed,
@@ -67,7 +63,6 @@ class ExceptionHour
         ExceptionHourId $exceptionHourId,
         HospitalId $hospitalId,
         Date $date,
-        TimePeriod $timePeriod,
         ?StartTime $startTime,
         ?EndTime $endTime,
         IsClosed $isClosed,
@@ -77,7 +72,6 @@ class ExceptionHour
             exceptionHourId: $exceptionHourId,
             hospitalId: $hospitalId,
             date: $date,
-            timePeriod: $timePeriod,
             startTime: $startTime,
             endTime: $endTime,
             isClosed: $isClosed,
@@ -104,11 +98,6 @@ class ExceptionHour
         return $this->date;
     }
 
-    public function getTimePeriod(): TimePeriod
-    {
-        return $this->timePeriod;
-    }
-
     public function getStartTime(): ?StartTime
     {
         return $this->startTime;
@@ -127,5 +116,10 @@ class ExceptionHour
     public function getReason(): ?Reason
     {
         return $this->reason;
+    }
+
+    public function hasBusinessHours(): bool
+    {
+        return ! $this->isClosed->getValue();
     }
 }

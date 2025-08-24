@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Database\Factories;
 
 use App\Domains\Schedule\Enum\DayOfWeek;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -24,7 +23,6 @@ class BusinessHourFactory extends Factory
         return [
             'hospital_id' => Hospital::inRandomOrder()->first(),
             'day_of_week' => DayOfWeek::SUNDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',
             'end_time'    => '12:00',
         ];

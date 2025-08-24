@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Tests\Feature\Controllers\Hospital;
 
 use App\Domains\Schedule\Enum\DayOfWeek;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\BusinessHour;
 use App\Models\Hospital;
 use App\Models\StaffMember;
@@ -38,21 +37,18 @@ class BusinessHourControllerTest extends TestCase
         BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::SUNDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '09:00',
             'end_time'    => '12:00',
         ]);
         BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::SUNDAY,
-            'time_period' => TimePeriod::PM,
             'start_time'  => '13:00',
             'end_time'    => '16:00',
         ]);
         BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::MONDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
@@ -75,7 +71,6 @@ class BusinessHourControllerTest extends TestCase
             ->assertJsonFragment(
                 [
                     'day_of_week' => DayOfWeek::SUNDAY,
-                    'time_period' => TimePeriod::AM,
                     'start_time'  => '09:00',
                     'end_time'    => '12:00',
                 ],
@@ -83,7 +78,6 @@ class BusinessHourControllerTest extends TestCase
             ->assertJsonFragment(
                 [
                     'day_of_week' => DayOfWeek::SUNDAY,
-                    'time_period' => TimePeriod::PM,
                     'start_time'  => '13:00',
                     'end_time'    => '16:00',
                 ],
@@ -91,7 +85,6 @@ class BusinessHourControllerTest extends TestCase
             ->assertJsonFragment(
                 [
                     'day_of_week' => DayOfWeek::MONDAY,
-                    'time_period' => TimePeriod::AM,
                     'start_time'  => '10:00',
                     'end_time'    => '13:00',
                 ],
@@ -125,14 +118,12 @@ class BusinessHourControllerTest extends TestCase
             'day_of_week' => DayOfWeek::FRIDAY->value,
             'periods'     => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:30',
+                    'start_time' => '09:00',
+                    'end_time'   => '12:30',
                 ],
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
                 ],
             ],
         ];
@@ -156,7 +147,6 @@ class BusinessHourControllerTest extends TestCase
         BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
@@ -164,14 +154,12 @@ class BusinessHourControllerTest extends TestCase
             'day_of_week' => DayOfWeek::FRIDAY->value,
             'periods'     => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:30',
+                    'start_time' => '09:00',
+                    'end_time'   => '12:30',
                 ],
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
                 ],
             ],
         ];
@@ -187,12 +175,10 @@ class BusinessHourControllerTest extends TestCase
 
         $records = BusinessHour::orderBy('id', 'asc')->get();
         $this->assertEquals(DayOfWeek::FRIDAY, $records[0]->day_of_week);
-        $this->assertEquals(TimePeriod::AM, $records[0]->time_period);
         $this->assertEquals('09:00', $records[0]->start_time->format('H:i'));
         $this->assertEquals('12:30', $records[0]->end_time->format('H:i'));
 
         $this->assertEquals(DayOfWeek::FRIDAY, $records[1]->day_of_week);
-        $this->assertEquals(TimePeriod::PM, $records[1]->time_period);
         $this->assertEquals('13:00', $records[1]->start_time->format('H:i'));
         $this->assertEquals('19:30', $records[1]->end_time->format('H:i'));
     }
@@ -206,7 +192,6 @@ class BusinessHourControllerTest extends TestCase
         BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
@@ -214,9 +199,8 @@ class BusinessHourControllerTest extends TestCase
             'day_of_week' => DayOfWeek::FRIDAY->value,
             'periods'     => [
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
+                    'start_time' => '13:00',
+                    'end_time'   => '19:30',
                 ],
             ],
         ];
@@ -232,37 +216,27 @@ class BusinessHourControllerTest extends TestCase
 
         $record = BusinessHour::first();
         $this->assertEquals(DayOfWeek::FRIDAY, $record->day_of_week);
-        $this->assertEquals(TimePeriod::PM, $record->time_period);
         $this->assertEquals('13:00', $record->start_time->format('H:i'));
         $this->assertEquals('19:30', $record->end_time->format('H:i'));
     }
 
     /**
-     * 指定した曜日の受付時間の作成/更新 hospital_id、day_of_week、time_periodで重複して登録されないこと
+     * 指定した曜日の受付時間の作成/更新 時間が重複して登録されないこと
      */
-    public function testStoreNotDuplicateSuccess()
+    public function testStoreNotOverlapFailure()
     {
         // 準備（Arrange）
         $this->actingAs($this->staff, $this->guard);
-        BusinessHour::factory()->create([
-            'hospital_id' => $this->hospital->id,
-            'day_of_week' => DayOfWeek::FRIDAY,
-            'time_period' => TimePeriod::AM,
-            'start_time'  => '10:00',
-            'end_time'    => '13:00',
-        ]);
         $postData = [
             'day_of_week' => DayOfWeek::FRIDAY->value,
             'periods'     => [
                 [
-                    'time_period' => TimePeriod::AM->value,
-                    'start_time'  => '09:00',
-                    'end_time'    => '12:30',
+                    'start_time' => '09:00',
+                    'end_time'   => '13:30',
                 ],
                 [
-                    'time_period' => TimePeriod::PM->value,
-                    'start_time'  => '13:00',
-                    'end_time'    => '19:30',
+                    'start_time' => '13:00', // 重複している
+                    'end_time'   => '19:30',
                 ],
             ],
         ];
@@ -271,20 +245,12 @@ class BusinessHourControllerTest extends TestCase
         $response = $this->post(route('hospital.business-hours.store'), $postData);
 
         // 検証（Assert）
-        $response->assertStatus(200);
+        $response->assertStatus(422)
+            ->assertJson([
+                'message' => '営業時間が重複しています: 09:00-13:30 と 13:00-19:30',
+            ]);
 
-        $this->assertDatabaseCount('business_hours', 2);
-
-        $records = BusinessHour::all();
-        $this->assertEquals(DayOfWeek::FRIDAY, $records[0]->day_of_week);
-        $this->assertEquals(TimePeriod::AM, $records[0]->time_period);
-        $this->assertEquals('09:00', $records[0]->start_time->format('H:i'));
-        $this->assertEquals('12:30', $records[0]->end_time->format('H:i'));
-
-        $this->assertEquals(DayOfWeek::FRIDAY, $records[1]->day_of_week);
-        $this->assertEquals(TimePeriod::PM, $records[1]->time_period);
-        $this->assertEquals('13:00', $records[1]->start_time->format('H:i'));
-        $this->assertEquals('19:30', $records[1]->end_time->format('H:i'));
+        $this->assertDatabaseCount('business_hours', 0);
     }
 
     /**
@@ -296,7 +262,6 @@ class BusinessHourControllerTest extends TestCase
         $model = BusinessHour::factory()->create([
             'hospital_id' => $this->hospital->id,
             'day_of_week' => DayOfWeek::FRIDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);
@@ -320,7 +285,6 @@ class BusinessHourControllerTest extends TestCase
         $model = BusinessHour::factory()->create([
             'hospital_id' => Hospital::factory()->create()->id,
             'day_of_week' => DayOfWeek::FRIDAY,
-            'time_period' => TimePeriod::AM,
             'start_time'  => '10:00',
             'end_time'    => '13:00',
         ]);

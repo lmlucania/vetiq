@@ -30,7 +30,6 @@ class BusinessHourDto
         return new self(
             dayOfWeek: $dayOfWeek,
             periods: array_map(fn ($period) => BusinessHourPeriodDto::fromPrimitive(
-                timePeriod: $period['time_period'],
                 startTime: $period['start_time'],
                 endTime: $period['end_time'],
             ), $periods),

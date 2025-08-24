@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Database\Factories;
 
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Models\Hospital;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -23,7 +22,6 @@ class ExceptionHourFactory extends Factory
         return [
             'hospital_id' => Hospital::inRandomOrder()->first()->id,
             'date'        => '2025/02/01',
-            'time_period' => TimePeriod::AM,
             'start_time'  => null,
             'end_time'    => null,
             'is_closed'   => true,

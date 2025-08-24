@@ -6,6 +6,7 @@ namespace App\Application\Service\Hospital\ExceptionHour;
 
 use App\Application\Dto\Request\ExceptionHourDto;
 use App\Application\Service\Auth\AuthActorService;
+use App\Domains\ExceptionHour\DomainService\ExceptionHourDomainService;
 use App\Domains\ExceptionHour\Factory\ExceptionHourFactory;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
 use Illuminate\Support\Facades\DB;
@@ -18,28 +19,33 @@ class SyncOwnExceptionHoursByDateService
         private AuthActorService $authActorService,
         private ExceptionHourRepositoryInterface $exceptionHourRepository,
         private ExceptionHourFactory $exceptionHourFactory,
+        private ExceptionHourDomainService $exceptionHourDomainService,
     ) {
     }
 
-    public function execute(ExceptionHourDto $exceptionHourDto)
+    public function execute(ExceptionHourDto $exceptionHourDto): bool
     {
         $hospitalId = $this->authActorService->getHospitalId();
         // トランザクション範囲を最初限にするため、トランザクションの外で実行する
-        $upsertRows = $this->exceptionHourFactory->dtoToInsertRows(dto: $exceptionHourDto, hospitalId: $hospitalId);
+        $entities = $this->exceptionHourFactory->dtoToEntities(dto: $exceptionHourDto, hospitalId: $hospitalId);
+
+        $this->exceptionHourDomainService->validateBeforeCreate($entities);
+
+        $insertRows = $this->exceptionHourFactory->entitesToInsertRows($entities);
 
         try {
-            DB::transaction(function () use ($hospitalId, $exceptionHourDto, $upsertRows) {
+            DB::transaction(function () use ($hospitalId, $exceptionHourDto, $insertRows) {
                 $this->exceptionHourRepository->deleteByDateInHospital(
                     hospitalId: $hospitalId,
                     date: $exceptionHourDto->getDate(),
                 );
 
-                $this->exceptionHourRepository->upsertMany($upsertRows);
+                $this->exceptionHourRepository->createMany($insertRows);
             });
 
             return true;
         } catch (Throwable $e) {
-            Log::error('Business hour sync failed', ['error' => $e]);
+            Log::error('Exception hour sync failed', ['error' => $e]);
             return false;
         }
     }

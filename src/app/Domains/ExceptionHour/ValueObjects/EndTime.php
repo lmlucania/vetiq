@@ -26,4 +26,9 @@ class EndTime
     {
         return $this->endTime;
     }
+
+    public function toString(): string
+    {
+        return $this->endTime->format('H:i');
+    }
 }

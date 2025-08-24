@@ -7,6 +7,7 @@ namespace App\Application\Service\Hospital\BusinessHour;
 use App\Application\Dto\Request\BusinessHourDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
+use App\Exceptions\DomainException;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Throwable;
@@ -21,18 +22,20 @@ class SyncOwnBusinessHoursByDayOfWeekService
 
     public function execute(BusinessHourDto $businessHourDto): bool
     {
+        $this->validateOverlaps($businessHourDto);
+
         $hospitalId = $this->authActorService->getHospitalId();
         // トランザクション範囲を最初限にするため、トランザクションの外で実行する
-        $upsertRows = $this->buildUpsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
+        $insertRows = $this->buildInsertRows(hospitalId: $hospitalId, dto: $businessHourDto);
 
         try {
-            DB::transaction(function () use ($hospitalId, $businessHourDto, $upsertRows) {
+            DB::transaction(function () use ($hospitalId, $businessHourDto, $insertRows) {
                 $this->businessHourRepository->deleteByDayOfWeekInHospital(
                     hospitalId: $hospitalId,
                     dayOfWeek: $businessHourDto->getDayOfWeek(),
                 );
 
-                $this->businessHourRepository->upsertMany($upsertRows);
+                $this->businessHourRepository->createMany($insertRows);
             });
 
             return true;
@@ -43,26 +46,67 @@ class SyncOwnBusinessHoursByDayOfWeekService
     }
 
     /**
-     * upsert用の配列を作成する
+     * insert用の配列を作成する
      * @param int $hospitalId
      * @param BusinessHourDto $dto
      * @return array
      */
-    private function buildUpsertRows(int $hospitalId, BusinessHourDto $dto): array
+    private function buildInsertRows(int $hospitalId, BusinessHourDto $dto): array
     {
         $dayOfWeek = $dto->getDayOfWeek();
-        $rows      = [];
 
-        foreach ($dto->getPeriods() as $periodDto) {
-            $rows[] = [
+        return array_map(
+            fn ($periodDto) => [
                 'hospital_id' => $hospitalId,
                 'day_of_week' => $dayOfWeek,
-                'time_period' => $periodDto->getTimePeriod()->value,
                 'start_time'  => $periodDto->getStartTime(),
                 'end_time'    => $periodDto->getEndTime(),
-            ];
+            ],
+            $dto->getPeriods(),
+        );
+    }
+
+    /**
+     * 時間が重複してないことをチェックする
+     * @param BusinessHourDto $dto
+     * @return void
+     * @throws DomainException
+     */
+    private function validateOverlaps(BusinessHourDto $dto): void
+    {
+        // start_timeとend_timeの相関チェックはStoreBusinessHourRequestで実施済み
+        $periods = array_map(
+            fn ($periodDto) => [
+                'start_time' => $periodDto->getStartTime(),
+                'end_time'   => $periodDto->getEndTime(),
+            ],
+            $dto->getPeriods(),
+        );
+
+        // 重複チェックをするために開始時間で昇順にする
+        usort($periods, fn ($a, $b) => strcmp($a['start_time'], $b['start_time']));
+
+        $conflicts = [];
+        for ($i = 0; $i < count($periods) - 1; $i++) {
+            $current = $periods[$i];
+            $next    = $periods[$i + 1];
+
+            // 現在の end_time が次の start_time より大きい場合は重複している
+            if ($current['end_time'] > $next['start_time']) {
+                $conflicts[] = sprintf(
+                    '%s-%s と %s-%s',
+                    $current['start_time'],
+                    $current['end_time'],
+                    $next['start_time'],
+                    $next['end_time'],
+                );
+            }
         }
 
-        return $rows;
+        if (! empty($conflicts)) {
+            throw new DomainException(
+                '営業時間が重複しています: ' . implode(', ', $conflicts),
+            );
+        }
     }
 }

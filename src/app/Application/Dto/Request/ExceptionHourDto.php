@@ -30,7 +30,6 @@ class ExceptionHourDto
         return new self(
             date: $date,
             periods: array_map(fn ($period) => ExceptionHourPeriodDto::fromPrimitive(
-                timePeriod: $period['time_period'],
                 startTime: $period['start_time'],
                 endTime: $period['end_time'],
                 isClosed: $period['is_closed'],

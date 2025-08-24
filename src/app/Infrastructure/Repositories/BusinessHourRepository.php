@@ -19,7 +19,7 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
     {
         return BusinessHour::where('hospital_id', $hospitalId)
             ->orderBy('day_of_week')
-            ->orderBy('time_period')
+            ->orderBy('start_time')
             ->get();
     }
 
@@ -35,11 +35,8 @@ class BusinessHourRepository implements BusinessHourRepositoryInterface
             ->delete();
     }
 
-    public function upsertMany(array $rows): int
+    public function createMany(array $rows): bool
     {
-        return BusinessHour::upsert(
-            $rows,
-            ['hospital_id', 'day_of_week', 'time_period'],
-        );
+        return BusinessHour::insert($rows);
     }
 }

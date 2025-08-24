@@ -6,6 +6,7 @@ namespace App\Application\Service\Hospital\BusinessHour;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
+use Illuminate\Database\Eloquent\Collection;
 
 class GetOwnBusinessHoursService
 {
@@ -15,7 +16,7 @@ class GetOwnBusinessHoursService
     ) {
     }
 
-    public function execute()
+    public function execute(): Collection
     {
         $hospitalId = $this->authActorService->getHospitalId();
 

@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Http\Requests\Hospital\ExceptionHour;
 
 use App\Application\Dto\Request\ExceptionHourDto;
-use App\Domains\Schedule\Enum\TimePeriod;
 use App\Http\Requests\Base\ApiRequest;
-use Illuminate\Validation\Rules\Enum;
 
 class StoreExceptionHourRequest extends ApiRequest
 {
@@ -22,13 +20,12 @@ class StoreExceptionHourRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'date'                  => ['required', 'date_format:Y-m-d'],
-            'periods'               => ['required', 'array', 'max:2'],
-            'periods.*.time_period' => ['required', 'integer', new Enum(TimePeriod::class)],
-            'periods.*.start_time'  => ['nullable', 'date_format:H:i'],
-            'periods.*.end_time'    => ['nullable', 'date_format:H:i', 'after:periods.*.start_time'],
-            'periods.*.is_closed'   => ['required', 'bool'],
-            'periods.*.reason'      => ['nullable', 'string'],
+            'date'                 => ['required', 'date_format:Y-m-d'],
+            'periods'              => ['required', 'array', 'max:5'],
+            'periods.*.start_time' => ['nullable', 'date_format:H:i'],
+            'periods.*.end_time'   => ['nullable', 'date_format:H:i', 'after:periods.*.start_time'],
+            'periods.*.is_closed'  => ['required', 'bool'],
+            'periods.*.reason'     => ['nullable', 'string'],
         ];
     }
 
