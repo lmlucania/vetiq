@@ -23,7 +23,6 @@ class ExceptionHourFactory extends Factory
         return [
             'hospital_id' => Hospital::inRandomOrder()->first()->id,
             'date'        => '2025/02/01',
-            'time_period' => TimePeriod::AM,
             'start_time'  => null,
             'end_time'    => null,
             'is_closed'   => true,
