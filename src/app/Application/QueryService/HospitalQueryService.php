@@ -26,6 +26,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         string $keyword,
         array $tagIds,
         array $prefectureCodes,
+        array $addresses,
         array $sort,
         string $date,
         TimeRangeDto $timeRange,
@@ -36,6 +37,14 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 
         $filteredQuery = $this->applyFilter($sortedQuery, $keyword, $tagIds, $prefectureCodes);
+
+        if (! empty($addresses)) {
+            $filteredQuery->where(function ($subQuery) use ($addresses) {
+                foreach ($addresses as $addr) {
+                    $subQuery->orWhere('address1', 'like', "%{$addr}%");
+                }
+            });
+        }
 
         if (! empty($date)) {
             $dow = DayOfWeek::fromCarbon(Carbon::createFromFormat('Y-m-d', $date));
@@ -52,7 +61,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
                 });
         }
 
-        if (! empty($timeRange)) {
+        if (! $timeRange->empty()) {
             // 通常の営業時間
             $filteredQuery
                 ->whereHas('businessHours', function ($subQuery) use ($timeRange) {

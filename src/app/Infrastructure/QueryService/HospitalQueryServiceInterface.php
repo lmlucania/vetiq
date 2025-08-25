@@ -16,6 +16,7 @@ interface HospitalQueryServiceInterface
         string $keyword,
         array $tagIds,
         array $prefectureCodes,
+        array $addresses,
         array $sort,
         string $date,
         TimeRangeDto $timeRange,

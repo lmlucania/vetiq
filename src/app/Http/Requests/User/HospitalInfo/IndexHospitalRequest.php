@@ -29,6 +29,8 @@ class IndexHospitalRequest extends ApiRequest
             'prefectures'   => ['nullable', 'array'],
             'prefectures.*' => ['integer'],
             'keyword'       => ['nullable', 'string'],
+            'addresses'     => ['nullable', 'array'],
+            'addresses.*'   => ['string'],
             'date'          => ['nullable', 'date_format:Y-m-d'],
             'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
             'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
@@ -53,6 +55,11 @@ class IndexHospitalRequest extends ApiRequest
     public function getTags():array
     {
         return $this->query('tags', []);
+    }
+
+    public function getAddresses():array
+    {
+        return $this->query('addresses', []);
     }
 
     public function getPrefectures():array

@@ -32,6 +32,7 @@ class HospitalController extends Controller
             keyword: $request->getKeyword(),
             tagIds: $request->getTags(),
             prefectureCodes: $request->getPrefectures(),
+            addresses: $request->getAddresses(),
             sort: $request->getSort(),
             date: $request->getDate(),
             timeRange: $request->getTimeRangeDto(),

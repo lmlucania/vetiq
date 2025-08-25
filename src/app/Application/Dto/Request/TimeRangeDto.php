@@ -29,4 +29,9 @@ class TimeRangeDto
     {
         return $this->endTime;
     }
+
+    public function empty(): bool
+    {
+        return empty($this->startTime) || empty($this->endTime);
+    }
 }
