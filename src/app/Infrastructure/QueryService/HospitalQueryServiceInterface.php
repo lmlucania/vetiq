@@ -20,6 +20,7 @@ interface HospitalQueryServiceInterface
         array $sort,
         string $date,
         TimeRangeDto $timeRange,
+        array $dayOfWeek,
         array $queryParam
     ):LengthAwarePaginator;
 

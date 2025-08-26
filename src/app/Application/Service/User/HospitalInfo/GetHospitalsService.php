@@ -26,6 +26,7 @@ class GetHospitalsService
         array $sort,
         string $date,
         TimeRangeDto $timeRange,
+        array $dayOfWeek,
         array $queryParam
     ) {
         $existTags = $this->tagRepository->getManyByIds($tagIds);
@@ -40,6 +41,7 @@ class GetHospitalsService
             sort: $sort,
             date: $date,
             timeRange: $timeRange,
+            dayOfWeek: $dayOfWeek,
             queryParam: $queryParam,
         );
     }

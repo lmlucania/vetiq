@@ -36,6 +36,7 @@ class HospitalController extends Controller
             sort: $request->getSort(),
             date: $request->getDate(),
             timeRange: $request->getTimeRangeDto(),
+            dayOfWeek: $request->getDayOfWeek(),
             queryParam: $request->getAllQuery(),
         );
 

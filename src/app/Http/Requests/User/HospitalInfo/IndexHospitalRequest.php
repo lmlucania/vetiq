@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace App\Http\Requests\User\HospitalInfo;
 
 use App\Application\Dto\Request\TimeRangeDto;
+use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Http\Requests\Base\ApiRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class IndexHospitalRequest extends ApiRequest
 {
@@ -34,6 +36,8 @@ class IndexHospitalRequest extends ApiRequest
             'date'          => ['nullable', 'date_format:Y-m-d'],
             'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
             'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
+            'day_of_week'     => ['nullable', 'array'],
+            'day_of_week.*'          => ['integer', new Enum(DayOfWeek::class)],
         ];
     }
 
@@ -83,6 +87,11 @@ class IndexHospitalRequest extends ApiRequest
             startTime: $this->getStartTime(),
             endTime: $this->getEndTime(),
         );
+    }
+
+    public function getDayOfWeek(): array
+    {
+        return $this->query('day_of_week', []);
     }
 
     public function getAllQuery(): array

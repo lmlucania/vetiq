@@ -30,6 +30,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         array $sort,
         string $date,
         TimeRangeDto $timeRange,
+        array $dayOfWeek,
         array $queryParam
     ): LengthAwarePaginator {
         $query = Hospital::query();
@@ -47,12 +48,12 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         }
 
         if (! empty($date)) {
-            $dow = DayOfWeek::fromCarbon(Carbon::createFromFormat('Y-m-d', $date));
+            $dowByDate = DayOfWeek::fromCarbon(Carbon::createFromFormat('Y-m-d', $date));
 
             $filteredQuery
-                ->whereHas('businessHours', function ($subQuery) use ($dow) {
+                ->whereHas('businessHours', function ($subQuery) use ($dowByDate) {
                     // 通常の営業日程
-                    $subQuery->where('day_of_week', $dow);
+                    $subQuery->where('day_of_week', $dowByDate);
                 })
                 ->whereDoesntHave('exceptionHours', function ($subQuery) use ($date) {
                     // 臨時休業になっていない
@@ -64,7 +65,13 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         if (! $timeRange->empty()) {
             // 通常の営業時間
             $filteredQuery
-                ->whereHas('businessHours', function ($subQuery) use ($timeRange) {
+                ->whereHas('businessHours', function ($subQuery) use ($timeRange, $dayOfWeek) {
+
+                    if (!empty($dayOfWeek)) {
+                        // 曜日が渡された場合は、指定された曜日の営業時間の絞り込みをする
+                        $subQuery->whereIn('day_of_week', $dayOfWeek);
+                    }
+
                     $subQuery
                         ->where('start_time', '<=', $timeRange->getStartTime())
                         ->where('end_time', '>=', $timeRange->getEndTime());
