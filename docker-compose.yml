@@ -64,4 +64,19 @@ services:
         ports: 
             - 1025:1025
             - 6082:8025
-    
+
+    minio:
+        image: minio/minio:latest
+        container_name: ${PROJECT_NAME}-minio
+        volumes:
+            - ./minio/data:/export
+        ports:
+            - "9000:9000" # API用
+            - "9001:9001" # コンソール画面用
+        environment:
+            - MINIO_ROOT_USER=user
+            - MINIO_ROOT_PASSWORD=password
+        entrypoint: sh
+        command: -c "
+            mkdir -p /export/test-bucket;
+            minio server /export --address :9000 --console-address :9001;"
