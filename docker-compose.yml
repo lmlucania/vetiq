@@ -71,12 +71,12 @@ services:
         volumes:
             - ./minio/data:/export
         ports:
-            - "9000:9000" # API用
-            - "9001:9001" # コンソール画面用
+            - ${MINIO_API_PORT}:9000
+            - ${MINIO_CONSOLE_PORT}:9001
         environment:
-            - MINIO_ROOT_USER=user
-            - MINIO_ROOT_PASSWORD=password
+            - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+            - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+            - MINIO_SERVER_URL=${MINIO_SERVER_URL}
         entrypoint: sh
         command: -c "
-            mkdir -p /export/test-bucket;
             minio server /export --address :9000 --console-address :9001;"
