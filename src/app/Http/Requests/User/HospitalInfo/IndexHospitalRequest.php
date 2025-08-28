@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace App\Http\Requests\User\HospitalInfo;
 
+use App\Application\Dto\Request\TimeRangeDto;
+use App\Domains\Schedule\Enum\DayOfWeek;
 use App\Http\Requests\Base\ApiRequest;
+use Illuminate\Validation\Rules\Enum;
 
 class IndexHospitalRequest extends ApiRequest
 {
@@ -28,6 +31,13 @@ class IndexHospitalRequest extends ApiRequest
             'prefectures'   => ['nullable', 'array'],
             'prefectures.*' => ['integer'],
             'keyword'       => ['nullable', 'string'],
+            'addresses'     => ['nullable', 'array'],
+            'addresses.*'   => ['string'],
+            'date'          => ['nullable', 'date_format:Y-m-d'],
+            'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
+            'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
+            'day_of_week'     => ['nullable', 'array'],
+            'day_of_week.*'          => ['integer', new Enum(DayOfWeek::class)],
         ];
     }
 
@@ -51,6 +61,11 @@ class IndexHospitalRequest extends ApiRequest
         return $this->query('tags', []);
     }
 
+    public function getAddresses():array
+    {
+        return $this->query('addresses', []);
+    }
+
     public function getPrefectures():array
     {
         return $this->query('prefectures', []);
@@ -61,8 +76,36 @@ class IndexHospitalRequest extends ApiRequest
         return $this->query('keyword', '');
     }
 
+    public function getDate(): string
+    {
+        return $this->query('date', '');
+    }
+
+    public function getTimeRangeDto(): TimeRangeDto
+    {
+        return TimeRangeDto::fromPrimitive(
+            startTime: $this->getStartTime(),
+            endTime: $this->getEndTime(),
+        );
+    }
+
+    public function getDayOfWeek(): array
+    {
+        return $this->query('day_of_week', []);
+    }
+
     public function getAllQuery(): array
     {
         return $this->query();
+    }
+
+    private function getStartTime(): string
+    {
+        return $this->query('start_time', '');
+    }
+
+    private function getEndTime(): string
+    {
+        return $this->query('end_time', '');
     }
 }

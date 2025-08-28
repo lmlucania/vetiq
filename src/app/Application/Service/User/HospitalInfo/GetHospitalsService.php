@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service\User\HospitalInfo;
 
+use App\Application\Dto\Request\TimeRangeDto;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
 use App\Infrastructure\QueryService\HospitalQueryServiceInterface;
 
@@ -15,8 +16,19 @@ class GetHospitalsService
     ) {
     }
 
-    public function execute(int $page, int $perPage, string $keyword, array $tagIds, array $prefectureCodes, array $sort, $queryParam)
-    {
+    public function execute(
+        int $page,
+        int $perPage,
+        string $keyword,
+        array $tagIds,
+        array $prefectureCodes,
+        array $addresses,
+        array $sort,
+        string $date,
+        TimeRangeDto $timeRange,
+        array $dayOfWeek,
+        array $queryParam
+    ) {
         $existTags = $this->tagRepository->getManyByIds($tagIds);
 
         return $this->hospitalQueryService->listByCriteria(
@@ -25,7 +37,11 @@ class GetHospitalsService
             keyword: $keyword,
             tagIds: $existTags->pluck('id')->toArray(),
             prefectureCodes: $prefectureCodes,
+            addresses: $addresses,
             sort: $sort,
+            date: $date,
+            timeRange: $timeRange,
+            dayOfWeek: $dayOfWeek,
             queryParam: $queryParam,
         );
     }

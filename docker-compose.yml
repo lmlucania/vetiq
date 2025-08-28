@@ -64,4 +64,19 @@ services:
         ports: 
             - 1025:1025
             - 6082:8025
-    
+
+    minio:
+        image: minio/minio:latest
+        container_name: ${PROJECT_NAME}-minio
+        volumes:
+            - ./minio/data:/export
+        ports:
+            - ${MINIO_API_PORT}:9000
+            - ${MINIO_CONSOLE_PORT}:9001
+        environment:
+            - MINIO_ROOT_USER=${MINIO_ROOT_USER}
+            - MINIO_ROOT_PASSWORD=${MINIO_ROOT_PASSWORD}
+            - MINIO_SERVER_URL=${MINIO_SERVER_URL}
+        entrypoint: sh
+        command: -c "
+            minio server /export --address :9000 --console-address :9001;"
