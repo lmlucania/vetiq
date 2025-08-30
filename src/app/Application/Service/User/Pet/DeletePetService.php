@@ -17,6 +17,7 @@ class DeletePetService
 
     public function execute(int $id): bool
     {
+        // 病院側から確認できるようにペット画像は削除しない
         $pet = $this->petRepository->getByUserIdAndId(
             userId: $this->authActorService->getUserId(),
             id: $id,
