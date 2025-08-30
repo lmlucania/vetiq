@@ -36,8 +36,8 @@ class IndexHospitalRequest extends ApiRequest
             'date'          => ['nullable', 'date_format:Y-m-d'],
             'start_time'    => ['nullable', 'date_format:H:i', 'required_with:end_time'],
             'end_time'      => ['nullable', 'date_format:H:i', 'required_with:start_time', 'after_or_equal:start_time'],
-            'day_of_week'     => ['nullable', 'array'],
-            'day_of_week.*'          => ['integer', new Enum(DayOfWeek::class)],
+            'day_of_week'   => ['nullable', 'array'],
+            'day_of_week.*' => ['integer', new Enum(DayOfWeek::class)],
         ];
     }
 

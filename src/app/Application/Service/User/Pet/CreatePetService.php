@@ -6,15 +6,18 @@ namespace App\Application\Service\User\Pet;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Enum\Gender;
+use App\Domains\Pet\Repository\PetImageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Models\Pet;
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 
 class CreatePetService
 {
     public function __construct(
         private PetRepositoryInterface $petRepository,
         private AuthActorService $authActorService,
+        private PetImageRepositoryInterface  $petImageRepository,
     ) {
     }
 
@@ -23,9 +26,10 @@ class CreatePetService
         Gender $gender,
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
-        ?string $remark
+        ?string $remark,
+        ?UploadedFile $image,
     ): Pet {
-        return $this->petRepository->create(
+        $pet = $this->petRepository->create(
             userId: $this->authActorService->getUserId(),
             name: $name,
             gender: $gender,
@@ -33,5 +37,12 @@ class CreatePetService
             startedCareAt: $startedCareAt,
             remark: $remark,
         );
+
+        if ($image){
+            $path = $this->petImageRepository->save($pet->id, $image);
+            $this->petRepository->updateImagePath($pet->id, $path);
+        }
+
+        return $pet;
     }
 }

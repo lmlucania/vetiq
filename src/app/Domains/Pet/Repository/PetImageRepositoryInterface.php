@@ -1,0 +1,12 @@
+<?php
+
+declare(strict_types=1);
+
+namespace App\Domains\Pet\Repository;
+
+use Illuminate\Http\UploadedFile;
+
+interface PetImageRepositoryInterface
+{
+    public function save(int $petId, UploadedFile $image): string;
+}

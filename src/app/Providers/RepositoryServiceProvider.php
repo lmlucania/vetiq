@@ -12,6 +12,7 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
+use App\Domains\Pet\Repository\PetImageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
@@ -28,6 +29,7 @@ use App\Infrastructure\Repositories\MenuRepository;
 use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
 use App\Infrastructure\Repositories\ReviewRepository;
+use App\Infrastructure\Repositories\S3PetImageRepository;
 use App\Infrastructure\Repositories\TagRepository;
 use App\Infrastructure\Repositories\UserProfileRepository;
 use App\Infrastructure\Repositories\UserRepository;
@@ -55,6 +57,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppointmentStatusHistoryRepositoryInterface::class, AppointmentStatusHistoryRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
         $this->app->bind(HospitalViewHistoryRepositoryInterface::class, HospitalViewHistoryRepository::class);
+        $this->app->bind(PetImageRepositoryInterface::class, S3PetImageRepository::class);
     }
 
     /**

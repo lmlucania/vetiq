@@ -34,4 +34,6 @@ interface PetRepositoryInterface
     ):bool;
 
     public function delete(int $id):bool;
+
+    public function updateImagePath(int $id, string $path): bool;
 }

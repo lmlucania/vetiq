@@ -66,8 +66,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
             // 通常の営業時間
             $filteredQuery
                 ->whereHas('businessHours', function ($subQuery) use ($timeRange, $dayOfWeek) {
-
-                    if (!empty($dayOfWeek)) {
+                    if (! empty($dayOfWeek)) {
                         // 曜日が渡された場合は、指定された曜日の営業時間の絞り込みをする
                         $subQuery->whereIn('day_of_week', $dayOfWeek);
                     }
