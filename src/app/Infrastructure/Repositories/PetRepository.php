@@ -68,7 +68,8 @@ class PetRepository implements PetRepositoryInterface
         return Pet::findOrFail($id)->delete();
     }
 
-    public function updateImagePath(int $id, string $path): bool{
+    public function updateImagePath(int $id, string $path): bool
+    {
         $model = Pet::findOrFail($id);
 
         $model->image_path = $path;

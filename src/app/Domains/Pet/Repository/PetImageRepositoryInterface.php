@@ -9,4 +9,6 @@ use Illuminate\Http\UploadedFile;
 interface PetImageRepositoryInterface
 {
     public function save(int $petId, UploadedFile $image): string;
+
+    public function deleteExcept(int $petId, string $keepPath): void;
 }

@@ -38,10 +38,12 @@ class CreatePetService
             remark: $remark,
         );
 
-        if ($image){
-            $path = $this->petImageRepository->save($pet->id, $image);
-            $this->petRepository->updateImagePath($pet->id, $path);
+        if (empty($image)) {
+            return $pet;
         }
+
+        $newPath = $this->petImageRepository->save($pet->id, $image);
+        $this->petRepository->updateImagePath($pet->id, $newPath);
 
         return $pet;
     }
