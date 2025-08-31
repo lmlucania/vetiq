@@ -51,6 +51,7 @@ class PetRepository implements PetRepositoryInterface
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
         ?string $remark,
+        ?string $imagePath,
     ): bool {
         $model = Pet::findOrFail($id);
 
@@ -59,6 +60,7 @@ class PetRepository implements PetRepositoryInterface
         $model->birthday        = $birthday;
         $model->started_care_at = $startedCareAt;
         $model->remark          = $remark;
+        $model->image_path      = $imagePath;
 
         return $model->save();
     }
