@@ -21,6 +21,7 @@ class Hospital extends Model
         'address1',
         'address2',
         'is_published',
+        'image_path',
         ];
 
     protected function casts(): array
