@@ -22,8 +22,9 @@ class HospitalRepository implements HospitalRepositoryInterface
         string $postCode,
         Prefecture $prefecture,
         string $address1,
-        string $address2,
-        bool $isPublished
+        ?string $address2,
+        bool $isPublished,
+        ?string $imagePath,
     ): bool {
         $hospital = Hospital::findOrFail($id);
 
@@ -34,6 +35,7 @@ class HospitalRepository implements HospitalRepositoryInterface
         $hospital->address1     = $address1;
         $hospital->address2     = $address2;
         $hospital->is_published = $isPublished;
+        $hospital->image_path   = $imagePath;
 
         return $hospital->save();
     }
