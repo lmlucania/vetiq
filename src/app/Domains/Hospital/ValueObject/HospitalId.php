@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Hospital\Repositories\ValueObject;
+namespace App\Domains\Hospital\ValueObject;
 
 class HospitalId
 {

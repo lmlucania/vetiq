@@ -8,7 +8,7 @@ use App\Domains\Appointment\Enum\AppointmentStatus;
 use App\Domains\Appointment\ValueObjects\AppointmentAt;
 use App\Domains\Appointment\ValueObjects\AppointmentId;
 use App\Domains\Appointment\ValueObjects\HospitalMemo;
-use App\Domains\Hospital\Repositories\ValueObject\HospitalId;
+use App\Domains\Hospital\ValueObject\HospitalId;
 use App\Domains\Menu\ValueObjects\MenuId;
 use App\Domains\Pet\ValueObjects\PetId;
 use App\Domains\Vet\ValueObjects\VetId;
