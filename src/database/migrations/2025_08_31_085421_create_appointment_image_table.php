@@ -14,7 +14,8 @@ return new class extends Migration
         Schema::create('appointment_image', function (Blueprint $table) {
             $table->id();
             $table->foreignId('appointment_id')->constrained()->onDelete('cascade');
-            $table->string('image_path');
+            $table->string('image_path')->comment('パス');
+            $table->integer('display_order')->comment('表示順序');
             $table->timestamps();
         });
     }
