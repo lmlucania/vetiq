@@ -13,7 +13,7 @@ class S3PetImageRepository implements PetImageRepositoryInterface
 {
     public function save(int $petId, UploadedFile $image): string
     {
-        $path = Storage::disk('s3')->putFile($this->getDirectory($petId), $image);
+        $path = Storage::disk('s3')->putFile($this->getDirectoryPath($petId), $image);
 
         if ($path === false) {
             throw new RuntimeException('S3へのアップロードに失敗しました');
@@ -24,7 +24,7 @@ class S3PetImageRepository implements PetImageRepositoryInterface
 
     public function deleteExcept(int $petId, string $keepPath): void
     {
-        $allFiles = Storage::disk('s3')->files($this->getDirectory($petId));
+        $allFiles = Storage::disk('s3')->allFiles($this->getDirectoryPath($petId));
 
         if (empty($allFiles)) {
             return;
@@ -37,7 +37,7 @@ class S3PetImageRepository implements PetImageRepositoryInterface
         }
     }
 
-    private function getDirectory(int $petId): string
+    private function getDirectoryPath(int $petId): string
     {
         return "pets/{$petId}";
     }
