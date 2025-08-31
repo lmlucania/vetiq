@@ -10,6 +10,7 @@ use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
 use App\Domains\ExceptionHour\Repositories\ExceptionHourRepositoryInterface;
+use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
@@ -33,6 +34,7 @@ use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
 use App\Infrastructure\Repositories\ReviewRepository;
 use App\Infrastructure\Repositories\S3AppointmentImageStorageRepository;
+use App\Infrastructure\Repositories\S3HospitalImageStorageRepository;
 use App\Infrastructure\Repositories\S3PetImageStorageRepository;
 use App\Infrastructure\Repositories\TagRepository;
 use App\Infrastructure\Repositories\UserProfileRepository;
@@ -64,6 +66,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(PetImageStorageRepositoryInterface::class, S3PetImageStorageRepository::class);
         $this->app->bind(AppointmentImageStorageRepositoryInterface::class, S3AppointmentImageStorageRepository::class);
         $this->app->bind(AppointmentImageAttachRepositoryInterface::class, AppointmentImageAttachRepository::class);
+        $this->app->bind(HospitalImageStorageRepositoryInterface::class, S3HospitalImageStorageRepository::class);
     }
 
     /**
