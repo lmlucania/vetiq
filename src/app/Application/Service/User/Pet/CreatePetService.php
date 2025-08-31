@@ -6,7 +6,7 @@ namespace App\Application\Service\User\Pet;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Enum\Gender;
-use App\Domains\Pet\Repository\PetImageRepositoryInterface;
+use App\Domains\Pet\Repository\PetImageStorageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Models\Pet;
 use Carbon\Carbon;
@@ -17,7 +17,7 @@ class CreatePetService
     public function __construct(
         private PetRepositoryInterface $petRepository,
         private AuthActorService $authActorService,
-        private PetImageRepositoryInterface  $petImageRepository,
+        private PetImageStorageRepositoryInterface  $petImageStorageRepository,
     ) {
     }
 
@@ -42,7 +42,7 @@ class CreatePetService
             return $pet;
         }
 
-        $newPath = $this->petImageRepository->save($pet->id, $image);
+        $newPath = $this->petImageStorageRepository->save($pet->id, $image);
         $this->petRepository->updateImagePath($pet->id, $newPath);
 
         return $pet;

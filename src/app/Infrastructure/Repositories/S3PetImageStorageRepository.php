@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Pet\Repository\PetImageRepositoryInterface;
+use App\Domains\Pet\Repository\PetImageStorageRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
-class S3PetImageRepository implements PetImageRepositoryInterface
+class S3PetImageStorageRepository implements PetImageStorageRepositoryInterface
 {
     public function save(int $petId, UploadedFile $image): string
     {

@@ -7,6 +7,8 @@ namespace App\Application\Service\User\Appointment;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Appointment\Enum\AppointmentStatus;
 use App\Domains\Appointment\Factory\AppointmentFactory;
+use App\Domains\Appointment\Repositories\AppointmentImageAttachRepositoryInterface;
+use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
@@ -30,6 +32,8 @@ class CreateAppointmentService
         private MenuRepositoryInterface $menuRepository,
         private VetRepositoryInterface $vetRepository,
         private AppointmentFactory $appointmentFactory,
+        private AppointmentImageStorageRepositoryInterface $appointmentImageStorageRepository,
+        private AppointmentImageAttachRepositoryInterface $appointmentImageAttachRepository,
     ) {
     }
 
@@ -39,6 +43,7 @@ class CreateAppointmentService
         int $menuId,
         ?int $vetId,
         Carbon $appointmentAt,
+        ?array $images,
     ): bool {
         $pet = $this->petRepository->getByUserIdAndId(
             userId: $this->authActorService->getUserId(),
@@ -53,8 +58,6 @@ class CreateAppointmentService
             ? null
             : $this->vetRepository->getByHospitalIdAndId(hospitalId: $hospital->id, id: $vetId);
 
-        $modifier = $this->authActorService->getUser();
-
         $appointmentEntity = $this->appointmentFactory->newEntityFromPrimitives(
             petId: $pet->id,
             hospitalId: $hospital->id,
@@ -66,14 +69,16 @@ class CreateAppointmentService
         );
 
         try {
-            DB::transaction(function () use ($appointmentEntity, $modifier) {
-                $this->statusHistoryRepository->create(
-                    appointmentEntity: $this->appointmentRepository->create($appointmentEntity),
-                    modifier: $modifier,
-                );
-            });
+            $appointmentEntityWithId = DB::transaction(function () use ($appointmentEntity) {
+                $appointmentEntityWithId = $this->appointmentRepository->create($appointmentEntity);
 
-            return true;
+                $this->statusHistoryRepository->create(
+                    appointmentEntity: $appointmentEntityWithId,
+                    modifier: $this->authActorService->getUser(),
+                );
+
+                return $appointmentEntityWithId;
+            });
         } catch (DomainException $e) {
             // ドメインの例外は、そのまま上に投げる
             throw $e;
@@ -81,5 +86,20 @@ class CreateAppointmentService
             Log::error('Appointment create failed', ['error' => $e]);
             return false;
         }
+
+        // 途中でエラーにならない場合はここまで到達する
+        if (empty($images)) {
+            return true;
+        }
+
+        $s3Paths = $this->appointmentImageStorageRepository->saveMany(
+            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
+            images: $images,
+        );
+
+        return $this->appointmentImageAttachRepository->attach(
+            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
+            paths: $s3Paths,
+        );
     }
 }

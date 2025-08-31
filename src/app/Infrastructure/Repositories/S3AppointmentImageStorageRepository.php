@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace App\Infrastructure\Repositories;
 
-use App\Domains\Appointment\Repositories\AppointmentImageRepositoryInterface;
+use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
-class S3AppointmentImageRepository implements AppointmentImageRepositoryInterface
+/**
+ * 予約に紐づく画像を S3 に保存するリポジトリクラス
+ * 画像ファイルを S3 にアップロードする責務を持つ
+ * 予約と保存先のパスとの紐付けは別のクラスで行う @see AppointmentImageAttachRepository
+ */
+class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepositoryInterface
 {
     /**
      * @param int $appointmentId

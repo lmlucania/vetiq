@@ -6,7 +6,7 @@ namespace App\Domains\Pet\Repository;
 
 use Illuminate\Http\UploadedFile;
 
-interface PetImageRepositoryInterface
+interface PetImageStorageRepositoryInterface
 {
     public function save(int $petId, UploadedFile $image): string;
 

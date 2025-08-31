@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Domains\BusinessHour\Repositories\BusinessHourRepositoryInterface;
@@ -12,7 +13,7 @@ use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\HospitalViewHistory\Repositories\HospitalViewHistoryRepositoryInterface;
 use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
-use App\Domains\Pet\Repository\PetImageRepositoryInterface;
+use App\Domains\Pet\Repository\PetImageStorageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use App\Domains\Review\Repository\ReviewRepositoryInterface;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
@@ -29,7 +30,8 @@ use App\Infrastructure\Repositories\MenuRepository;
 use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
 use App\Infrastructure\Repositories\ReviewRepository;
-use App\Infrastructure\Repositories\S3PetImageRepository;
+use App\Infrastructure\Repositories\S3AppointmentImageStorageRepository;
+use App\Infrastructure\Repositories\S3PetImageStorageRepository;
 use App\Infrastructure\Repositories\TagRepository;
 use App\Infrastructure\Repositories\UserProfileRepository;
 use App\Infrastructure\Repositories\UserRepository;
@@ -57,7 +59,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppointmentStatusHistoryRepositoryInterface::class, AppointmentStatusHistoryRepository::class);
         $this->app->bind(TagRepositoryInterface::class, TagRepository::class);
         $this->app->bind(HospitalViewHistoryRepositoryInterface::class, HospitalViewHistoryRepository::class);
-        $this->app->bind(PetImageRepositoryInterface::class, S3PetImageRepository::class);
+        $this->app->bind(PetImageStorageRepositoryInterface::class, S3PetImageStorageRepository::class);
+        $this->app->bind(AppointmentImageStorageRepositoryInterface::class, S3AppointmentImageStorageRepository::class);
     }
 
     /**

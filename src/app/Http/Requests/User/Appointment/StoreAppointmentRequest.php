@@ -6,6 +6,7 @@ namespace App\Http\Requests\User\Appointment;
 
 use App\Http\Requests\Base\ApiRequest;
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 
 class StoreAppointmentRequest extends ApiRequest
 {
@@ -25,6 +26,8 @@ class StoreAppointmentRequest extends ApiRequest
             'menu_id'        => ['required', 'integer', 'exists:menus,id'],
             'vet_id'         => ['nullable', 'integer', 'exists:vets,id'],
             'appointment_at' => ['required', 'date'],
+            'images'         => ['nullable', 'array'],
+            'images.*'       => ['nullable', 'image', 'max:2048'],
         ];
     }
 
@@ -51,5 +54,14 @@ class StoreAppointmentRequest extends ApiRequest
     public function getAppointmentAt(): Carbon
     {
         return Carbon::parse($this->validated('appointment_at'));
+    }
+
+    /**
+     * @return UploadedFile[]
+     */
+    public function getImages(): array
+    {
+        // validated() だと null が返ることがあるので file() が安全
+        return $this->file('images');
     }
 }
