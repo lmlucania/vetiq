@@ -56,7 +56,7 @@ class AppointmentController extends Controller
             menuId: $request->getMenuId(),
             vetId: $request->getVetId(),
             appointmentAt: $request->getAppointmentAt(),
-            imgages: $request->getImages(),
+            images: $request->getImages(),
         );
 
         if ($success) {

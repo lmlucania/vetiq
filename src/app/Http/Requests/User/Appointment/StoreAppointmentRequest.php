@@ -33,22 +33,22 @@ class StoreAppointmentRequest extends ApiRequest
 
     public function getPetId(): int
     {
-        return $this->validated('pet_id');
+        return (int)$this->validated('pet_id');
     }
 
     public function getHospitalId(): int
     {
-        return $this->validated('hospital_id');
+        return (int)$this->validated('hospital_id');
     }
 
     public function getMenuId(): int
     {
-        return $this->validated('menu_id');
+        return (int)$this->validated('menu_id');
     }
 
     public function getVetId(): ?int
     {
-        return $this->validated('vet_id');
+        return (int)$this->validated('vet_id');
     }
 
     public function getAppointmentAt(): Carbon

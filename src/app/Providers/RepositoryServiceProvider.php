@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Providers;
 
+use App\Domains\Appointment\Repositories\AppointmentImageAttachRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
@@ -20,6 +21,7 @@ use App\Domains\Tag\Repository\TagRepositoryInterface;
 use App\Domains\User\Repository\UserProfileRepositoryInterface;
 use App\Domains\User\Repository\UserRepositoryInterface;
 use App\Domains\Vet\Repository\VetRepositoryInterface;
+use App\Infrastructure\Repositories\AppointmentImageAttachRepository;
 use App\Infrastructure\Repositories\AppointmentRepository;
 use App\Infrastructure\Repositories\AppointmentStatusHistoryRepository;
 use App\Infrastructure\Repositories\BusinessHourRepository;
@@ -61,6 +63,7 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(HospitalViewHistoryRepositoryInterface::class, HospitalViewHistoryRepository::class);
         $this->app->bind(PetImageStorageRepositoryInterface::class, S3PetImageStorageRepository::class);
         $this->app->bind(AppointmentImageStorageRepositoryInterface::class, S3AppointmentImageStorageRepository::class);
+        $this->app->bind(AppointmentImageAttachRepositoryInterface::class, AppointmentImageAttachRepository::class);
     }
 
     /**
