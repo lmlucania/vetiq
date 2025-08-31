@@ -45,20 +45,14 @@ class CreateAppointmentService
         Carbon $appointmentAt,
         ?array $images,
     ): bool {
-        $pet = $this->petRepository->getByUserIdAndId(
-            userId: $this->authActorService->getUserId(),
-            id: $petId,
+        [$pet, $hospital, $menu, $vet] = $this->validateAndFetchModels(
+            petId: $petId,
+            hospitalId: $hospitalId,
+            menuId: $menuId,
+            vetId: $vetId,
         );
-        $hospital = $this->hospitalRepository->getById($hospitalId);
-        $menu     = $this->menuRepository->getByHospitalIdAndId(
-            hospitalId: $hospital->id,
-            id: $menuId,
-        );
-        $vet = is_null($vetId)
-            ? null
-            : $this->vetRepository->getByHospitalIdAndId(hospitalId: $hospital->id, id: $vetId);
 
-        $appointmentEntity = $this->appointmentFactory->newEntityFromPrimitives(
+        $appointmentEntityWithoutId = $this->appointmentFactory->newEntityFromPrimitives(
             petId: $pet->id,
             hospitalId: $hospital->id,
             menuId: $menu->id,
@@ -69,8 +63,8 @@ class CreateAppointmentService
         );
 
         try {
-            $appointmentEntityWithId = DB::transaction(function () use ($appointmentEntity) {
-                $appointmentEntityWithId = $this->appointmentRepository->create($appointmentEntity);
+            $appointmentEntityWithId = DB::transaction(function () use ($appointmentEntityWithoutId) {
+                $appointmentEntityWithId = $this->appointmentRepository->create($appointmentEntityWithoutId);
 
                 $this->statusHistoryRepository->create(
                     appointmentEntity: $appointmentEntityWithId,
@@ -101,5 +95,32 @@ class CreateAppointmentService
             appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
             paths: $s3Paths,
         );
+    }
+
+    /**
+     * 指定されたIDでモデルインスタンスを取得する
+     * IDが不正または関連付けが無い場合にスローされる
+     * @param int $petId
+     * @param int $hospitalId
+     * @param int $menuId
+     * @param int|null $vetId
+     * @return array
+     */
+    private function validateAndFetchModels(int $petId, int $hospitalId, int $menuId, ?int $vetId): array
+    {
+        $pet = $this->petRepository->getByUserIdAndId(
+            userId: $this->authActorService->getUserId(),
+            id: $petId,
+        );
+        $hospital = $this->hospitalRepository->getById($hospitalId);
+        $menu     = $this->menuRepository->getByHospitalIdAndId(
+            hospitalId: $hospital->id,
+            id: $menuId,
+        );
+        $vet = is_null($vetId)
+            ? null
+            : $this->vetRepository->getByHospitalIdAndId(hospitalId: $hospital->id, id: $vetId);
+
+        return [$pet, $hospital, $menu, $vet];
     }
 }
