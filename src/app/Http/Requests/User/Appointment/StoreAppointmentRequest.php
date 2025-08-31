@@ -62,6 +62,6 @@ class StoreAppointmentRequest extends ApiRequest
     public function getImages(): array
     {
         // validated() だと null が返ることがあるので file() が安全
-        return $this->file('images');
+        return $this->file('images') ?? [];
     }
 }
