@@ -31,6 +31,7 @@ interface PetRepositoryInterface
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
         ?string $remark,
+        ?string $imagePath,
     ):bool;
 
     public function delete(int $id):bool;
