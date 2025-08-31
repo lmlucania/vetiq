@@ -29,27 +29,26 @@ class UpdatePetService
         ?string $remark,
         ?UploadedFile $image,
     ): bool {
-        $useId = $this->authActorService->getUserId();
-        $pet   = $this->petRepository->getByUserIdAndId($useId, $id);
+        $pet = $this->petRepository->getByUserIdAndId(
+            userId: $this->authActorService->getUserId(),
+            id: $id,
+        );
 
-        $result = $this->petRepository->update(
+        $imagePath = $pet->image_path;
+        if (! empty($image)) {
+            // 画像がアップロードされなくても削除はしない
+            $imagePath = $this->petImageStorageRepository->save($pet->id, $image);
+            $this->petImageStorageRepository->deleteExcept($pet->id, $imagePath);
+        }
+
+        return $this->petRepository->update(
             id: $pet->id,
             name: $name,
             gender: $gender,
             birthday: $birthday,
             startedCareAt: $startedCareAt,
             remark: $remark,
+            imagePath: $imagePath,
         );
-
-        if (empty($image)) {
-            // 画像がアップロードされなくても削除はしない
-            return $result;
-        }
-
-        $newPath = $this->petImageStorageRepository->save($pet->id, $image);
-        $this->petRepository->updateImagePath($pet->id, $newPath);
-        $this->petImageStorageRepository->deleteExcept($pet->id, $newPath);
-
-        return $result;
     }
 }
