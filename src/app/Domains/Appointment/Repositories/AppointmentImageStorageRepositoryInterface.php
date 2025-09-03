@@ -8,9 +8,7 @@ use Illuminate\Http\UploadedFile;
 
 interface AppointmentImageStorageRepositoryInterface
 {
-    public function saveMany(int $appointmentId, array $images): array;
+    public function save(int $appointmentId, UploadedFile $image): string;
 
     public function deleteMany(array $paths): bool;
-
-    public function save(int $appointmentId, UploadedFile $image): string;
 }

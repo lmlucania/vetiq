@@ -8,6 +8,8 @@ use App\Domains\Appointment\Repositories\AppointmentImageAttachRepositoryInterfa
 use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * 予約画像を保存するサービスクラス
@@ -22,8 +24,8 @@ class CreateAppointmentImageService
 
     /**
      * @param int $appointmentId
-     * @param UploadedFile[] $images
-     * @return true
+     * @param array $images
+     * @return bool
      */
     public function execute(int $appointmentId, array $images): bool
     {
@@ -45,6 +47,12 @@ class CreateAppointmentImageService
             ];
         }
 
-        return $this->appointmentImageAttachRepository->attachMany($appointmentId, $insertRows);
+        try {
+            return $this->appointmentImageAttachRepository->attachMany($appointmentId, $insertRows);
+        } catch (Throwable $e) {
+            Log::error('Fail to create appointment image', ['error' => $e]);
+            $this->appointmentImageStorageRepository->deleteMany(array_column($insertRows, 'image_path'));
+            return false;
+        }
     }
 }

@@ -7,8 +7,6 @@ namespace App\Application\Service\User\Appointment;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Appointment\Enum\AppointmentStatus;
 use App\Domains\Appointment\Factory\AppointmentFactory;
-use App\Domains\Appointment\Repositories\AppointmentImageAttachRepositoryInterface;
-use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentStatusHistoryRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
@@ -32,8 +30,6 @@ class CreateAppointmentService
         private MenuRepositoryInterface $menuRepository,
         private VetRepositoryInterface $vetRepository,
         private AppointmentFactory $appointmentFactory,
-        private AppointmentImageStorageRepositoryInterface $appointmentImageStorageRepository,
-        private AppointmentImageAttachRepositoryInterface $appointmentImageAttachRepository,
         private CreateAppointmentImageService $createAppointmentImageService,
     ) {
     }
@@ -44,7 +40,7 @@ class CreateAppointmentService
         int $menuId,
         ?int $vetId,
         Carbon $appointmentAt,
-        ?array $images,
+        array $images,
     ): bool {
         [$pet, $hospital, $menu, $vet] = $this->validateAndFetchModels(
             petId: $petId,
@@ -87,16 +83,10 @@ class CreateAppointmentService
             return true;
         }
 
-        try {
-            $this->createAppointmentImageService->execute(
-                appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
-                images: $images,
-            );
-            return true;
-        } catch (Throwable $e) {
-            Log::error('Fail to create appointment image', ['error' => $e]);
-            return false;
-        }
+        return $this->createAppointmentImageService->execute(
+            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
+            images: $images,
+        );
     }
 
     /**
