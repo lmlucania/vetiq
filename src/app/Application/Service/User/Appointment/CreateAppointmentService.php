@@ -77,7 +77,7 @@ class CreateAppointmentService
             // ドメインの例外は、そのまま上に投げる
             throw $e;
         } catch (Throwable $e) {
-            Log::error('Appointment create failed', ['error' => $e]);
+            Log::error('Fail to create appointment', ['error' => $e]);
             return false;
         }
 
