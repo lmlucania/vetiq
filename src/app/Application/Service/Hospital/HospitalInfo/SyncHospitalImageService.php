@@ -9,6 +9,12 @@ use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalImageAttachRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
 
+/**
+ * 病院画像を同期するサービスクラス
+ *
+ * 新規画像：S3に保存し、DBにアタッチして並び順を設定
+ * 既存画像：不要な画像を削除し、並び順を更新
+ */
 class SyncHospitalImageService
 {
     public function __construct(
