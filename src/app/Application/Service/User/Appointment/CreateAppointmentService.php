@@ -34,6 +34,7 @@ class CreateAppointmentService
         private AppointmentFactory $appointmentFactory,
         private AppointmentImageStorageRepositoryInterface $appointmentImageStorageRepository,
         private AppointmentImageAttachRepositoryInterface $appointmentImageAttachRepository,
+        private CreateAppointmentImageService $createAppointmentImageService,
     ) {
     }
 
@@ -86,15 +87,16 @@ class CreateAppointmentService
             return true;
         }
 
-        $s3Paths = $this->appointmentImageStorageRepository->saveMany(
-            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
-            images: $images,
-        );
-
-        return $this->appointmentImageAttachRepository->attach(
-            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
-            paths: $s3Paths,
-        );
+        try {
+            $this->createAppointmentImageService->execute(
+                appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
+                images: $images,
+            );
+            return true;
+        } catch (Throwable $e) {
+            Log::error('Fail to create appointment image', ['error' => $e]);
+            return false;
+        }
     }
 
     /**
