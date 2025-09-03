@@ -8,10 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppointmentImage extends Model
 {
+    protected $table = 'appointment_image';
+
     protected $fillable = [
         'appointment_id',
         'image_path',
         'display_order',
+        'created_at',
+        'updated_at',
     ];
 
     public function appointment()

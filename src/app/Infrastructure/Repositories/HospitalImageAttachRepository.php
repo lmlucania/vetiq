@@ -7,8 +7,6 @@ namespace App\Infrastructure\Repositories;
 use App\Domains\Hospital\Repositories\HospitalImageAttachRepositoryInterface;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Throwable;
 
 /**
  * 病院と保存先のパスとの紐付け、解除をするリポジトリクラス
@@ -17,13 +15,10 @@ use Throwable;
  */
 class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInterface
 {
-    public function attachMany(int $hospitalId, array $insertRows): void
+    public function attachMany(int $hospitalId, array $insertRows): bool
     {
-        if (empty($insertRows)) {
-            return;
-        }
-
-        DB::table('hospital_image')->insert($insertRows);
+        // insert内で空配列のチェックをしているため、呼び出し元ではチェックしない
+        return DB::table('hospital_image')->insert($insertRows);
     }
 
     public function detachMany(int $hospitalId, array $ids): int

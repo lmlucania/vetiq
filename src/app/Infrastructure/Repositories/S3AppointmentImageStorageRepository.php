@@ -44,26 +44,26 @@ class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepo
 
     /**
      * @param int $appointmentId
-     * @return string
-     */
-    private function getDirectoryPath(int $appointmentId): string
-    {
-        return "appointments/{$appointmentId}";
-    }
-
-    /**
-     * @param string $dirPath
      * @param UploadedFile $image
      * @return string
      */
-    private function save(string $dirPath, UploadedFile $image)
+    public function save(int $appointmentId, UploadedFile $image): string
     {
-        $path = Storage::disk('s3')->putFile($dirPath, $image);
+        $path = Storage::disk('s3')->putFile($this->getDirectoryPath($appointmentId), $image);
 
         if ($path === false) {
             throw new RuntimeException('S3へのアップロードに失敗しました');
         }
 
         return $path;
+    }
+
+    /**
+     * @param int $appointmentId
+     * @return string
+     */
+    private function getDirectoryPath(int $appointmentId): string
+    {
+        return "appointments/{$appointmentId}";
     }
 }

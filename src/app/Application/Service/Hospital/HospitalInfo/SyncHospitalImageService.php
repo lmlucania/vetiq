@@ -8,6 +8,7 @@ use App\Application\Dto\Request\HospitalImageDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalImageAttachRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -56,7 +57,7 @@ class SyncHospitalImageService
      */
     private function syncKeepImages(int $hospitalId, array $keepImages): void
     {
-        $keepIds = array_map(fn(HospitalImageDto $dto) => $dto->getId(), $keepImages);
+        $keepIds = array_map(fn (HospitalImageDto $dto) => $dto->getId(), $keepImages);
 
         $deletePaths = $this->hospitalImageAttachRepository->getPathsByHospitalIdExceptIds(
             hospitalId: $hospitalId,
@@ -95,12 +96,15 @@ class SyncHospitalImageService
 
         $insertRows = [];
         foreach ($newImages as $dto) {
+            $now    = Carbon::now();
             $s3Path = $this->hospitalImageStorageRepository->save(hospitalId: $hospitalId, image: $dto->getFile());
 
             $insertRows[] = [
-                'hospital_id' => $hospitalId,
-                'image_path'          => $s3Path,
+                'hospital_id'   => $hospitalId,
+                'image_path'    => $s3Path,
                 'display_order' => $dto->getDisplayOrder(),
+                'created_at'    => $now,
+                'updated_at'    => $now,
             ];
         }
 

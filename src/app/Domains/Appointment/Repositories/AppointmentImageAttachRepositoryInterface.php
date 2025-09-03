@@ -6,5 +6,5 @@ namespace App\Domains\Appointment\Repositories;
 
 interface AppointmentImageAttachRepositoryInterface
 {
-    public function attach(int $appointmentId, array $paths): bool;
+    public function attachMany(int $appointmentId, array $insertRows): bool;
 }
