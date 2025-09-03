@@ -17,6 +17,6 @@ class AppointmentImageAttachRepository implements AppointmentImageAttachReposito
     public function attachMany(int $appointmentId, array $insertRows): bool
     {
         // insert内で空配列のチェックをしているため、呼び出し元ではチェックしない
-        return DB::table('appointment_image')->insert($insertRows);
+        return DB::table('appointment_images')->insert($insertRows);
     }
 }

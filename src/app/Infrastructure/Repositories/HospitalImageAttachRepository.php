@@ -18,12 +18,12 @@ class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInte
     public function attachMany(int $hospitalId, array $insertRows): bool
     {
         // insert内で空配列のチェックをしているため、呼び出し元ではチェックしない
-        return DB::table('hospital_image')->insert($insertRows);
+        return DB::table('hospital_images')->insert($insertRows);
     }
 
     public function detachMany(int $hospitalId, array $ids): int
     {
-        return DB::table('hospital_image')
+        return DB::table('hospital_images')
             ->where('hospital_id', $hospitalId)
             ->whereIn('id', $ids)
             ->delete();
@@ -31,7 +31,7 @@ class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInte
 
     public function getPathsByHospitalIdAndIds(int $hospitalId, array $ids): array
     {
-        return DB::table('hospital_image')
+        return DB::table('hospital_images')
             ->where('hospital_id', $hospitalId)
             ->whereIn('id', $ids)
             ->pluck('image_path')
@@ -54,7 +54,7 @@ class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInte
 
     public function updateDisplayOrderByHospitalIdAndId(int $hospitalId, int $id, int $displayOrder): int
     {
-        return DB::table('hospital_image')
+        return DB::table('hospital_images')
             ->where('hospital_id', $hospitalId)
             ->where('id', $id)
             ->update(['display_order' => $displayOrder]);
@@ -62,7 +62,7 @@ class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInte
 
     private function buildQuery(int $hospitalId, array $ids): Builder
     {
-        return DB::table('hospital_image')
+        return DB::table('hospital_images')
             ->where('hospital_id', $hospitalId)
             ->whereNotIn('id', $ids);
     }

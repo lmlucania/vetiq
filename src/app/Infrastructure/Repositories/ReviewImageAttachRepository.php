@@ -12,6 +12,6 @@ class ReviewImageAttachRepository implements ReviewImageAttachRepositoryInterfac
     public function attachMany(int $reviewId, array $insertRows): bool
     {
         // insert内で空配列のチェックをしているため、呼び出し元ではチェックしない
-        return DB::table('review_image')->insert($insertRows);
+        return DB::table('review_images')->insert($insertRows);
     }
 }
