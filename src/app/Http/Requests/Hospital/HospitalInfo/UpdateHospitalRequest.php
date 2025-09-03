@@ -38,7 +38,7 @@ class UpdateHospitalRequest extends ApiRequest
             'images.*.file' => [
                 'nullable',
                 'image',
-                'max:2048',
+                'max:5120',
                 'prohibits:images.*.id',
             ],
         ];

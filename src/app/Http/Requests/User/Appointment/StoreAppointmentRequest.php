@@ -27,7 +27,7 @@ class StoreAppointmentRequest extends ApiRequest
             'vet_id'         => ['nullable', 'integer', 'exists:vets,id'],
             'appointment_at' => ['required', 'date'],
             'images'         => ['nullable', 'array'],
-            'images.*'       => ['nullable', 'image', 'max:2048'],
+            'images.*'       => ['nullable', 'image', 'max:5120'],
         ];
     }
 

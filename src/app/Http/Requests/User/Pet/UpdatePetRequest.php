@@ -28,7 +28,7 @@ class UpdatePetRequest extends ApiRequest
             'birthday'        => ['nullable', 'date'],
             'started_care_at' => ['nullable', 'date'],
             'remark'          => ['nullable', 'string'],
-            'image'           => ['nullable', 'image', 'max:2048'],
+            'image'           => ['nullable', 'image', 'max:5120'],
         ];
     }
 
