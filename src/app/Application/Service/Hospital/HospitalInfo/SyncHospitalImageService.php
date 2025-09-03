@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service\Hospital\HospitalInfo;
 
+use App\Application\Dto\Request\HospitalImageDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalImageAttachRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
@@ -17,100 +18,82 @@ class SyncHospitalImageService
     ) {
     }
 
-    public function execute(array $images)
+    /**
+     * @param HospitalImageDto[] $dtos
+     * @return void
+     */
+    public function execute(array $dtos)
     {
         $hospitalId = $this->authActorService->getHospitalId();
 
-        $keeps = [];
-        $new   = [];
-        foreach ($images as $index => $image) {
-            // リクエストの順番を並び順とする
-            if (! empty($image['id'])) {
-                $keeps[] = [
-                    'id'            => (int)$image['id'],
-                    'display_order' => $index + 1,
-                ];
-                continue;
-            }
-
-            if (! empty($image['file'])) {
-                $new[] = [
-                    'file'          => $image['file'],
-                    'display_order' => $index + 1,
-                ];
+        $keepImages = [];
+        $newImages  = [];
+        foreach ($dtos as $dto) {
+            if (! empty($dto->getId())) {
+                $keepImages[] = $dto;
+            } elseif (! empty($dto->getFile())) {
+                $newImages[] = $dto;
             }
         }
 
-        $this->deleteImages(
-            hospitalId: $hospitalId,
-            keeps: $keeps,
-        );
-
-        $this->storeImages(
-            hospitalId: $hospitalId,
-            new: $new,
-        );
+        $this->syncKeepImages(hospitalId: $hospitalId, keepImages: $keepImages);
+        $this->storeNewImages(hospitalId: $hospitalId, newImages: $newImages);
     }
 
     /**
+     * 既存画像の削除・並び替え更新
      * @param int $hospitalId
-     * @param array $keeps
+     * @param HospitalImageDto[] $keepImages
      * @return void
      */
-    private function deleteImages(int $hospitalId, array $keeps): void
+    private function syncKeepImages(int $hospitalId, array $keepImages): void
     {
-        $keepIds     = array_column($keeps, 'id');
+        $keepIds = array_map(fn(HospitalImageDto $dto) => $dto->getId(), $keepImages);
+
         $deletePaths = $this->hospitalImageAttachRepository->getPathsByHospitalIdExceptIds(
             hospitalId: $hospitalId,
             ids: $keepIds,
         );
-
         $this->hospitalImageStorageRepository->deleteMany($deletePaths);
 
         $deleteIds = $this->hospitalImageAttachRepository->getIdsByHospitalIdExceptiIds(
             hospitalId: $hospitalId,
             ids: $keepIds,
         );
-        $this->hospitalImageAttachRepository->detachMany(
-            hospitalId: $hospitalId,
-            ids: $deleteIds,
-        );
+        $this->hospitalImageAttachRepository->detachMany(hospitalId: $hospitalId, ids: $deleteIds);
 
-        foreach ($keeps as $keep) {
+        foreach ($keepImages as $dto) {
+            // 並び順を更新する
             $this->hospitalImageAttachRepository->updateDisplayOrderByHospitalIdAndId(
                 hospitalId: $hospitalId,
-                id: $keep['id'],
-                displayOrder: $keep['display_order'],
+                id: $dto->getId(),
+                displayOrder: $dto->getDisplayOrder(),
             );
         }
     }
 
     /**
+     * 新しい画像の保存とアタッチ
      * @param int $hospitalId
-     * @param array $new
+     * @param HospitalImageDto[] $newImages
      * @return void
      */
-    private function storeImages(int $hospitalId, array $new): void
+    private function storeNewImages(int $hospitalId, array $newImages): void
     {
-        if (empty($new)) {
+        if (empty($newImages)) {
             return;
         }
 
-        foreach ($new as $image) {
-            $s3Path = $this->hospitalImageStorageRepository->save(
-                hospitalId: $hospitalId,
-                image: $image['file'],
-            );
+        $uploaded = [];
+        foreach ($newImages as $dto) {
+            $s3Path = $this->hospitalImageStorageRepository->save(hospitalId: $hospitalId, image: $dto->getFile());
 
             $uploaded[] = [
                 'path'          => $s3Path,
-                'display_order' => $image['display_order'],
+                'display_order' => $dto->getDisplayOrder(),
             ];
         }
 
-        $this->hospitalImageAttachRepository->attachMany(
-            hospitalId: $hospitalId,
-            s3pathsWithOrder: $uploaded,
-        );
+        $this->hospitalImageAttachRepository->attachMany(hospitalId: $hospitalId, s3pathsWithOrder: $uploaded);
     }
 }

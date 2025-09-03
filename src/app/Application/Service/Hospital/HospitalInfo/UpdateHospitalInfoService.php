@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Application\Service\Hospital\HospitalInfo;
 
+use App\Application\Dto\Request\HospitalImageDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Location\Enum\Prefecture;
-use Illuminate\Http\UploadedFile;
 
 class UpdateHospitalInfoService
 {
@@ -26,7 +26,7 @@ class UpdateHospitalInfoService
      * @param string $address1
      * @param string|null $address2
      * @param bool $isPublished
-     * @param UploadedFile[] $images
+     * @param HospitalImageDto[] $dtos
      * @return bool
      */
     public function execute(
@@ -37,10 +37,10 @@ class UpdateHospitalInfoService
         string $address1,
         ?string $address2,
         bool $isPublished,
-        array $images,
+        array $dtos,
     ): bool {
         $this->syncHospitalImageService->execute(
-            images: $images,
+            dtos: $dtos,
         );
 
         return $this->hospitalRepository->update(
