@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class AppointmentImage extends Model
 {
-    protected $table = 'appointment_image';
+    protected $table = 'appointment_images';
 
     protected $fillable = [
         'appointment_id',

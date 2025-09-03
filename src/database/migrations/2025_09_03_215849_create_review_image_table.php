@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('review_image', function (Blueprint $table) {
+        Schema::create('review_images', function (Blueprint $table) {
             $table->id();
             $table->foreignId('review_id')->constrained()->onDelete('cascade');
             $table->string('image_path')->comment('パス');
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('review_image');
+        Schema::dropIfExists('review_images');
     }
 };
