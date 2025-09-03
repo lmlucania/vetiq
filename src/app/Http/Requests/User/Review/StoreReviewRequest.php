@@ -6,6 +6,7 @@ namespace App\Http\Requests\User\Review;
 
 use App\Domains\Review\Enum\Rating;
 use App\Http\Requests\Base\ApiRequest;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Validation\Rules\Enum;
 
 class StoreReviewRequest extends ApiRequest
@@ -21,15 +22,17 @@ class StoreReviewRequest extends ApiRequest
     public function rules(): array
     {
         return [
-            'rating' => ['required', 'integer', new Enum(Rating::class)],
-            'title'  => ['required', 'string', 'max:255'],
-            'body'   => ['nullable', 'string'],
+            'rating'   => ['required', 'integer', new Enum(Rating::class)],
+            'title'    => ['required', 'string', 'max:255'],
+            'body'     => ['nullable', 'string'],
+            'images'   => ['nullable', 'array'],
+            'images.*' => ['nullable', 'image', 'max:5120'],
         ];
     }
 
     public function getRating(): Rating
     {
-        return Rating::from($this->validated()['rating']);
+        return Rating::from((int)$this->validated()['rating']);
     }
 
     public function getTitle(): string
@@ -40,5 +43,14 @@ class StoreReviewRequest extends ApiRequest
     public function getBody(): ?string
     {
         return $this->validated()['body'];
+    }
+
+    /**
+     * @return UploadedFile[]
+     */
+    public function getImages(): array
+    {
+        // validated() だと null が返ることがあるので file() が安全
+        return $this->file('images') ?? [];
     }
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Review\Repository;
+namespace App\Domains\Review\Repositories;
 
 use App\Domains\Review\Enum\Rating;
 use App\Models\Review;

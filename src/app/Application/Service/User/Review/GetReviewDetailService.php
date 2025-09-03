@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace App\Application\Service\User\Review;
 
-use App\Domains\Review\Repository\ReviewRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewRepositoryInterface;
 use App\Models\Review;
 
 class GetReviewDetailService

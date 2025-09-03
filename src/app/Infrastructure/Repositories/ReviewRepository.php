@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace App\Infrastructure\Repositories;
 
 use App\Domains\Review\Enum\Rating;
-use App\Domains\Review\Repository\ReviewRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewRepositoryInterface;
 use App\Exceptions\NotFoundException;
 use App\Models\Review;
 

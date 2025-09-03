@@ -18,32 +18,6 @@ class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepo
 {
     /**
      * @param int $appointmentId
-     * @param UploadedFile[] $images
-     * @return array
-     */
-    public function saveMany(int $appointmentId, array $images): array
-    {
-        $dirPath = $this->getDirectoryPath($appointmentId);
-
-        $paths = [];
-        foreach ($images as $image) {
-            $paths[] = $this->save($dirPath, $image);
-        }
-
-        return $paths;
-    }
-
-    /**
-     * @param array $paths
-     * @return bool
-     */
-    public function deleteMany(array $paths): bool
-    {
-        return Storage::disk('s3')->delete($paths);
-    }
-
-    /**
-     * @param int $appointmentId
      * @param UploadedFile $image
      * @return string
      */
@@ -56,6 +30,15 @@ class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepo
         }
 
         return $path;
+    }
+
+    /**
+     * @param array $paths
+     * @return bool
+     */
+    public function deleteMany(array $paths): bool
+    {
+        return Storage::disk('s3')->delete($paths);
     }
 
     /**

@@ -18,7 +18,9 @@ use App\Domains\Menu\Repository\MenuRepositoryInterface;
 use App\Domains\Notification\Repository\NotificationRepositoryInterface;
 use App\Domains\Pet\Repository\PetImageStorageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
-use App\Domains\Review\Repository\ReviewRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewImageAttachRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewImageStorageRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewRepositoryInterface;
 use App\Domains\Tag\Repository\TagRepositoryInterface;
 use App\Domains\User\Repository\UserProfileRepositoryInterface;
 use App\Domains\User\Repository\UserRepositoryInterface;
@@ -34,10 +36,12 @@ use App\Infrastructure\Repositories\HospitalViewHistoryRepository;
 use App\Infrastructure\Repositories\MenuRepository;
 use App\Infrastructure\Repositories\NotificationRepository;
 use App\Infrastructure\Repositories\PetRepository;
+use App\Infrastructure\Repositories\ReviewImageAttachRepository;
 use App\Infrastructure\Repositories\ReviewRepository;
 use App\Infrastructure\Repositories\S3AppointmentImageStorageRepository;
 use App\Infrastructure\Repositories\S3HospitalImageStorageRepository;
 use App\Infrastructure\Repositories\S3PetImageStorageRepository;
+use App\Infrastructure\Repositories\S3ReviewImageStorageRepository;
 use App\Infrastructure\Repositories\TagRepository;
 use App\Infrastructure\Repositories\UserProfileRepository;
 use App\Infrastructure\Repositories\UserRepository;
@@ -70,6 +74,8 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(AppointmentImageAttachRepositoryInterface::class, AppointmentImageAttachRepository::class);
         $this->app->bind(HospitalImageStorageRepositoryInterface::class, S3HospitalImageStorageRepository::class);
         $this->app->bind(HospitalImageAttachRepositoryInterface::class, HospitalImageAttachRepository::class);
+        $this->app->bind(ReviewImageStorageRepositoryInterface::class, S3ReviewImageStorageRepository::class);
+        $this->app->bind(ReviewImageAttachRepositoryInterface::class, ReviewImageAttachRepository::class);
     }
 
     /**

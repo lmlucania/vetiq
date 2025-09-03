@@ -6,7 +6,7 @@ namespace App\Application\Service\User\Review;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Review\Enum\Rating;
-use App\Domains\Review\Repository\ReviewRepositoryInterface;
+use App\Domains\Review\Repositories\ReviewRepositoryInterface;
 use App\Exceptions\NotFoundException;
 
 class UpdateReviewService
