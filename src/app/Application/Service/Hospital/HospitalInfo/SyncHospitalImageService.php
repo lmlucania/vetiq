@@ -8,6 +8,8 @@ use App\Application\Dto\Request\HospitalImageDto;
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalImageAttachRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 /**
  * 病院画像を同期するサービスクラス
@@ -83,6 +85,7 @@ class SyncHospitalImageService
      * @param int $hospitalId
      * @param HospitalImageDto[] $newImages
      * @return void
+     * @throws Throwable
      */
     private function storeNewImages(int $hospitalId, array $newImages): void
     {
@@ -90,16 +93,22 @@ class SyncHospitalImageService
             return;
         }
 
-        $uploaded = [];
+        $insertRows = [];
         foreach ($newImages as $dto) {
             $s3Path = $this->hospitalImageStorageRepository->save(hospitalId: $hospitalId, image: $dto->getFile());
 
-            $uploaded[] = [
-                'path'          => $s3Path,
+            $insertRows[] = [
+                'hospital_id' => $hospitalId,
+                'image_path'          => $s3Path,
                 'display_order' => $dto->getDisplayOrder(),
             ];
         }
 
-        $this->hospitalImageAttachRepository->attachMany(hospitalId: $hospitalId, s3pathsWithOrder: $uploaded);
+        try {
+            $this->hospitalImageAttachRepository->attachMany($hospitalId, $insertRows);
+        } catch (Throwable $e) {
+            Log::error('Failed to attach hospital images', ['error' => $e]);
+            throw $e;
+        }
     }
 }

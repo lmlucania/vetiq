@@ -17,32 +17,13 @@ use Throwable;
  */
 class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInterface
 {
-    public function attachMany(int $hospitalId, array $s3pathsWithOrder): bool
+    public function attachMany(int $hospitalId, array $insertRows): void
     {
-        if (empty($s3pathsWithOrder)) {
-            return true;
+        if (empty($insertRows)) {
+            return;
         }
 
-        $records = [];
-        foreach ($s3pathsWithOrder as $pathWithOrder) {
-            $records[] = [
-                'hospital_id'   => $hospitalId,
-                'image_path'    => $pathWithOrder['path'],
-                'display_order' => $pathWithOrder['display_order'],
-            ];
-        }
-
-        try {
-            DB::table('hospital_image')->insert($records);
-            return true;
-        } catch (Throwable $e) {
-            Log::error('Failed to attach appointment images', [
-                'hospital_id' => $hospitalId,
-                'paths'       => $pathWithOrder['path'],
-                'error'       => $e->getMessage(),
-            ]);
-            return false;
-        }
+        DB::table('hospital_image')->insert($insertRows);
     }
 
     public function detachMany(int $hospitalId, array $ids): int

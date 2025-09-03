@@ -6,7 +6,7 @@ namespace App\Domains\Hospital\Repositories;
 
 interface HospitalImageAttachRepositoryInterface
 {
-    public function attachMany(int $hospitalId, array $s3pathsWithOrder): bool;
+    public function attachMany(int $hospitalId, array $insertRows): void;
 
     public function detachMany(int $hospitalId, array $ids): int;
 
