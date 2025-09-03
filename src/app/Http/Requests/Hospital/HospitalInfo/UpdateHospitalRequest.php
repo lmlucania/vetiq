@@ -7,7 +7,6 @@ namespace App\Http\Requests\Hospital\HospitalInfo;
 use App\Domains\Location\Enum\Prefecture;
 use App\Http\Requests\Base\ApiRequest;
 use Illuminate\Validation\Rules\Enum;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class UpdateHospitalRequest extends ApiRequest
 {
@@ -29,7 +28,19 @@ class UpdateHospitalRequest extends ApiRequest
             'address1'     => ['required', 'string', 'max:255'],
             'address2'     => ['nullable', 'string', 'max:255'],
             'is_published' => ['required', 'boolean'],
-            'image'        => ['nullable', 'image', 'max:2048'],
+            'images'       => ['nullable', 'array'],
+            'images.*'     => ['required', 'array'],
+            'images.*.id'  => [
+                'nullable',
+                'integer',
+                'prohibits:images.*.file',
+            ],
+            'images.*.file' => [
+                'nullable',
+                'image',
+                'max:2048',
+                'prohibits:images.*.id',
+            ],
         ];
     }
 
@@ -68,9 +79,12 @@ class UpdateHospitalRequest extends ApiRequest
         return (bool)$this->validated('is_published');
     }
 
-    public function getImage(): ?UploadedFile
+    /**
+     * @return \Illuminate\Http\UploadedFile[]
+     */
+    public function getImages(): array
     {
         // validated() だと null が返ることがあるので file() が安全
-        return $this->file('image');
+        return $this->validated('images') ?? [];
     }
 }

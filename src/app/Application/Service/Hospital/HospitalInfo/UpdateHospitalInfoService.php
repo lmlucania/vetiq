@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace App\Application\Service\Hospital\HospitalInfo;
 
 use App\Application\Service\Auth\AuthActorService;
-use App\Domains\Hospital\Repositories\HospitalImageStorageRepositoryInterface;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
 use App\Domains\Location\Enum\Prefecture;
 use Illuminate\Http\UploadedFile;
@@ -15,10 +14,21 @@ class UpdateHospitalInfoService
     public function __construct(
         private readonly HospitalRepositoryInterface $hospitalRepository,
         private readonly AuthActorService $authActorService,
-        private readonly HospitalImageStorageRepositoryInterface $hospitalImageStorageRepository,
+        private readonly SyncHospitalImageService $syncHospitalImageService,
     ) {
     }
 
+    /**
+     * @param string $name
+     * @param string $phone
+     * @param string $postCode
+     * @param Prefecture $prefecture
+     * @param string $address1
+     * @param string|null $address2
+     * @param bool $isPublished
+     * @param UploadedFile[] $images
+     * @return bool
+     */
     public function execute(
         string $name,
         string $phone,
@@ -27,18 +37,14 @@ class UpdateHospitalInfoService
         string $address1,
         ?string $address2,
         bool $isPublished,
-        ?UploadedFile $image,
+        array $images,
     ): bool {
-        $hospital  = $this->authActorService->getHospital();
-        $imagePath = $hospital->image_path;
-        if (! empty($image)) {
-            // 画像がアップロードされなくても削除はしない
-            $imagePath = $this->hospitalImageStorageRepository->save($hospital->id, $image);
-            $this->hospitalImageStorageRepository->deleteExcept($hospital->id, $imagePath);
-        }
+        $this->syncHospitalImageService->execute(
+            images: $images,
+        );
 
         return $this->hospitalRepository->update(
-            id: $hospital->id,
+            id: $this->authActorService->getHospitalId(),
             name: $name,
             phone: $phone,
             postCode: $postCode,
@@ -46,7 +52,6 @@ class UpdateHospitalInfoService
             address1: $address1,
             address2: $address2,
             isPublished: $isPublished,
-            imagePath: $imagePath,
         );
     }
 }

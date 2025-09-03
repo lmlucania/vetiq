@@ -44,7 +44,7 @@ class HospitalController extends Controller
             address1: $request->getAddress1(),
             address2: $request->getAddress2(),
             isPublished: $request->isPublished(),
-            image: $request->getImage(),
+            images: $request->getImages(),
         );
 
         if ($success) {

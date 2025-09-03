@@ -20,6 +20,5 @@ interface HospitalRepositoryInterface
         string $address1,
         ?string $address2,
         bool $isPublished,
-        ?string $imagePath,
     ): bool;
 }

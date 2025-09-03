@@ -9,8 +9,30 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Storage;
 use RuntimeException;
 
+/**
+ * 病院に紐づく画像を S3 に保存するリポジトリクラス
+ * 画像ファイルを S3 にアップロードする責務を持つ
+ * 予約と保存先のパスとの紐付けは別のクラスで行う @see HospitalImageAttachRepository
+ */
 class S3HospitalImageStorageRepository implements HospitalImageStorageRepositoryInterface
 {
+    /**
+     * @param int $hospitalId
+     * @param UploadedFile[] $images
+     * @return array
+     */
+    //    public function saveMany(int $hospitalId, array $images): array
+    //    {
+    //        $dirPath = $this->getDirectoryPath($hospitalId);
+    //
+    //        $paths = [];
+    //        foreach ($images as $image) {
+    //            $paths[] = $this->save($dirPath, $image);
+    //        }
+    //
+    //        return $paths;
+    //    }
+
     public function save(int $hospitalId, UploadedFile $image): string
     {
         $path = Storage::disk('s3')->putFile($this->getDirectoryPath($hospitalId), $image);
@@ -37,8 +59,29 @@ class S3HospitalImageStorageRepository implements HospitalImageStorageRepository
         }
     }
 
+    public function deleteMany(array $paths): void
+    {
+        Storage::disk('s3')->delete($paths);
+    }
+
     private function getDirectoryPath(int $hospitalId): string
     {
         return "hospitals/{$hospitalId}";
     }
+
+    /**
+     * @param string $dirPath
+     * @param UploadedFile $image
+     * @return string
+     */
+    //    private function save(string $dirPath, UploadedFile $image)
+    //    {
+    //        $path = Storage::disk('s3')->putFile($dirPath, $image);
+    //
+    //        if ($path === false) {
+    //            throw new RuntimeException('S3へのアップロードに失敗しました');
+    //        }
+    //
+    //        return $path;
+    //    }
 }
