@@ -63,6 +63,7 @@ class ReviewController extends Controller
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
+            images: $request->getImages(),
         );
 
         if ($success) {
