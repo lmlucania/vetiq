@@ -30,6 +30,7 @@ class SyncHospitalImageService
     /**
      * @param HospitalImageDto[] $dtos
      * @return void
+     * @throws Throwable
      */
     public function execute(array $dtos)
     {
@@ -40,22 +41,27 @@ class SyncHospitalImageService
         foreach ($dtos as $dto) {
             if (! empty($dto->getId())) {
                 $keepImages[] = $dto;
+                $this->hospitalImageAttachRepository->updateDisplayOrderByHospitalIdAndId(
+                    hospitalId: $hospitalId,
+                    id: $dto->getId(),
+                    displayOrder: $dto->getDisplayOrder(),
+                );
             } elseif (! empty($dto->getFile())) {
                 $newImages[] = $dto;
             }
         }
 
-        $this->syncKeepImages(hospitalId: $hospitalId, keepImages: $keepImages);
+        $this->deleteUnkeptImages(hospitalId: $hospitalId, keepImages: $keepImages);
         $this->storeNewImages(hospitalId: $hospitalId, newImages: $newImages);
     }
 
     /**
-     * 既存画像の削除・並び替え更新
+     * 不要な画像を削除する
      * @param int $hospitalId
      * @param HospitalImageDto[] $keepImages
      * @return void
      */
-    private function syncKeepImages(int $hospitalId, array $keepImages): void
+    private function deleteUnkeptImages(int $hospitalId, array $keepImages): void
     {
         $keepIds = array_map(fn (HospitalImageDto $dto) => $dto->getId(), $keepImages);
 
@@ -63,22 +69,13 @@ class SyncHospitalImageService
             hospitalId: $hospitalId,
             ids: $keepIds,
         );
-        $this->hospitalImageStorageRepository->deleteMany($deletePaths);
-
         $deleteIds = $this->hospitalImageAttachRepository->getIdsByHospitalIdExceptIds(
             hospitalId: $hospitalId,
             ids: $keepIds,
         );
-        $this->hospitalImageAttachRepository->detachMany(hospitalId: $hospitalId, ids: $deleteIds);
 
-        foreach ($keepImages as $dto) {
-            // 並び順を更新する
-            $this->hospitalImageAttachRepository->updateDisplayOrderByHospitalIdAndId(
-                hospitalId: $hospitalId,
-                id: $dto->getId(),
-                displayOrder: $dto->getDisplayOrder(),
-            );
-        }
+        $this->hospitalImageStorageRepository->deleteMany($deletePaths);
+        $this->hospitalImageAttachRepository->detachMany(hospitalId: $hospitalId, ids: $deleteIds);
     }
 
     /**
