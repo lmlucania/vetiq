@@ -16,6 +16,8 @@ use RuntimeException;
  */
 class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepositoryInterface
 {
+    private const DISK = 's3_private';
+
     /**
      * @param int $appointmentId
      * @param UploadedFile $image
@@ -23,7 +25,7 @@ class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepo
      */
     public function save(int $appointmentId, UploadedFile $image): string
     {
-        $path = Storage::disk('s3_private')->putFile($this->getDirectoryPath($appointmentId), $image);
+        $path = Storage::disk(self::DISK)->putFile($this->getDirectoryPath($appointmentId), $image);
 
         if ($path === false) {
             throw new RuntimeException('S3へのアップロードに失敗しました');
@@ -38,7 +40,7 @@ class S3AppointmentImageStorageRepository implements AppointmentImageStorageRepo
      */
     public function deleteMany(array $paths): bool
     {
-        return Storage::disk('s3_private')->delete($paths);
+        return Storage::disk(self::DISK)->delete($paths);
     }
 
     /**

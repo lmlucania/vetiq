@@ -16,10 +16,11 @@ use RuntimeException;
  */
 class S3HospitalImageStorageRepository implements HospitalImageStorageRepositoryInterface
 {
+    private const DISK = 's3_public';
 
     public function save(int $hospitalId, UploadedFile $image): string
     {
-        $path = Storage::disk('s3_private')->putFile($this->getDirectoryPath($hospitalId), $image);
+        $path = Storage::disk(self::DISK)->putFile($this->getDirectoryPath($hospitalId), $image);
 
         if ($path === false) {
             throw new RuntimeException('S3へのアップロードに失敗しました');
@@ -30,7 +31,7 @@ class S3HospitalImageStorageRepository implements HospitalImageStorageRepository
 
     public function deleteExcept(int $hospitalId, string $keepPath): void
     {
-        $allFiles = Storage::disk('s3_private')->allFiles($this->getDirectoryPath($hospitalId));
+        $allFiles = Storage::disk(self::DISK)->allFiles($this->getDirectoryPath($hospitalId));
 
         if (empty($allFiles)) {
             return;
@@ -39,13 +40,13 @@ class S3HospitalImageStorageRepository implements HospitalImageStorageRepository
         $toDelete = array_diff($allFiles, [$keepPath]);
 
         if (! empty($toDelete)) {
-            Storage::disk('s3_private')->delete($toDelete);
+            Storage::disk(self::DISK)->delete($toDelete);
         }
     }
 
     public function deleteMany(array $paths): void
     {
-        Storage::disk('s3_private')->delete($paths);
+        Storage::disk(self::DISK)->delete($paths);
     }
 
     private function getDirectoryPath(int $hospitalId): string
