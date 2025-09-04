@@ -7,7 +7,6 @@ namespace App\Application\Service\User\Appointment;
 use App\Domains\Appointment\Repositories\AppointmentImageAttachRepositoryInterface;
 use App\Domains\Appointment\Repositories\AppointmentImageStorageRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 

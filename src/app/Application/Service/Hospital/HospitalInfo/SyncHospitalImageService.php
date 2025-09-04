@@ -65,7 +65,7 @@ class SyncHospitalImageService
         );
         $this->hospitalImageStorageRepository->deleteMany($deletePaths);
 
-        $deleteIds = $this->hospitalImageAttachRepository->getIdsByHospitalIdExceptiIds(
+        $deleteIds = $this->hospitalImageAttachRepository->getIdsByHospitalIdExceptIds(
             hospitalId: $hospitalId,
             ids: $keepIds,
         );

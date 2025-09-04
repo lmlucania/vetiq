@@ -14,7 +14,7 @@ interface HospitalImageAttachRepositoryInterface
 
     public function getPathsByHospitalIdExceptIds(int $hospitalId, array $ids): array;
 
-    public function getIdsByHospitalIdExceptiIds(int $hospitalId, array $ids): array;
+    public function getIdsByHospitalIdExceptIds(int $hospitalId, array $ids): array;
 
     public function updateDisplayOrderByHospitalIdAndId(int $hospitalId, int $id, int $displayOrder): int;
 }

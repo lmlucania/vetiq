@@ -32,17 +32,17 @@ class StoreReviewRequest extends ApiRequest
 
     public function getRating(): Rating
     {
-        return Rating::from((int)$this->validated()['rating']);
+        return Rating::from((int)$this->validated('rating'));
     }
 
     public function getTitle(): string
     {
-        return $this->validated()['title'];
+        return $this->validated('title');
     }
 
     public function getBody(): ?string
     {
-        return $this->validated()['body'];
+        return $this->validated('body');
     }
 
     /**
