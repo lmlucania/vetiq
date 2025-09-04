@@ -31,7 +31,9 @@ Route::middleware('auth:users')->group(static function () {
         Route::post('', 'attach')->name('attach');
         Route::delete('', 'detach')->name('detach');
     });
-    Route::resource('hospital.reviews', ReviewController::class)->only(['index', 'store', 'show', 'update']);
+    Route::resource('hospital.reviews', ReviewController::class)->only(['index', 'store', 'show']);
+    // 言語仕様上、multipart/form-data を含むリクエストは POST メソッドでのみ自動パースされるため、POSTを使用する
+    Route::post('hospital/{hospital}/reviews/{review}', [ReviewController::class, 'update'])->name('hospital.reviews.update');
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
     Route::resource('hospitals', HospitalController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class)->only(['index', 'store', 'show']);

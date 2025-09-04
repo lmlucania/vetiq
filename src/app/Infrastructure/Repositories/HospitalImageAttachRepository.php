@@ -45,7 +45,7 @@ class HospitalImageAttachRepository implements HospitalImageAttachRepositoryInte
             ->toArray();
     }
 
-    public function getIdsByHospitalIdExceptiIds(int $hospitalId, array $ids): array
+    public function getIdsByHospitalIdExceptIds(int $hospitalId, array $ids): array
     {
         return $this->buildQuery($hospitalId, $ids)
             ->pluck('id')

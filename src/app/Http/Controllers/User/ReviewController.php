@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Dto\Request\ReviewImageDto;
 use App\Application\Service\User\Review\CreateReviewService;
 use App\Application\Service\User\Review\GetHospitalReviewsService;
 use App\Application\Service\User\Review\GetMyReviewsService;
@@ -93,12 +94,22 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, int $hospitalId, int $id)
     {
+        $dtos = [];
+        foreach ($request->getImages() as $index => $image) {
+            $dtos[] = new ReviewImageDto(
+                id: isset($image['id']) ? (int)$image['id'] : null,
+                file: $image['file'] ?? null,
+                displayOrder: $index + 1,
+            );
+        }
+
         $success = $this->updateReviewService->execute(
             hospitalId: $hospitalId,
             id: $id,
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
+            dtos: $dtos,
         );
 
         if ($success) {
