@@ -141,7 +141,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
@@ -177,7 +177,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
@@ -204,7 +204,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
