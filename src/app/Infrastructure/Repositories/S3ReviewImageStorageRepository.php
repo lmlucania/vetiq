@@ -13,7 +13,7 @@ class S3ReviewImageStorageRepository implements ReviewImageStorageRepositoryInte
 {
     public function save(int $reviewId, UploadedFile $image): string
     {
-        $path = Storage::disk('s3')->putFile($this->getDirectoryPath($reviewId), $image);
+        $path = Storage::disk('s3_private')->putFile($this->getDirectoryPath($reviewId), $image);
 
         if ($path === false) {
             throw new RuntimeException('S3へのアップロードに失敗しました');
@@ -24,7 +24,7 @@ class S3ReviewImageStorageRepository implements ReviewImageStorageRepositoryInte
 
     public function deleteMany(array $paths): bool
     {
-        return Storage::disk('s3')->delete($paths);
+        return Storage::disk('s3_private')->delete($paths);
     }
 
     /**
