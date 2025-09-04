@@ -16,22 +16,6 @@ use RuntimeException;
  */
 class S3HospitalImageStorageRepository implements HospitalImageStorageRepositoryInterface
 {
-    /**
-     * @param int $hospitalId
-     * @param UploadedFile[] $images
-     * @return array
-     */
-    //    public function saveMany(int $hospitalId, array $images): array
-    //    {
-    //        $dirPath = $this->getDirectoryPath($hospitalId);
-    //
-    //        $paths = [];
-    //        foreach ($images as $image) {
-    //            $paths[] = $this->save($dirPath, $image);
-    //        }
-    //
-    //        return $paths;
-    //    }
 
     public function save(int $hospitalId, UploadedFile $image): string
     {
@@ -68,20 +52,4 @@ class S3HospitalImageStorageRepository implements HospitalImageStorageRepository
     {
         return "hospitals/{$hospitalId}";
     }
-
-    /**
-     * @param string $dirPath
-     * @param UploadedFile $image
-     * @return string
-     */
-    //    private function save(string $dirPath, UploadedFile $image)
-    //    {
-    //        $path = Storage::disk('s3_private')->putFile($dirPath, $image);
-    //
-    //        if ($path === false) {
-    //            throw new RuntimeException('S3へのアップロードに失敗しました');
-    //        }
-    //
-    //        return $path;
-    //    }
 }
