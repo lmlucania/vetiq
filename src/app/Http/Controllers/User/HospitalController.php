@@ -41,6 +41,7 @@ class HospitalController extends Controller
         );
 
         return fractal($paginator->getCollection(), new HospitalTransformer())
+            ->parseIncludes(['images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

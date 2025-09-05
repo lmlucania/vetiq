@@ -11,6 +11,8 @@ interface HospitalRepositoryInterface
 {
     public function getById(int $id): Hospital;
 
+    public function getByIdWithImage(int $id): Hospital;
+
     public function update(
         int $id,
         string $name,

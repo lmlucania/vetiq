@@ -6,7 +6,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class ReviewImage extends Model
+class HospitalImage extends Model
 {
     protected $fillable = [
         'review_id',

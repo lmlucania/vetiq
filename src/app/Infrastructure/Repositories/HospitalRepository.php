@@ -15,6 +15,11 @@ class HospitalRepository implements HospitalRepositoryInterface
         return Hospital::findOrFail($id);
     }
 
+    public function getByIdWithImage(int $id): Hospital
+    {
+        return Hospital::with(['images'])->findOrFail($id);
+    }
+
     public function update(
         int $id,
         string $name,

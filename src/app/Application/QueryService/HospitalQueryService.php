@@ -33,7 +33,7 @@ class HospitalQueryService implements HospitalQueryServiceInterface
         array $dayOfWeek,
         array $queryParam
     ): LengthAwarePaginator {
-        $query = Hospital::query();
+        $query = Hospital::with(['images']);
 
         $sortedQuery = $this->querySort($query, $this->sortable, $sort ?: $this->defaultSort);
 

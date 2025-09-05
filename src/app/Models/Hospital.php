@@ -54,4 +54,9 @@ class Hospital extends Model
     {
         return $this->hasMany(ExceptionHour::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(HospitalImage::class);
+    }
 }
