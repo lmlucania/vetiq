@@ -26,8 +26,8 @@ class HospitalController extends Controller
      */
     public function show()
     {
-        $hospital = $this->getHospitalDetailService->execute();
-        return fractal($hospital, new HospitalTransformer())->parseIncludes(['images'])->respond();
+        $hospitalWithImages = $this->getHospitalDetailService->execute();
+        return fractal($hospitalWithImages, new HospitalTransformer())->parseIncludes(['images'])->respond();
     }
 
     /**
