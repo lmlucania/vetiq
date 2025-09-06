@@ -47,7 +47,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+            ->parseIncludes(['hospital', 'images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
@@ -80,10 +80,10 @@ class ReviewController extends Controller
      */
     public function show(int $hospitalId, int $id)
     {
-        $review = $this->getReviewDetailService->execute($hospitalId, $id);
+        $reviewWithImagesAndHospital = $this->getReviewDetailService->execute($hospitalId, $id);
 
-        return fractal($review, new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+        return fractal($reviewWithImagesAndHospital, new ReviewTransformer())
+            ->parseIncludes(['hospital', 'images'])
             ->respond();
     }
 
@@ -135,7 +135,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+            ->parseIncludes(['hospital', 'images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

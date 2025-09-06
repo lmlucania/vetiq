@@ -33,4 +33,9 @@ class Review extends Model
     {
         return $this->belongsTo(Hospital::class);
     }
+
+    public function images()
+    {
+        return $this->hasMany(ReviewImage::class);
+    }
 }

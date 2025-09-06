@@ -33,6 +33,7 @@ class ReviewController
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
+            ->parseIncludes(['images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

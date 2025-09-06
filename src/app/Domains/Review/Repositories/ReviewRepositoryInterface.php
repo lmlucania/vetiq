@@ -11,6 +11,8 @@ interface ReviewRepositoryInterface
 {
     public function getByHospitalIdAndId(int $hospitalId, int $id): Review;
 
+    public function getByHospitalIdAndIdWithImagesAndHospital(int $hospitalId, int $id): Review;
+
     public function create(
         int $hospitalId,
         int $userId,

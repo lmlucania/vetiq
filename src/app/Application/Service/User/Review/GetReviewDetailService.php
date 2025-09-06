@@ -16,7 +16,7 @@ class GetReviewDetailService
 
     public function execute(int $hospitalId, int $id): Review
     {
-        return $this->reviewRepository->getByHospitalIdAndId(
+        return $this->reviewRepository->getByHospitalIdAndIdWithImagesAndHospital(
             hospitalId: $hospitalId,
             id: $id,
         );

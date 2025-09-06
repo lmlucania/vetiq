@@ -13,15 +13,17 @@ class ReviewRepository implements ReviewRepositoryInterface
 {
     public function getByHospitalIdAndId(int $hospitalId, int $id): Review
     {
-        $model = Review::where('id', $id)
+        return Review::where('id', $id)
             ->where('hospital_id', $hospitalId)
-            ->first();
+            ->firstOrFail();
+    }
 
-        if ($model == null) {
-            throw new NotFoundException();
-        }
-
-        return $model;
+    public function getByHospitalIdAndIdWithImagesAndHospital(int $hospitalId, int $id): Review
+    {
+        return Review::with(['hospital', 'images'])
+            ->where('id', $id)
+            ->where('hospital_id', $hospitalId)
+            ->firstOrFail();
     }
 
     public function create(
