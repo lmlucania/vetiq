@@ -115,8 +115,9 @@ class ReviewControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(5, 'data')
+            ->assertJsonCount(6, 'data')
             ->assertJsonFragment([
+                'id'     => $review->id,
                 'rating' => Rating::One->value,
                 'title'  => 'テストタイトル',
                 'body'   => 'テスト本文',
