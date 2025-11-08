@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace App\Transformers;
 
 use App\Models\Hospital;
-use League\Fractal\Manager;
 use League\Fractal\Resource\Collection;
-use League\Fractal\Serializer\ArraySerializer;
 use League\Fractal\TransformerAbstract;
 
 class HospitalTransformer extends TransformerAbstract

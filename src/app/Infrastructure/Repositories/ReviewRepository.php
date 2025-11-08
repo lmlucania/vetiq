@@ -6,7 +6,6 @@ namespace App\Infrastructure\Repositories;
 
 use App\Domains\Review\Enum\Rating;
 use App\Domains\Review\Repositories\ReviewRepositoryInterface;
-use App\Exceptions\NotFoundException;
 use App\Models\Review;
 
 class ReviewRepository implements ReviewRepositoryInterface
