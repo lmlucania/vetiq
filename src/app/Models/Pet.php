@@ -20,6 +20,7 @@ class Pet extends Model
         'birthday',
         'started_care_at',
         'remark',
+        'image_path',
     ];
 
     protected $casts = [

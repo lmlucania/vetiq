@@ -18,7 +18,9 @@ Route::middleware(['guest'])->group(static function () {
 
 Route::middleware('auth:users')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
-    Route::resource('pets', PetController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
+    Route::resource('pets', PetController::class)->only(['index', 'store', 'show', 'destroy']);
+    // 言語仕様上、multipart/form-data を含むリクエストは POST メソッドでのみ自動パースされるため、POSTを使用する
+    Route::post('pets/{pet}', [PetController::class, 'update'])->name('pet.update');
     Route::controller(UserController::class)->prefix('profile')->name('profile.')->group(static function () {
         Route::get('', 'me')->name('me');
         Route::post('', 'update')->name('update');
@@ -29,7 +31,9 @@ Route::middleware('auth:users')->group(static function () {
         Route::post('', 'attach')->name('attach');
         Route::delete('', 'detach')->name('detach');
     });
-    Route::resource('hospital.reviews', ReviewController::class)->only(['index', 'store', 'show', 'update']);
+    Route::resource('hospital.reviews', ReviewController::class)->only(['index', 'store', 'show']);
+    // 言語仕様上、multipart/form-data を含むリクエストは POST メソッドでのみ自動パースされるため、POSTを使用する
+    Route::post('hospital/{hospital}/reviews/{review}', [ReviewController::class, 'update'])->name('hospital.reviews.update');
     Route::get('reviews', [ReviewController::class, 'indexOwn'])->name('reviews.index');
     Route::resource('hospitals', HospitalController::class)->only(['index', 'show']);
     Route::resource('appointments', AppointmentController::class)->only(['index', 'store', 'show']);

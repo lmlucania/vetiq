@@ -15,6 +15,11 @@ class HospitalRepository implements HospitalRepositoryInterface
         return Hospital::findOrFail($id);
     }
 
+    public function getByIdWithImage(int $id): Hospital
+    {
+        return Hospital::with(['images'])->findOrFail($id);
+    }
+
     public function update(
         int $id,
         string $name,
@@ -22,8 +27,8 @@ class HospitalRepository implements HospitalRepositoryInterface
         string $postCode,
         Prefecture $prefecture,
         string $address1,
-        string $address2,
-        bool $isPublished
+        ?string $address2,
+        bool $isPublished,
     ): bool {
         $hospital = Hospital::findOrFail($id);
 

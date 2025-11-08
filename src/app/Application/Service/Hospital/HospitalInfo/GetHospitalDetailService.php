@@ -6,6 +6,7 @@ namespace App\Application\Service\Hospital\HospitalInfo;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Hospital\Repositories\HospitalRepositoryInterface;
+use App\Models\Hospital;
 
 class GetHospitalDetailService
 {
@@ -15,10 +16,10 @@ class GetHospitalDetailService
     ) {
     }
 
-    public function execute()
+    public function execute(): Hospital
     {
         $hospitalId = $this->authActorService->getHospitalId();
 
-        return $this->hospitalRepository->getById($hospitalId);
+        return $this->hospitalRepository->getByIdWithImage($hospitalId);
     }
 }

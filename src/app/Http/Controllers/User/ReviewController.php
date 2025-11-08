@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\User;
 
+use App\Application\Dto\Request\ReviewImageDto;
 use App\Application\Service\User\Review\CreateReviewService;
 use App\Application\Service\User\Review\GetHospitalReviewsService;
 use App\Application\Service\User\Review\GetMyReviewsService;
@@ -46,7 +47,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+            ->parseIncludes(['hospital', 'images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }
@@ -63,6 +64,7 @@ class ReviewController extends Controller
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
+            images: $request->getImages(),
         );
 
         if ($success) {
@@ -78,10 +80,10 @@ class ReviewController extends Controller
      */
     public function show(int $hospitalId, int $id)
     {
-        $review = $this->getReviewDetailService->execute($hospitalId, $id);
+        $reviewWithImagesAndHospital = $this->getReviewDetailService->execute($hospitalId, $id);
 
-        return fractal($review, new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+        return fractal($reviewWithImagesAndHospital, new ReviewTransformer())
+            ->parseIncludes(['hospital', 'images'])
             ->respond();
     }
 
@@ -92,12 +94,22 @@ class ReviewController extends Controller
      */
     public function update(UpdateReviewRequest $request, int $hospitalId, int $id)
     {
+        $dtos = [];
+        foreach ($request->getImages() as $index => $image) {
+            $dtos[] = new ReviewImageDto(
+                id: isset($image['id']) ? (int)$image['id'] : null,
+                file: $image['file'] ?? null,
+                displayOrder: $index + 1,
+            );
+        }
+
         $success = $this->updateReviewService->execute(
             hospitalId: $hospitalId,
             id: $id,
             rating: $request->getRating(),
             title: $request->getTitle(),
             body: $request->getBody(),
+            dtos: $dtos,
         );
 
         if ($success) {
@@ -123,7 +135,7 @@ class ReviewController extends Controller
         );
 
         return fractal($paginator->getCollection(), new ReviewTransformer())
-            ->parseIncludes(['hospital'])
+            ->parseIncludes(['hospital', 'images'])
             ->paginateWith(new IlluminatePaginatorAdapter($paginator))
             ->respond();
     }

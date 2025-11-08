@@ -30,6 +30,7 @@ class CreateAppointmentService
         private MenuRepositoryInterface $menuRepository,
         private VetRepositoryInterface $vetRepository,
         private AppointmentFactory $appointmentFactory,
+        private CreateAppointmentImageService $createAppointmentImageService,
     ) {
     }
 
@@ -39,7 +40,66 @@ class CreateAppointmentService
         int $menuId,
         ?int $vetId,
         Carbon $appointmentAt,
+        array $images,
     ): bool {
+        [$pet, $hospital, $menu, $vet] = $this->validateAndFetchModels(
+            petId: $petId,
+            hospitalId: $hospitalId,
+            menuId: $menuId,
+            vetId: $vetId,
+        );
+
+        $appointmentEntityWithoutId = $this->appointmentFactory->newEntityFromPrimitives(
+            petId: $pet->id,
+            hospitalId: $hospital->id,
+            menuId: $menu->id,
+            vetId: $vet?->id,
+            appointmentAt: $appointmentAt,
+            status: AppointmentStatus::Reserved,
+            hospitalMemo: null,
+        );
+
+        try {
+            $appointmentEntityWithId = DB::transaction(function () use ($appointmentEntityWithoutId) {
+                $appointmentEntityWithId = $this->appointmentRepository->create($appointmentEntityWithoutId);
+
+                $this->statusHistoryRepository->create(
+                    appointmentEntity: $appointmentEntityWithId,
+                    modifier: $this->authActorService->getUser(),
+                );
+
+                return $appointmentEntityWithId;
+            });
+        } catch (DomainException $e) {
+            // ドメインの例外は、そのまま上に投げる
+            throw $e;
+        } catch (Throwable $e) {
+            Log::error('Fail to create appointment', ['error' => $e]);
+            return false;
+        }
+
+        // 途中でエラーにならない場合はここまで到達する
+        if (empty($images)) {
+            return true;
+        }
+
+        return $this->createAppointmentImageService->execute(
+            appointmentId: $appointmentEntityWithId->getAppointmentId()->getValue(),
+            images: $images,
+        );
+    }
+
+    /**
+     * 指定されたIDでモデルインスタンスを取得する
+     * IDが不正または関連付けが無い場合にスローされる
+     * @param int $petId
+     * @param int $hospitalId
+     * @param int $menuId
+     * @param int|null $vetId
+     * @return array
+     */
+    private function validateAndFetchModels(int $petId, int $hospitalId, int $menuId, ?int $vetId): array
+    {
         $pet = $this->petRepository->getByUserIdAndId(
             userId: $this->authActorService->getUserId(),
             id: $petId,
@@ -53,33 +113,6 @@ class CreateAppointmentService
             ? null
             : $this->vetRepository->getByHospitalIdAndId(hospitalId: $hospital->id, id: $vetId);
 
-        $modifier = $this->authActorService->getUser();
-
-        $appointmentEntity = $this->appointmentFactory->newEntityFromPrimitives(
-            petId: $pet->id,
-            hospitalId: $hospital->id,
-            menuId: $menu->id,
-            vetId: $vet?->id,
-            appointmentAt: $appointmentAt,
-            status: AppointmentStatus::Reserved,
-            hospitalMemo: null,
-        );
-
-        try {
-            DB::transaction(function () use ($appointmentEntity, $modifier) {
-                $this->statusHistoryRepository->create(
-                    appointmentEntity: $this->appointmentRepository->create($appointmentEntity),
-                    modifier: $modifier,
-                );
-            });
-
-            return true;
-        } catch (DomainException $e) {
-            // ドメインの例外は、そのまま上に投げる
-            throw $e;
-        } catch (Throwable $e) {
-            Log::error('Appointment create failed', ['error' => $e]);
-            return false;
-        }
+        return [$pet, $hospital, $menu, $vet];
     }
 }

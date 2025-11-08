@@ -40,7 +40,7 @@ class SyncOwnBusinessHoursByDayOfWeekService
 
             return true;
         } catch (Throwable $e) {
-            Log::error('Business hour sync failed', ['error' => $e]);
+            Log::error('Fail to sync business hour', ['error' => $e]);
             return false;
         }
     }

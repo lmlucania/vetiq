@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Http\Controllers\Hospital;
 
+use App\Application\Dto\Request\HospitalImageDto;
 use App\Application\Service\Hospital\HospitalInfo\GetHospitalDetailService;
 use App\Application\Service\Hospital\HospitalInfo\UpdateHospitalInfoService;
 use App\Http\Controllers\Controller;
@@ -25,8 +26,8 @@ class HospitalController extends Controller
      */
     public function show()
     {
-        $hospital = $this->getHospitalDetailService->execute();
-        return fractal($hospital, new HospitalTransformer())->respond();
+        $hospitalWithImages = $this->getHospitalDetailService->execute();
+        return fractal($hospitalWithImages, new HospitalTransformer())->parseIncludes(['images'])->respond();
     }
 
     /**
@@ -36,6 +37,15 @@ class HospitalController extends Controller
      */
     public function update(UpdateHospitalRequest $request)
     {
+        $dtos = [];
+        foreach ($request->getImages() as $index => $image) {
+            $dtos[] = new HospitalImageDto(
+                id: isset($image['id']) ? (int)$image['id'] : null,
+                file: $image['file'] ?? null,
+                displayOrder: $index + 1,
+            );
+        }
+
         $success = $this->updateHospitalInfoService->execute(
             name: $request->getName(),
             phone: $request->getPhone(),
@@ -44,6 +54,7 @@ class HospitalController extends Controller
             address1: $request->getAddress1(),
             address2: $request->getAddress2(),
             isPublished: $request->isPublished(),
+            dtos: $dtos,
         );
 
         if ($success) {

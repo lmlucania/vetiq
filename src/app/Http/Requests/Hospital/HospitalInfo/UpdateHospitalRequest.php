@@ -28,6 +28,19 @@ class UpdateHospitalRequest extends ApiRequest
             'address1'     => ['required', 'string', 'max:255'],
             'address2'     => ['nullable', 'string', 'max:255'],
             'is_published' => ['required', 'boolean'],
+            'images'       => ['nullable', 'array'],
+            'images.*'     => ['required', 'array'],
+            'images.*.id'  => [
+                'nullable',
+                'integer',
+                'prohibits:images.*.file',
+            ],
+            'images.*.file' => [
+                'nullable',
+                'image',
+                'max:5120',
+                'prohibits:images.*.id',
+            ],
         ];
     }
 
@@ -48,7 +61,7 @@ class UpdateHospitalRequest extends ApiRequest
 
     public function getPrefecture(): Prefecture
     {
-        return Prefecture::from($this->validated('prefecture'));
+        return Prefecture::from((int)$this->validated('prefecture'));
     }
 
     public function getAddress1(): string
@@ -63,6 +76,15 @@ class UpdateHospitalRequest extends ApiRequest
 
     public function isPublished(): bool
     {
-        return $this->validated('is_published');
+        return (bool)$this->validated('is_published');
+    }
+
+    /**
+     * @return \Illuminate\Http\UploadedFile[]
+     */
+    public function getImages(): array
+    {
+        // validated() だと null が返ることがあるので file() が安全
+        return $this->validated('images') ?? [];
     }
 }

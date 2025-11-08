@@ -115,8 +115,9 @@ class ReviewControllerTest extends TestCase
         // 検証（Assert）
         $response
             ->assertStatus(200)
-            ->assertJsonCount(5, 'data')
+            ->assertJsonCount(6, 'data')
             ->assertJsonFragment([
+                'id'     => $review->id,
                 'rating' => Rating::One->value,
                 'title'  => 'テストタイトル',
                 'body'   => 'テスト本文',
@@ -141,7 +142,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
@@ -177,7 +178,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);
@@ -204,7 +205,7 @@ class ReviewControllerTest extends TestCase
         ];
 
         // 実行（Act）
-        $response = $this->put(route(
+        $response = $this->post(route(
             'user.hospital.reviews.update',
             ['hospital' => $this->hospital->id, 'review' => $review->id,],
         ), $postData);

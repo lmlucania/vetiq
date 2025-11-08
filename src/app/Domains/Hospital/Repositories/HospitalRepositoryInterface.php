@@ -11,6 +11,8 @@ interface HospitalRepositoryInterface
 {
     public function getById(int $id): Hospital;
 
+    public function getByIdWithImage(int $id): Hospital;
+
     public function update(
         int $id,
         string $name,
@@ -18,7 +20,7 @@ interface HospitalRepositoryInterface
         string $postCode,
         Prefecture $prefecture,
         string $address1,
-        string $address2,
-        bool $isPublished
+        ?string $address2,
+        bool $isPublished,
     ): bool;
 }

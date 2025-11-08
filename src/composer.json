@@ -10,6 +10,7 @@
         "laravel/sanctum": "^4.0",
         "laravel/tinker": "^2.9",
         "league/csv": "^9.24",
+        "league/flysystem-aws-s3-v3": "^3.0",
         "rakutentech/laravel-request-docs": "^2.42",
         "spatie/laravel-fractal": "^6.2"
     },

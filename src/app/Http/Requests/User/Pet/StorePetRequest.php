@@ -8,6 +8,7 @@ use App\Domains\Pet\Enum\Gender;
 use App\Http\Requests\Base\ApiRequest;
 use Carbon\Carbon;
 use Illuminate\Validation\Rules\Enum;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 class StorePetRequest extends ApiRequest
 {
@@ -27,6 +28,7 @@ class StorePetRequest extends ApiRequest
             'birthday'        => ['nullable', 'date'],
             'started_care_at' => ['nullable', 'date'],
             'remark'          => ['nullable', 'string'],
+            'image'           => ['nullable', 'image', 'max:5120'],
         ];
     }
 
@@ -37,7 +39,7 @@ class StorePetRequest extends ApiRequest
 
     public function getGender(): Gender
     {
-        return Gender::from($this->validated('gender'));
+        return Gender::from((int)$this->validated('gender'));
     }
 
     public function getBirthday(): ?Carbon
@@ -55,5 +57,11 @@ class StorePetRequest extends ApiRequest
     public function getRemark(): ?string
     {
         return $this->validated('remark');
+    }
+
+    public function getImage(): ?UploadedFile
+    {
+        // validated() だと null が返ることがあるので file() が安全
+        return $this->file('image');
     }
 }

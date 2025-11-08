@@ -56,6 +56,7 @@ class AppointmentController extends Controller
             menuId: $request->getMenuId(),
             vetId: $request->getVetId(),
             appointmentAt: $request->getAppointmentAt(),
+            images: $request->getImages(),
         );
 
         if ($success) {
@@ -71,8 +72,8 @@ class AppointmentController extends Controller
      */
     public function show(int $id)
     {
-        $appointment = $this->getAppointmentDetailService->execute($id);
-        return fractal($appointment, new AppointmentWithStatusHistoryTransformer())
+        $appointmentWithRelations = $this->getAppointmentDetailService->execute($id);
+        return fractal($appointmentWithRelations, new AppointmentWithStatusHistoryTransformer())
             ->parseIncludes(['pet', 'menu', 'hospital', 'vet'])
             ->respond();
     }

@@ -50,6 +50,7 @@ class PetController extends Controller
             birthday: $request->getBirthday(),
             startedCareAt: $request->getStartedCareAt(),
             remark: $request->getRemark(),
+            image: $request->getImage(),
         );
 
         if ($success) {
@@ -84,6 +85,7 @@ class PetController extends Controller
             birthday: $request->getBirthday(),
             startedCareAt: $request->getStartedCareAt(),
             remark: $request->getRemark(),
+            image: $request->getImage(),
         );
 
         if ($success) {

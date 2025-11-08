@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace App\Domains\Review\Repository;
+namespace App\Domains\Review\Repositories;
 
 use App\Domains\Review\Enum\Rating;
 use App\Models\Review;
@@ -10,6 +10,8 @@ use App\Models\Review;
 interface ReviewRepositoryInterface
 {
     public function getByHospitalIdAndId(int $hospitalId, int $id): Review;
+
+    public function getByHospitalIdAndIdWithImagesAndHospital(int $hospitalId, int $id): Review;
 
     public function create(
         int $hospitalId,

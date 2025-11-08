@@ -45,7 +45,7 @@ class SyncOwnExceptionHoursByDateService
 
             return true;
         } catch (Throwable $e) {
-            Log::error('Exception hour sync failed', ['error' => $e]);
+            Log::error('Fail to sync exception hour', ['error' => $e]);
             return false;
         }
     }

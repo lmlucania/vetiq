@@ -21,7 +21,8 @@ Route::middleware('auth:staff-members')->group(static function () {
     Route::post('logout', [AuthController::class, 'logout'])->name('logout');
     Route::controller(HospitalController::class)->prefix('info')->name('info.')->group(static function () {
         Route::get('', 'show')->name('show');
-        Route::put('', 'update')->name('update');
+        // 言語仕様上、multipart/form-data を含むリクエストは POST メソッドでのみ自動パースされるため、POSTを使用する
+        Route::post('', 'update')->name('update');
     });
     Route::resource('menus', MenuController::class)->only(['index', 'store', 'show', 'update', 'destroy']);
     Route::controller(MenuController::class)->prefix('menus')->name('menus.')->group(static function () {

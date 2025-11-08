@@ -6,14 +6,17 @@ namespace App\Application\Service\User\Pet;
 
 use App\Application\Service\Auth\AuthActorService;
 use App\Domains\Pet\Enum\Gender;
+use App\Domains\Pet\Repository\PetImageStorageRepositoryInterface;
 use App\Domains\Pet\Repository\PetRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Http\UploadedFile;
 
 class UpdatePetService
 {
     public function __construct(
         private PetRepositoryInterface $petRepository,
         private AuthActorService $authActorService,
+        private PetImageStorageRepositoryInterface $petImageStorageRepository,
     ) {
     }
 
@@ -23,10 +26,20 @@ class UpdatePetService
         Gender $gender,
         ?Carbon $birthday,
         ?Carbon $startedCareAt,
-        ?string $remark
+        ?string $remark,
+        ?UploadedFile $image,
     ): bool {
-        $useId = $this->authActorService->getUserId();
-        $pet   = $this->petRepository->getByUserIdAndId($useId, $id);
+        $pet = $this->petRepository->getByUserIdAndId(
+            userId: $this->authActorService->getUserId(),
+            id: $id,
+        );
+
+        $imagePath = $pet->image_path;
+        if (! empty($image)) {
+            // 画像がアップロードされなくても削除はしない
+            $imagePath = $this->petImageStorageRepository->save($pet->id, $image);
+            $this->petImageStorageRepository->deleteExcept($pet->id, $imagePath);
+        }
 
         return $this->petRepository->update(
             id: $pet->id,
@@ -35,6 +48,7 @@ class UpdatePetService
             birthday: $birthday,
             startedCareAt: $startedCareAt,
             remark: $remark,
+            imagePath: $imagePath,
         );
     }
 }
